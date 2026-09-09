@@ -1,6 +1,4 @@
-// Cross-service defensive attack paths sourced from the local ARS3NAL vault,
-// public cloud-security research, and official AWS incident-response guidance.
-// Scenarios explain authorized testing and response reasoning; they omit payloads.
+// Incident scenarios. Source references are defined below and linked by each scenario.
 
 export const researchSources = {
   vault: {

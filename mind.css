@@ -1,5 +1,5 @@
 
-/* A single reading and navigation system throughout the atlas. */
+/* Shared page layout. */
 :root { --mind-bg:#101017;--mind-panel:#17131f;--mind-line:#ffffff12;--mind-muted:#a298af; }
 body { background:#0e0c13;color:#ece5f3; }
 .topbar { background:#100e16; }
@@ -89,7 +89,7 @@ body { background:#0e0c13;color:#ece5f3; }
 .mind-link.documented { stroke:#a1deca;stroke-opacity:.5; }.mind-link.attack { stroke:#ffb08b;stroke-opacity:.5;stroke-dasharray:6 5; }
 .mind-link.references { stroke:#bda3d7;stroke-dasharray:2 6;stroke-opacity:.3; }
 
-/* Library, research paths, articles, and source index share the same page frame. */
+/* Library, scenarios, articles, and sources. */
 .content-page,.paths-page.content-page,.scenario-page.content-page,.sources-page.content-page { max-width:1600px;padding:67px 50px 40px; }
 .content-page>.breadcrumb,.sources-page>.breadcrumb { position:static;inset:auto;margin:0 0 25px;display:flex;line-height:1.7; }
 .content-hero { margin:0 0 34px;padding-bottom:25px;border-bottom:1px solid var(--mind-line); }
@@ -121,7 +121,7 @@ body { background:#0e0c13;color:#ece5f3; }
 .article { max-width:900px; }.article>p { font-size:16px;line-height:1.95; }
 .article-flow a { border-radius:9px;padding:18px; }
 
-/* Stage nodes drive the narrative; readers choose the lens and pace. */
+/* Scenario stage navigation. */
 .story-player { border:1px solid #c3a0dd24;border-radius:14px;overflow:hidden;background:#15101d;margin:30px 0 45px; }
 .story-player-heading { display:flex;align-items:center;justify-content:space-between;gap:20px;padding:25px 28px;border-bottom:1px solid var(--mind-line);background:linear-gradient(100deg,#251a30,#181220); }
 .story-player-heading .mind-eyebrow { margin:0 0 8px; }
@@ -223,7 +223,7 @@ body { background:#0e0c13;color:#ece5f3; }
 @media(max-width:600px){.atlas-home-stories{padding:16px}.atlas-home-story .story-player-heading{padding:18px}.atlas-home-story .story-position{display:none}.atlas-home-story .story-reading{padding:0 17px 17px}}
 @media(max-width:370px){.topbar{margin-inline:10px;gap:5px}.brand{font-size:16px;gap:5px;letter-spacing:1px}.brand svg{width:20px;height:20px}.primary-nav a{font-size:8px;padding-inline:7px}.top-actions{gap:0}.topbar .search-launch{padding:4px}}
 
-/* Shared node language: a navigable network, with the text beside it. */
+/* Graph nodes and labels. */
 .mind-graph-node .mind-node-back,.mind-graph-node:hover .mind-node-back,.mind-graph-node:focus .mind-node-back { fill:transparent;stroke:none; }
 .mind-neuron-glow { fill:var(--color);opacity:.055; }
 .mind-neuron-ring { fill:none;stroke:var(--color);stroke-opacity:.25;stroke-dasharray:1 5; }
@@ -271,7 +271,7 @@ body { background:#0e0c13;color:#ece5f3; }
 @media(prefers-reduced-motion:reduce){.story-stop:before{animation:none}}
 
 
-/* Membership remains editorial; capability arrows carry source-backed meaning. */
+/* Keep grouping lines distinct from documented capability links. */
 .mind-link.membership { stroke-opacity:.65;stroke-width:1.8; }
 .mind-link.documented { stroke-opacity:.85;stroke-width:2; }
 .mind-link.references { stroke-opacity:.6; }

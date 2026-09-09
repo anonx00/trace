@@ -22,9 +22,7 @@ const allServices = [...originalServices,
   extra('redshift','Amazon Redshift','Data warehouse','Amazon Redshift is a managed cloud data warehouse for analyzing data using SQL.','redshift/latest/mgmt/welcome.html'),
 ].map(s=>({...s, source: root+(s.id==='sts'?'STS/latest/APIReference/API_AssumeRole.html':s.doc), short: s.name.replace(/^(Amazon |AWS )/, '')}));
 
-// Glue and Redshift are valuable AWS services, but they did not earn a place in
-// this incident-response-focused edition. The map is intentionally a curated
-// security surface rather than a general product catalog.
+// Limit the map to the services covered by the security notes.
 export const services = allServices.filter(s=>!['glue','redshift'].includes(s.id));
 
 export const domains = [
@@ -41,8 +39,7 @@ export const serviceById = id => services.find(s=>s.id===id);
 export const domainById = id => domains.find(d=>d.id===id);
 export const domainFor = id => domains.find(d=>d.services.includes(id));
 
-// Each relationship below has a specific official source. These are documented
-// capabilities; they do not assert that an integration is configured in an account.
+// Each capability needs an AWS source. These links describe supported features.
 const link = (from,to,label,detail,path) => ({from,to,label,detail,source:root+path});
 export const connections = [
   // Additional capability sources checked 9 September 2026.

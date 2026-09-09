@@ -1,7 +1,4 @@
-// Defensive security profiles for the AWS Security Universe.
-// These are concise analyst syntheses. Each profile links back to official AWS
-// documentation so the interface remains useful without presenting conjecture
-// as product documentation.
+// Service security notes. Each profile includes its AWS documentation source.
 
 const securityPillar = 'https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html';
 const incidentResponse = 'https://docs.aws.amazon.com/security-ir/latest/userguide/incident-response.html';

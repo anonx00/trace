@@ -1,5 +1,5 @@
 
-/* TRACE / Research observatory. All content regions use normal document flow. */
+/* Homepage. */
 .research-home { --ink:#ececf1; --quiet:#9496a9; --stroke:#ffffff10; --accent:#cbbaff; color:var(--ink); max-width:1840px; margin:0 auto; padding:68px 38px 0; }
 .research-home * { box-sizing:border-box; }
 .research-home button,.research-home a { -webkit-tap-highlight-color:transparent; }
@@ -135,7 +135,7 @@
 @media(prefers-reduced-motion:reduce){.research-home *{animation:none!important;transition:none!important}}
 
 
-/* Readable capability paths with source inspection by pointer or keyboard. */
+/* Capability links and source previews. */
 .atlas-services-mode .atlas-stage { height:720px; }
 .atlas-service-node text { font-size:14px;fill:#ece5f4;stroke-width:5px; }
 .atlas-service-node>circle { stroke-width:1.8; }

@@ -1,5 +1,4 @@
-// Original summaries of the S3 guide supplied by the user. Keys match imported
-// section titles; each note is displayed beside that section's canonical anchor.
+// S3 notes keyed by the section titles in the documentation index.
 export const s3Notes = {
   'Features of Amazon S3':'S3 combines object storage with storage classes, access controls, lifecycle management, replication, monitoring, and analytics. These features are configured for particular bucket types and workloads; a feature listed here is not automatically enabled in an account.',
   'Storage classes':'Storage classes offer different access, resilience, and retrieval characteristics. S3 Standard serves frequent access; infrequent-access and Glacier classes support less frequently retrieved data. S3 Express One Zone is designed for low-latency access in a single Availability Zone. Check the class-specific documentation when comparing tradeoffs.',

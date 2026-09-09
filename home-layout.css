@@ -1,4 +1,4 @@
-/* Homepage regions participate in layout; text never competes with graph space. */
+/* Homepage layout overrides. */
 .map-page.universe-view {
   display: grid;
   grid-template-columns: clamp(260px, 23vw, 340px) minmax(0, 1fr);

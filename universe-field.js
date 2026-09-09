@@ -1,6 +1,6 @@
 let sharedAdapter;
 ﻿
-// Decorative GPU field. Research content and all navigation remain in the DOM.
+// Background animation; graph content and navigation are separate DOM elements.
 // API reference: https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API
 const shader = `
 struct Scene { screen: vec4f, motion: vec4f };

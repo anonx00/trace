@@ -1,4 +1,4 @@
-// Original learning summaries. The atlas depicts reference relationships, not a discovered AWS account.
+// Base service descriptions used by catalog.js.
 export const domains = [
   { id: 'identity', name: 'Identity & access', short: 'Identity', icon: 'fingerprint', color: '#d1b6ff', position: [265, 170], description: 'Who can act, what they can reach, and where trust begins.', lens: 'Follow the principal, its session, and the policies that shape its access.', services: ['iam', 'sts', 'identity-center', 'kms'] },
   { id: 'compute', name: 'Compute', short: 'Compute', icon: 'chip', color: '#ffc58f', position: [745, 152], description: 'The workloads that turn permissions into real activity.', lens: 'Connect workload identity with process, runtime, and network evidence.', services: ['ec2', 'lambda', 'ecs', 'eks'] },
