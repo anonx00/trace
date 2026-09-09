@@ -1,0 +1,2 @@
+Font CSS: https://fonts.googleapis.com/css2?family=DM+Sans:wght@400..700&family=Space+Grotesk:wght@400..700&display=swap
+Fonts downloaded from Google Fonts; see accompanying OFL licenses.
