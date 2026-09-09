@@ -1,6 +1,7 @@
 
 """Regression coverage for the connected research experience, not just the homepage."""
 import json
+import re
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
@@ -83,6 +84,10 @@ with sync_playwright() as p:
         page.locator('.inspector').wait_for()
         for tab in ['Intel','Evidence','Defense','AWS docs']:
             page.get_by_role('tab',name=tab,exact=True).click()
+            if tab=='Defense':
+                expect(page.locator('.field-command')).to_have_count(1)
+                expect(page.locator('.field-command code')).to_contain_text('aws ')
+                expect(page.locator('.field-command a')).to_have_attribute('href',re.compile(r'^https://docs\.aws\.amazon\.com/cli/'))
             clipped=page.locator('.mind-node-copy').evaluate_all("(els)=>els.filter(e=>e.scrollHeight>Number(e.parentElement.getAttribute('height'))+1).map(e=>e.innerText)")
             if clipped:overflow.append({'service':doc['id'],'tab':tab,'text':clipped})
     assert not overflow,overflow

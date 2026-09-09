@@ -6,6 +6,7 @@ let cleanupResearchHome=()=>{},cleanupMindPage=()=>{},graphPage=0,mindPaused=mat
 import {services,domains,connections,insights,serviceById,domainById,domainFor} from './catalog.js';
 import {s3Notes} from './s3-notes.js';
 import {profileFor} from './security-data.js';
+import {commandFor} from './defensive-commands.js';
 import {scenarios,scenarioById,scenariosForService,scenarioSources,researchForDomain,researchSources} from './scenario-data.js';
 
 const $=s=>document.querySelector(s);
@@ -58,6 +59,35 @@ function mapPage(type,id,topicIndex){
   $('#focus-graph').addEventListener('click',()=>{$('.mind-page').classList.remove('mind-reading-mode');$('#mind-reading').setAttribute('aria-pressed','false');$('#mind-reading').textContent='Reading view';});
   document.title=`${topic?.title||s?.name||d?.name||'Explore the AWS universe'} — TRACE`;
 }
+function renderFieldCommand(panel,item){
+  const label=document.createElement('div');
+  label.className='panel-label source-heading';
+  label.textContent='READ-ONLY FIELD CHECK / AWS CLI';
+  const list=document.createElement('ol');
+  list.className='defense-list';
+  const row=document.createElement('li');
+  row.className='field-command';
+  const badge=document.createElement('span');
+  badge.textContent='CLI';
+  const content=document.createElement('p');
+  const title=document.createElement('strong');
+  title.textContent=item.title;
+  const command=document.createElement('code');
+  command.textContent=item.command;
+  const source=document.createElement('a');
+  source.href=item.source;
+  source.target='_blank';
+  source.rel='noopener noreferrer';
+  source.textContent='AWS CLI reference ↗';
+  content.append(title,document.createElement('br'),command,document.createElement('br'),source);
+  row.append(badge,content);
+  list.append(row);
+  const note=document.createElement('p');
+  note.className='map-tools-note';
+  note.textContent='Confirm the active account and Region where applicable. Replace values in angle brackets. These checks read configuration or status; they do not prove that a control is effective.';
+  panel.querySelector('.source-button').before(label,list,note);
+}
+
 function renderPanel(){const {type,d,s,topic,topicIndex}=routeState;const panel=$('.inspector');
   if(type==='universe'){
     panel.innerHTML=`<span class="entry-label">YOUR FIRST INCIDENT</span><h2>One web request.<br>A whole AWS identity.</h2><p class="inspector-intro">Trace an SSRF path from the edge to instance metadata, temporary credentials, data access, and response evidence.</p><a href="#/scenario/web-to-role" class="start-path">Trace the attack path <span>↗</span></a><div class="entry-stats"><div><strong>${services.length}</strong><small>services</small></div><div><strong>${docs.stats.sections}</strong><small>source topics</small></div><div><strong>08</strong><small>security domains</small></div></div>${provenance()}`;
@@ -86,6 +116,7 @@ function renderPanel(){const {type,d,s,topic,topicIndex}=routeState;const panel=
       const fill=q=>{$('#topic-list').innerHTML=(doc?.sections||[]).map((t,i)=>({...t,i})).filter(t=>t.title.toLowerCase().includes(q)).map(t=>`<a class="topic-link" href="#/service/${s.id}/topic/${t.i}">${esc(t.title)}<small>Official guide / section ${t.i+1}</small></a>`).join('')||'<p class="empty-note">No matching headings in the imported page. Open the AWS guide for the complete documentation.</p>';};fill('');$('.topic-filter').oninput=e=>fill(e.target.value.toLowerCase());
     }
   }
+  if(activeTab==='defense') renderFieldCommand(panel,commandFor(s.id));
 }
 
 let camera={x:0,y:0,w:1200,h:800},baseCamera={x:0,y:0,w:1200,h:800};

@@ -54,6 +54,7 @@ jobs:
         run: |
           npm run test:ui
           npm run test:connections
+          npm run test:commands
           npm run test:motion
           npm run test:mind
       - name: Upload static Pages artifact

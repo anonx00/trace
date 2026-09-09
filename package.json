@@ -11,7 +11,8 @@
     "test:ui": "python scripts/check_ui.py",
     "test:mind": "python scripts/check_mind.py",
     "test:motion": "python scripts/check_motion.py",
-    "test:connections": "python scripts/check_connections.py"
+    "test:connections": "python scripts/check_connections.py",
+    "test:commands": "node scripts/check_defensive_commands.mjs"
   },
   "type": "module"
 }
