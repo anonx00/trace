@@ -18,7 +18,7 @@ with sync_playwright() as pw:
     assert not page.locator('.sidebar').is_visible()
     page.screenshot(path=str(out/'universe-desktop.png'),full_page=True)
     page.locator('[data-detail="services"]').click()
-    assert page.locator('.map-node').count()==46
+    assert page.locator('.map-node').count()==48
     page.locator('[data-detail="overview"]').click()
     assert page.locator('.map-node').count()==8
     page.locator('[data-route="#/domain/data"]').click()
@@ -78,22 +78,27 @@ with sync_playwright() as pw:
     page.locator('.search-result').first.click()
     assert not page.locator('#search-dialog').is_visible()
     page.goto('http://127.0.0.1:4173/#/library')
-    assert page.locator('.library-card').count()==38
+    assert page.locator('.library-card').count()==40
     page.locator('[data-filter="saved"]').click()
     expect(page.locator('.library-card')).to_have_count(1)
     page.locator('[data-filter="all"]').click()
     page.locator('#library-search').fill('s3')
     assert page.locator('.library-card').count()>0
     page.goto('http://127.0.0.1:4173/#/sources')
-    assert page.locator('tbody tr').count()==38
+    assert page.locator('tbody tr').count()==40
     assert page.locator('.reference-grid a').count()>=10
     page.goto('http://127.0.0.1:4173/#/paths')
-    assert page.locator('.scenario-card').count()==8
+    assert page.locator('.scenario-card').count()==13
     page.locator('.scenario-card').first.click()
     page.wait_for_url('**/#/scenario/*')
     expect(page.locator('.trace-stage')).to_have_count(4)
     expect(page.locator('.scenario-sources a').first).to_be_visible()
     assert page.locator('.scenario-sources a').count()>=5
+    for scenario in ('alb-rule-auth-bypass','appsync-api-key-persistence','appsync-resolver-data-access','cloudfront-function-cookie-theft','lambda-edge-request-exfiltration'):
+        page.goto('http://127.0.0.1:4173/#/scenario/'+scenario,wait_until='domcontentloaded')
+        expect(page.locator('.trace-stage')).to_have_count(4)
+        assert page.locator('.scenario-sources a').count()>=3,scenario
+        assert page.locator('.stage-service').count()==4,scenario
     page.set_viewport_size({'width':390,'height':844})
     page.goto('http://127.0.0.1:4173/#/')
     assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')

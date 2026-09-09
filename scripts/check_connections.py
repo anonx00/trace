@@ -30,8 +30,16 @@ with sync_playwright() as p:
     assert a==signal.evaluate(position),'Pause failed'
     for d in data['domains']:
         page.goto('http://127.0.0.1:4173/#/domain/'+d['id'],wait_until='networkidle')
-        expect(page.locator('.mind-graph-node')).to_have_count(len(d['services']))
-        expect(page.locator('.mind-link.membership')).to_have_count(len(d['services']))
+        visible=min(6,len(d['services']))
+        expect(page.locator('.mind-graph-node')).to_have_count(visible)
+        expect(page.locator('.mind-link.membership')).to_have_count(visible)
+        seen=set(page.locator('.mind-graph-node').evaluate_all("ns=>ns.map(n=>n.dataset.route.split('/').pop())"))
+        while page.locator('#graph-next').is_enabled():
+            page.locator('#graph-next').click()
+            remaining=len(d['services'])-len(seen)
+            expect(page.locator('.mind-graph-node')).to_have_count(min(6,remaining))
+            seen.update(page.locator('.mind-graph-node').evaluate_all("ns=>ns.map(n=>n.dataset.route.split('/').pop())"))
+        assert seen==set(d['services']),d['id']
         assert page.locator('.canvas-wrap').bounding_box()['height']>400
         assert page.locator('.mind-graph-node').evaluate_all('ns=>ns.every(n=>n.getBoundingClientRect().width>20)')
     for s in ('codepipeline','cloudformation','ecr'):

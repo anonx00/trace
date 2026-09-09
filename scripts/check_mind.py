@@ -89,9 +89,9 @@ with sync_playwright() as p:
             clipped=page.locator('.mind-node-copy').evaluate_all("(els)=>els.filter(e=>e.scrollHeight>Number(e.parentElement.getAttribute('height'))+1).map(e=>e.innerText)")
             if clipped:overflow.append({'service':doc['id'],'tab':tab,'text':clipped})
     assert not overflow,overflow
-    print('All 38 services / four lenses: full graph text',flush=True)
+    print('All 40 services / four lenses: full graph text',flush=True)
 
-    routes=['#/','#/domain/data','#/service/s3','#/service/rds/topic/13','#/paths','#/scenario/web-to-role','#/library','#/sources']
+    routes=['#/','#/domain/data','#/service/s3','#/service/rds/topic/13','#/paths','#/scenario/web-to-role','#/scenario/appsync-api-key-persistence','#/scenario/lambda-edge-request-exfiltration','#/library','#/sources']
     layout=[]
     for width in [1440,1024,768,390,320]:
         page.set_viewport_size({'width':width,'height':900})
@@ -106,12 +106,12 @@ with sync_playwright() as p:
     page.goto(URL,wait_until='networkidle')
     page.locator('[data-detail="services"]').click()
     expect(page.locator('.atlas-service-index')).to_be_visible()
-    assert page.locator('.atlas-service-index a').count()==38
+    assert page.locator('.atlas-service-index a').count()==40
     page.locator('.atlas-service-index a[href="#/service/iam"]').click()
     page.wait_for_url('**/#/service/iam')
     page.locator('#mind-reading').click()
     expect(page.locator('.inspector')).to_be_visible()
     page.screenshot(path=str(ROOT/'artifacts/mind-mobile-reading.png'),full_page=True)
     assert not errors,errors
-    print(json.dumps({'result':'passed','pageErrors':errors,'layouts':len(routes)*5,'services':38}))
+    print(json.dumps({'result':'passed','pageErrors':errors,'layouts':len(routes)*5,'services':40}))
     browser.close()

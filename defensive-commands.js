@@ -16,6 +16,11 @@ export const defensiveCommands = {
     command: 'aws sso-admin list-instances',
     source: cli + 'sso-admin/list-instances.html'
   },
+  cognito: {
+    title: 'Review user-pool policies, app clients, and protection settings',
+    command: 'aws cognito-idp describe-user-pool --user-pool-id <user-pool-id>',
+    source: cli + 'cognito-idp/describe-user-pool.html'
+  },
   organizations: {
     title: 'Confirm organization identity and feature set',
     command: 'aws organizations describe-organization',
@@ -110,6 +115,11 @@ export const defensiveCommands = {
     title: 'Inspect stage logging, tracing, throttling, and deployment state',
     command: 'aws apigateway get-stages --rest-api-id <rest-api-id>',
     source: cli + 'apigateway/get-stages.html'
+  },
+  appsync: {
+    title: 'Review GraphQL authorization, logging, and endpoint settings',
+    command: 'aws appsync get-graphql-api --api-id <api-id>',
+    source: cli + 'appsync/get-graphql-api.html'
   },
   guardduty: {
     title: 'Review detector status and finding publication frequency',

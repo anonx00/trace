@@ -8,7 +8,7 @@ An interactive map of AWS services and their security controls. Follow a connect
 
 ## Explore
 
-The map includes **38 services**, **35 documented relationships**, and **8 incident scenarios**.
+The map includes **40 services**, **41 documented relationships**, and **13 incident scenarios**.
 
 - **Domains:** start with identity, workloads, data, networking, detection, response, supply chain, or investigation.
 - **Services:** select a node for security notes, logs, controls, and documentation. Select a connection to see why it exists.
@@ -18,7 +18,7 @@ Ctrl/Cmd+K opens search. **Reading view** puts the notes first; **Focus graph** 
 
 ## Sources
 
-AWS documentation supports the service relationships. Incident scenarios draw on MITRE ATT&CK, HackTricks, Stratus Red Team, and the research linked on the [Sources page](https://anonx00.github.io/trace/#/sources).
+AWS documentation supports the service relationships. Incident scenarios draw on MITRE ATT&CK, controlled AWS attack labs, AWS incident-response playbooks, and the research linked on the [Sources page](https://anonx00.github.io/trace/#/sources).
 
 Capability links, scenario sequences, and navigation groupings have separate labels. TRACE describes possible relationships; it does not inspect your AWS account or show live incidents.
 
@@ -48,6 +48,7 @@ python -m pip install -r requirements-dev.txt
 python -m playwright install chromium
 npm run check
 python scripts/test_import_docs.py
+npm run test:scenarios
 npm run test:ui
 npm run test:connections
 npm run test:motion

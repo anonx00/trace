@@ -1,10 +1,11 @@
 import { services as originalServices } from './data.js';
 
-export const reviewed = '8 September 2026';
+export const reviewed = '9 September 2026';
 const root = 'https://docs.aws.amazon.com/';
 const extra = (id, name, label, summary, doc) => ({ id, name, label, summary, doc });
 const allServices = [...originalServices,
   extra('organizations','AWS Organizations','Multi-account governance','AWS Organizations centrally manages AWS accounts, groups them into organizational units, and applies governance policies.','organizations/latest/userguide/orgs_introduction.html'),
+  extra('cognito','Amazon Cognito','Application identity','Amazon Cognito provides user directories, application sign-in, federation, and identity pools that can exchange authenticated identities for AWS credentials.','cognito/latest/developerguide/what-is-amazon-cognito.html'),
   extra('fargate','AWS Fargate','Serverless containers','Fargate runs containers for Amazon ECS without requiring you to provision or manage a cluster of EC2 instances.','AmazonECS/latest/developerguide/AWS_Fargate.html'),
   extra('efs','Amazon EFS','Shared file storage','Amazon Elastic File System provides managed, elastic file storage for use with AWS compute services and on-premises resources.','efs/latest/ug/whatisefs.html'),
   extra('elb','Elastic Load Balancing','Traffic distribution','Elastic Load Balancing distributes incoming traffic across multiple targets and monitors their health.','elasticloadbalancing/latest/userguide/what-is-load-balancing.html'),
@@ -15,6 +16,7 @@ const allServices = [...originalServices,
   extra('eventbridge','Amazon EventBridge','Event routing','EventBridge connects application components through events. Event buses route matching events to targets using rules.','eventbridge/latest/userguide/eb-what-is.html'),
   extra('stepfunctions','AWS Step Functions','Workflow orchestration','Step Functions coordinates application components through state-machine workflows, including tasks, choices, and parallel branches.','step-functions/latest/dg/welcome.html'),
   extra('apigateway','Amazon API Gateway','Managed APIs','API Gateway creates and manages REST, HTTP, and WebSocket APIs that access backend services.','apigateway/latest/developerguide/welcome.html'),
+  extra('appsync','AWS AppSync','Managed GraphQL APIs','AWS AppSync creates managed GraphQL and Pub/Sub APIs and connects them to data sources through resolvers.','appsync/latest/devguide/what-is-appsync.html'),
   extra('athena','Amazon Athena','SQL over data','Athena is an interactive analytics service. It can query data in Amazon S3 using standard SQL without infrastructure provisioning.','athena/latest/ug/what-is.html'),
   extra('glue','AWS Glue','Data integration','AWS Glue provides data discovery, preparation, and integration capabilities, including a central Data Catalog.','glue/latest/dg/what-is-glue.html'),
   extra('kinesis','Kinesis Data Streams','Streaming data','Kinesis Data Streams collects and processes streams of data records in real time. Applications produce and consume records through streams.','streams/latest/dev/introduction.html'),
@@ -25,10 +27,10 @@ const allServices = [...originalServices,
 export const services = allServices.filter(s=>!['glue','redshift'].includes(s.id));
 
 export const domains = [
-  {id:'identity',name:'Identity & trust',short:'Identity',color:'#c3adff',icon:'key',description:'Trace principals, temporary sessions, account guardrails, and cryptographic authority.',services:['iam','sts','identity-center','organizations','kms'],x:450,y:220},
+  {id:'identity',name:'Identity & trust',short:'Identity',color:'#c3adff',icon:'key',description:'Trace principals, temporary sessions, account guardrails, application identity, and cryptographic authority.',services:['iam','sts','identity-center','organizations','cognito','kms'],x:450,y:220},
   {id:'runtime',name:'Workload & runtime',short:'Runtime',color:'#ffbd91',icon:'chip',description:'Investigate the code, containers, hosts, roles, and network paths where workloads execute.',services:['ec2','lambda','ecs','eks','fargate'],x:885,y:180},
   {id:'data',name:'Data protection',short:'Data',color:'#97d5bd',icon:'database',description:'Model access, encryption, recovery, and destructive paths across high-value data stores.',services:['s3','rds','dynamodb','efs','backup','secretsmanager'],x:1275,y:320},
-  {id:'edge',name:'Network & edge',short:'Edge',color:'#90c9f2',icon:'network',description:'See how traffic reaches workloads through routing, DNS, APIs, load balancers, and edge controls.',services:['vpc','route53','cloudfront','waf','elb','apigateway'],x:1270,y:690},
+  {id:'edge',name:'Network & edge',short:'Edge',color:'#90c9f2',icon:'network',description:'See how traffic reaches workloads through routing, DNS, APIs, load balancers, and edge controls.',services:['vpc','route53','cloudfront','waf','elb','apigateway','appsync'],x:1270,y:690},
   {id:'detection',name:'Detection & evidence',short:'Detection',color:'#d9e894',icon:'shield',description:'Preserve the findings, API history, configuration state, metrics, and logs used during triage.',services:['guardduty','cloudtrail','securityhub','cloudwatch','config'],x:890,y:855},
   {id:'response',name:'Response automation',short:'Response',color:'#eeaaca',icon:'workflow',description:'Route, queue, orchestrate, and execute contained response actions with an auditable control plane.',services:['systemsmanager','eventbridge','sns','sqs','stepfunctions'],x:450,y:815},
   {id:'supply',name:'Software supply chain',short:'Supply chain',color:'#9bdade',icon:'layers',description:'Protect templates, images, artifacts, release identities, and the path into production.',services:['codepipeline','cloudformation','ecr'],x:150,y:595},
@@ -57,6 +59,12 @@ export const connections = [
   link("systemsmanager","cloudwatch","Can export session logs","Session Manager can send supported session log data to CloudWatch Logs when configured. Consult session logging limitations for the session type in use.","systems-manager/latest/userguide/session-manager-logging-cloudwatch-logs.html"),
   link("stepfunctions","lambda","Can invoke a function","A Step Functions task can invoke Lambda synchronously or asynchronously. The state-machine definition and IAM permissions govern the invocation.","step-functions/latest/dg/connect-lambda.html"),
   link("apigateway","lambda","Supports REST API integrations","API Gateway REST APIs support Lambda proxy and custom integrations. Method configuration and invocation permissions determine the request path.","apigateway/latest/developerguide/set-up-lambda-integrations.html"),
+  link("appsync","cognito","Can authorize GraphQL operations with a user pool","AppSync supports Cognito user pools as a primary or additional authorization mode. Schema directives can scope which operations use that mode.","appsync/latest/devguide/security-authz.html"),
+  link("appsync","dynamodb","Can use DynamoDB data sources","An AppSync resolver can translate GraphQL operations into reads and writes against a configured DynamoDB data source.","appsync/latest/devguide/tutorial-dynamodb-resolvers.html"),
+  link("appsync","cloudwatch","Can publish API and resolver logs","AppSync can publish request and field-level logs to CloudWatch Logs when logging and the required service role are configured.","appsync/latest/devguide/monitoring.html"),
+  link("cognito","cloudtrail","Records supported Cognito API activity","CloudTrail records supported Cognito API calls and their caller context. Some private fields are obscured, and an ongoing trail is required for retained history.","cognito/latest/developerguide/logging-using-cloudtrail.html"),
+  link("elb","cognito","Can authenticate users before forwarding","Application Load Balancer HTTPS listener rules can run an authenticate-cognito action before forwarding a request. Rule priority and action order define which requests receive authentication.","elasticloadbalancing/latest/application/listener-authenticate-users.html"),
+  link("cloudfront","lambda","Can trigger versioned Lambda@Edge code","CloudFront can invoke Lambda@Edge functions on viewer or origin request and response events after a function version is associated with a distribution behavior.","AmazonCloudFront/latest/DeveloperGuide/lambda-at-the-edge.html"),
   link("kinesis","kms","Supports stream encryption","Kinesis Data Streams supports server-side encryption with AWS KMS keys. Stream encryption configuration and key permissions apply.","streams/latest/dev/server-side-encryption.html"),
   link("opensearch","cloudwatch","Can publish audit logs","OpenSearch Service audit logging sends configured audit events to CloudWatch Logs and requires fine-grained access control.","opensearch-service/latest/developerguide/audit-logs.html"),
 

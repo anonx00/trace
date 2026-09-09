@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-09T06:04:52.811370+00:00",
+  "generatedAt": "2026-09-09T10:38:48.800506+00:00",
   "documents": [
     {
       "id": "apigateway",
@@ -183,6 +183,80 @@
           "title": "Get started with API Gateway",
           "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started.html",
           "pageUrl": "https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started.html"
+        }
+      ]
+    },
+    {
+      "id": "appsync",
+      "url": "https://docs.aws.amazon.com/appsync/latest/devguide/what-is-appsync.html",
+      "resolvedUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/what-is-appsync.html",
+      "fetchedAt": "2026-09-09T10:38:48.499389+00:00",
+      "sha256": "f623c887f7c51ba6b4f1b128a4333e08ca02f234d7c16a62369a5e0b2b77c225",
+      "status": "ok",
+      "title": "What is AWS AppSync?",
+      "excerpt": "AWS AppSync enables developers to connect their applications and services to data and events with secure, serverless and high-performing GraphQL and Pub/Sub APIs. You",
+      "sections": [
+        {
+          "title": "AWS AppSync features",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/what-is-appsync.html#appsync-feature-overview",
+          "level": 2
+        },
+        {
+          "title": "Are you a first-time AWS AppSync user?",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/what-is-appsync.html#first-time-user",
+          "level": 2
+        },
+        {
+          "title": "Related services",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/what-is-appsync.html#related-services",
+          "level": 2
+        },
+        {
+          "title": "Pricing for AWS AppSync",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/what-is-appsync.html#pricing-for-appsync",
+          "level": 2
+        }
+      ],
+      "links": [
+        {
+          "title": "Publish events via WebSocket",
+          "url": "https://docs.aws.amazon.com/appsync/latest/eventapi/publish-websocket.html",
+          "pageUrl": "https://docs.aws.amazon.com/appsync/latest/eventapi/publish-websocket.html"
+        },
+        {
+          "title": "Getting started: Creating your first GraphQL API in AWS AppSync",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/quickstart.html",
+          "pageUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/quickstart.html"
+        },
+        {
+          "title": "Building a client application using Amplify client",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/building-a-client-app.html",
+          "pageUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/building-a-client-app.html"
+        },
+        {
+          "title": "Using subscriptions for real-time data applications in AWS AppSync",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html",
+          "pageUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html"
+        },
+        {
+          "title": "Resolver tutorials (JavaScript)",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/tutorials-js.html",
+          "pageUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/tutorials-js.html"
+        },
+        {
+          "title": "Resolver reference\n                (JavaScript)",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/resolver-reference-js-version.html",
+          "pageUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/resolver-reference-js-version.html"
+        },
+        {
+          "title": "Resolver\n                tutorials (VTL)",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/tutorials.html",
+          "pageUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/tutorials.html"
+        },
+        {
+          "title": "AWS AppSync resolver mapping template reference (VTL)",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/resolver-mapping-template-reference.html",
+          "pageUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/resolver-mapping-template-reference.html"
         }
       ]
     },
@@ -1005,6 +1079,125 @@
       "excerpt": "AWS CodePipeline is a continuous delivery service you can use to model, visualize, and automate the steps required to release your software. You can",
       "sections": [],
       "links": []
+    },
+    {
+      "id": "cognito",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html",
+      "resolvedUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html",
+      "fetchedAt": "2026-09-09T10:38:48.537620+00:00",
+      "sha256": "2aa526e4e497beb17a2f85ac36735c5b78e365dcce78fa4c65bc840dbb838f32",
+      "status": "ok",
+      "title": "What is Amazon Cognito?",
+      "excerpt": "Amazon Cognito is an identity platform for web and mobile apps. Itâs a user directory, an authentication server, and an authorization service for OAuth",
+      "sections": [
+        {
+          "title": "User pools",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html#what-is-amazon-cognito-user-pools",
+          "level": 2
+        },
+        {
+          "title": "Identity pools",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html#what-is-amazon-cognito-identity-pools",
+          "level": 2
+        },
+        {
+          "title": "Features of Amazon Cognito",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html#what-is-amazon-cognito-features",
+          "level": 2
+        },
+        {
+          "title": "User pools",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html#what-is-amazon-cognito-features-user-pools",
+          "level": 3
+        },
+        {
+          "title": "Identity pools",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html#what-is-amazon-cognito-features-identity-pools",
+          "level": 3
+        },
+        {
+          "title": "Amazon Cognito user pools and identity pools comparison",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html#what-is-amazon-cognito-features-comparison",
+          "level": 2
+        },
+        {
+          "title": "Getting started with Amazon Cognito",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html#getting-started-overview",
+          "level": 2
+        },
+        {
+          "title": "Regional availability",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html#getting-started-regional-availability",
+          "level": 2
+        },
+        {
+          "title": "Pricing for Amazon Cognito",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html#pricing-for-amazon-cognito",
+          "level": 2
+        }
+      ],
+      "links": [
+        {
+          "title": "Common Amazon Cognito scenarios",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-scenarios.html",
+          "pageUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-scenarios.html"
+        },
+        {
+          "title": "Regional data considerations",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/security-cognito-regional-data-considerations.html",
+          "pageUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/security-cognito-regional-data-considerations.html"
+        },
+        {
+          "title": "Getting started with user pools",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/getting-started-user-pools.html",
+          "pageUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/getting-started-user-pools.html"
+        },
+        {
+          "title": "Amazon Cognito user\n          pools API reference",
+          "url": "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/",
+          "pageUrl": "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/"
+        },
+        {
+          "title": "Developer-authenticated identities",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/developer-authenticated-identities.html",
+          "pageUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/developer-authenticated-identities.html"
+        },
+        {
+          "title": "unauthenticated\n        identities",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/identity-pools.html#authenticated-and-unauthenticated-identities",
+          "pageUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/identity-pools.html"
+        },
+        {
+          "title": "aws:PrincipalTag",
+          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-principaltag",
+          "pageUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html"
+        },
+        {
+          "title": "Getting started with Amazon Cognito identity pools",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/getting-started-with-identity-pools.html",
+          "pageUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/getting-started-with-identity-pools.html"
+        },
+        {
+          "title": "Amazon Cognito identity\n          pools API reference",
+          "url": "https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/",
+          "pageUrl": "https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/"
+        },
+        {
+          "title": "Guided setup options for Amazon Cognito",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-guided-setup.html",
+          "pageUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-guided-setup.html"
+        },
+        {
+          "title": "Getting started with AWS",
+          "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-getting-started-account-iam.html",
+          "pageUrl": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-getting-started-account-iam.html"
+        },
+        {
+          "title": "AWS regions and endpoints",
+          "url": "https://docs.aws.amazon.com/general/latest/gr/rande.html##cognito_identity_region",
+          "pageUrl": "https://docs.aws.amazon.com/general/latest/gr/rande.html"
+        }
+      ]
     },
     {
       "id": "config",
@@ -5076,32 +5269,6 @@
       ]
     },
     {
-      "from": "ecs",
-      "to": "guardduty",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html",
-      "targets": [
-        {
-          "title": "Amazon GuardDuty",
-          "url": "https://docs.aws.amazon.com/guardduty/",
-          "pageUrl": "https://docs.aws.amazon.com/guardduty/"
-        }
-      ]
-    },
-    {
-      "from": "ecs",
-      "to": "elb",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html",
-      "targets": [
-        {
-          "title": "Elastic Load Balancing",
-          "url": "https://docs.aws.amazon.com/elasticloadbalancing/",
-          "pageUrl": "https://docs.aws.amazon.com/elasticloadbalancing/"
-        }
-      ]
-    },
-    {
       "from": "ec2",
       "to": "eks",
       "type": "references",
@@ -5237,6 +5404,156 @@
       ]
     },
     {
+      "from": "ecs",
+      "to": "guardduty",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html",
+      "targets": [
+        {
+          "title": "Amazon GuardDuty",
+          "url": "https://docs.aws.amazon.com/guardduty/",
+          "pageUrl": "https://docs.aws.amazon.com/guardduty/"
+        }
+      ]
+    },
+    {
+      "from": "ecs",
+      "to": "elb",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html",
+      "targets": [
+        {
+          "title": "Elastic Load Balancing",
+          "url": "https://docs.aws.amazon.com/elasticloadbalancing/",
+          "pageUrl": "https://docs.aws.amazon.com/elasticloadbalancing/"
+        }
+      ]
+    },
+    {
+      "from": "dynamodb",
+      "to": "iam",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "targets": [
+        {
+          "title": "IAM",
+          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html",
+          "pageUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html"
+        },
+        {
+          "title": "fine-grained access control",
+          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_dynamodb_attributes.html",
+          "pageUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_dynamodb_attributes.html"
+        },
+        {
+          "title": "IAM Access Analyzer",
+          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html#what-is-access-analyzer-resource-identification",
+          "pageUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
+        }
+      ]
+    },
+    {
+      "from": "dynamodb",
+      "to": "kms",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "targets": [
+        {
+          "title": "AWS Key Management Service",
+          "url": "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html",
+          "pageUrl": "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"
+        },
+        {
+          "title": "AWS-owned KMS keys",
+          "url": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-mgmt",
+          "pageUrl": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html"
+        }
+      ]
+    },
+    {
+      "from": "dynamodb",
+      "to": "lambda",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "targets": [
+        {
+          "title": "Lambda",
+          "url": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html",
+          "pageUrl": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
+        }
+      ]
+    },
+    {
+      "from": "dynamodb",
+      "to": "apigateway",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "targets": [
+        {
+          "title": "Amazon API Gateway",
+          "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html",
+          "pageUrl": "https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html"
+        }
+      ]
+    },
+    {
+      "from": "dynamodb",
+      "to": "appsync",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "targets": [
+        {
+          "title": "AWS AppSync",
+          "url": "https://docs.aws.amazon.com/appsync/latest/devguide/what-is-appsync.html",
+          "pageUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/what-is-appsync.html"
+        }
+      ]
+    },
+    {
+      "from": "dynamodb",
+      "to": "kinesis",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "targets": [
+        {
+          "title": "Amazon Kinesis Data Streams",
+          "url": "https://docs.aws.amazon.com/streams/latest/dev/introduction.html",
+          "pageUrl": "https://docs.aws.amazon.com/streams/latest/dev/introduction.html"
+        }
+      ]
+    },
+    {
+      "from": "dynamodb",
+      "to": "opensearch",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "targets": [
+        {
+          "title": "Using an OpenSearch Ingestion pipeline with\n                Amazon DynamoDB",
+          "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/configure-client-ddb.html",
+          "pageUrl": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/configure-client-ddb.html"
+        }
+      ]
+    },
+    {
+      "from": "vpc",
+      "to": "ec2",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html",
+      "targets": [
+        {
+          "title": "Amazon VPC actions",
+          "url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/OperationList-query-vpc.html",
+          "pageUrl": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/OperationList-query-vpc.html"
+        },
+        {
+          "title": "Bring your own IP addresses (BYOIP)",
+          "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-byoip.html",
+          "pageUrl": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-byoip.html"
+        }
+      ]
+    },
+    {
       "from": "backup",
       "to": "ec2",
       "type": "references",
@@ -5342,117 +5659,6 @@
           "title": "Amazon Elastic File System (Amazon EFS)",
           "url": "https://docs.aws.amazon.com/efs/latest/ug/",
           "pageUrl": "https://docs.aws.amazon.com/efs/latest/ug/"
-        }
-      ]
-    },
-    {
-      "from": "dynamodb",
-      "to": "iam",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
-      "targets": [
-        {
-          "title": "IAM",
-          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html",
-          "pageUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html"
-        },
-        {
-          "title": "fine-grained access control",
-          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_dynamodb_attributes.html",
-          "pageUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_dynamodb_attributes.html"
-        },
-        {
-          "title": "IAM Access Analyzer",
-          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html#what-is-access-analyzer-resource-identification",
-          "pageUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
-        }
-      ]
-    },
-    {
-      "from": "dynamodb",
-      "to": "kms",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
-      "targets": [
-        {
-          "title": "AWS Key Management Service",
-          "url": "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html",
-          "pageUrl": "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"
-        },
-        {
-          "title": "AWS-owned KMS keys",
-          "url": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-mgmt",
-          "pageUrl": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html"
-        }
-      ]
-    },
-    {
-      "from": "dynamodb",
-      "to": "lambda",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
-      "targets": [
-        {
-          "title": "Lambda",
-          "url": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html",
-          "pageUrl": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
-        }
-      ]
-    },
-    {
-      "from": "dynamodb",
-      "to": "apigateway",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
-      "targets": [
-        {
-          "title": "Amazon API Gateway",
-          "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html",
-          "pageUrl": "https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html"
-        }
-      ]
-    },
-    {
-      "from": "dynamodb",
-      "to": "kinesis",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
-      "targets": [
-        {
-          "title": "Amazon Kinesis Data Streams",
-          "url": "https://docs.aws.amazon.com/streams/latest/dev/introduction.html",
-          "pageUrl": "https://docs.aws.amazon.com/streams/latest/dev/introduction.html"
-        }
-      ]
-    },
-    {
-      "from": "dynamodb",
-      "to": "opensearch",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
-      "targets": [
-        {
-          "title": "Using an OpenSearch Ingestion pipeline with\n                Amazon DynamoDB",
-          "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/configure-client-ddb.html",
-          "pageUrl": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/configure-client-ddb.html"
-        }
-      ]
-    },
-    {
-      "from": "vpc",
-      "to": "ec2",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html",
-      "targets": [
-        {
-          "title": "Amazon VPC actions",
-          "url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/OperationList-query-vpc.html",
-          "pageUrl": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/OperationList-query-vpc.html"
-        },
-        {
-          "title": "Bring your own IP addresses (BYOIP)",
-          "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-byoip.html",
-          "pageUrl": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-byoip.html"
         }
       ]
     },
@@ -5678,19 +5884,6 @@
       ]
     },
     {
-      "from": "sqs",
-      "to": "lambda",
-      "type": "references",
-      "source": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html",
-      "targets": [
-        {
-          "title": "Lambda",
-          "url": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html",
-          "pageUrl": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
-        }
-      ]
-    },
-    {
       "from": "sns",
       "to": "cloudwatch",
       "type": "references",
@@ -5700,6 +5893,19 @@
           "title": "Setting up Amazon SNS notifications",
           "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_SetupSNS.html",
           "pageUrl": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_SetupSNS.html"
+        }
+      ]
+    },
+    {
+      "from": "sqs",
+      "to": "lambda",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html",
+      "targets": [
+        {
+          "title": "Lambda",
+          "url": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html",
+          "pageUrl": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
         }
       ]
     },
@@ -5746,12 +5952,25 @@
           "pageUrl": "https://docs.aws.amazon.com/lambda/"
         }
       ]
+    },
+    {
+      "from": "cognito",
+      "to": "iam",
+      "type": "references",
+      "source": "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html",
+      "targets": [
+        {
+          "title": "aws:PrincipalTag",
+          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-principaltag",
+          "pageUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html"
+        }
+      ]
     }
   ],
   "stats": {
-    "requested": 38,
-    "fetched": 38,
-    "sections": 230,
-    "references": 52
+    "requested": 40,
+    "fetched": 40,
+    "sections": 243,
+    "references": 54
   }
 }

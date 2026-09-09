@@ -71,14 +71,80 @@ export const researchSources = {
     publisher: 'Rhino Security Labs',
     url: 'https://rhinosecuritylabs.com/aws/aws-privilege-escalation-methods-mitigation/',
     kind: 'RESEARCH'
+  },
+  awsAttackAlb: {
+    label: 'ALB listener-rule authentication bypass lab',
+    publisher: 'AWS Attack Scenarios / Adan Alvarez',
+    url: 'https://github.com/adanalvarez/AWS-Attack-Scenarios/blob/dfc857bae9f8fd1cf021f40cac101ec0d76606b6/ALB-Scenario1/README.md',
+    kind: 'SAFE LAB'
+  },
+  awsAttackAppSyncKey: {
+    label: 'AppSync additional API-key authorization lab',
+    publisher: 'AWS Attack Scenarios / Adan Alvarez',
+    url: 'https://github.com/adanalvarez/AWS-Attack-Scenarios/blob/dfc857bae9f8fd1cf021f40cac101ec0d76606b6/AppSync-Scenario1/README.md',
+    kind: 'SAFE LAB'
+  },
+  awsAttackAppSyncResolver: {
+    label: 'AppSync resolver authorization manipulation lab',
+    publisher: 'AWS Attack Scenarios / Adan Alvarez',
+    url: 'https://github.com/adanalvarez/AWS-Attack-Scenarios/blob/dfc857bae9f8fd1cf021f40cac101ec0d76606b6/AppSync-Scenario2/README.md',
+    kind: 'SAFE LAB'
+  },
+  awsAttackCloudFrontFunction: {
+    label: 'CloudFront Function response-manipulation and cookie-theft lab',
+    publisher: 'AWS Attack Scenarios / Adan Alvarez',
+    url: 'https://github.com/adanalvarez/AWS-Attack-Scenarios/blob/dfc857bae9f8fd1cf021f40cac101ec0d76606b6/CloudFront-Scenario1/README.md',
+    kind: 'SAFE LAB'
+  },
+  awsAttackCloudFrontLambda: {
+    label: 'Lambda@Edge request-data exfiltration lab',
+    publisher: 'AWS Attack Scenarios / Adan Alvarez',
+    url: 'https://github.com/adanalvarez/AWS-Attack-Scenarios/blob/dfc857bae9f8fd1cf021f40cac101ec0d76606b6/CloudFront-Scenario2/README.md',
+    kind: 'SAFE LAB'
+  },
+  awsAiApi: {
+    label: 'API security breach triage and containment playbook',
+    publisher: 'AWS Samples incident-response playbooks',
+    url: 'https://github.com/aws-samples/aws-incident-response-playbooks/blob/699c7c7c30f4add23531a3afd1f1803ab61d5f11/ai-playbooks/scenarios/ai-irp-api-security-breach.md',
+    kind: 'IR PLAYBOOK'
+  },
+  awsAiCredential: {
+    label: 'Credential compromise scoping and persistence checks',
+    publisher: 'AWS Samples incident-response playbooks',
+    url: 'https://github.com/aws-samples/aws-incident-response-playbooks/blob/699c7c7c30f4add23531a3afd1f1803ab61d5f11/ai-playbooks/scenarios/ai-irp-credential-compromise.md',
+    kind: 'IR PLAYBOOK'
+  },
+  awsAiSts: {
+    label: 'STS role-chain and instance-credential response playbook',
+    publisher: 'AWS Samples incident-response playbooks',
+    url: 'https://github.com/aws-samples/aws-incident-response-playbooks/blob/699c7c7c30f4add23531a3afd1f1803ab61d5f11/ai-playbooks/scenarios/ai-irp-sts-token-abuse.md',
+    kind: 'IR PLAYBOOK'
+  },
+  awsAiData: {
+    label: 'Unauthorized S3 access investigation and recovery playbook',
+    publisher: 'AWS Samples incident-response playbooks',
+    url: 'https://github.com/aws-samples/aws-incident-response-playbooks/blob/699c7c7c30f4add23531a3afd1f1803ab61d5f11/ai-playbooks/scenarios/ai-irp-data-access.md',
+    kind: 'IR PLAYBOOK'
+  },
+  awsAiEc2: {
+    label: 'EC2 isolation, evidence preservation, and recovery playbook',
+    publisher: 'AWS Samples incident-response playbooks',
+    url: 'https://github.com/aws-samples/aws-incident-response-playbooks/blob/699c7c7c30f4add23531a3afd1f1803ab61d5f11/ai-playbooks/scenarios/ai-irp-ec2-compromise.md',
+    kind: 'IR PLAYBOOK'
+  },
+  awsAiRansomware: {
+    label: 'Ransomware containment and recovery-source playbook',
+    publisher: 'AWS Samples incident-response playbooks',
+    url: 'https://github.com/aws-samples/aws-incident-response-playbooks/blob/699c7c7c30f4add23531a3afd1f1803ab61d5f11/ai-playbooks/scenarios/ai-irp-ransomware.md',
+    kind: 'IR PLAYBOOK'
   }
 };
 
 const sourceGroups = {
-  identity: ['vault','hacktricks','pacu','rhinoIam','mitre','prowler','awsIr'],
-  runtime: ['vault','hacktricks','pacu','stratus','cloudgoat','prowler','awsIr'],
-  data: ['vault','hacktricks','pacu','stratus','cloudgoat','prowler','awsCloudTrailInvestigation','awsIr'],
-  edge: ['vault','hacktricks','stratus','prowler','awsCorrelation','awsIr'],
+  identity: ['vault','hacktricks','pacu','rhinoIam','awsAiCredential','awsAiSts','mitre','prowler','awsIr'],
+  runtime: ['vault','hacktricks','pacu','stratus','cloudgoat','awsAiEc2','prowler','awsIr'],
+  data: ['vault','hacktricks','pacu','stratus','cloudgoat','awsAiData','awsAiRansomware','prowler','awsCloudTrailInvestigation','awsIr'],
+  edge: ['vault','hacktricks','stratus','awsAttackAlb','awsAttackAppSyncKey','awsAttackAppSyncResolver','awsAttackCloudFrontFunction','awsAttackCloudFrontLambda','awsAiApi','prowler','awsCorrelation','awsIr'],
   detection: ['hacktricks','stratus','prowler','awsCloudTrailInvestigation','awsCorrelation','awsIr'],
   response: ['pacu','stratus','awsAutomation','awsIr'],
   supply: ['vault','hacktricks','cloudgoat','prowler','mitre','awsIr'],
@@ -106,7 +172,7 @@ export const scenarios = [
     detect: ['Correlate the same role session across source IPs and services.', 'Look for first-time API calls, enumeration followed by data access, and access outside the workload baseline.', 'Confirm whether S3 data events and secret retrieval events were enabled before the incident.'],
     contain: ['Block the vulnerable request path and isolate the workload.', 'Replace or remove the role permissions and invalidate dependent secrets; temporary credentials expire but exposed downstream credentials may not.', 'Preserve CloudTrail, application, WAF, VPC, S3, and host evidence before rebuilding.'],
     harden: ['Require IMDSv2, reduce metadata hop limit, and block metadata access where the workload does not need it.', 'Use narrow workload roles and explicit egress controls.', 'Validate URLs after every resolution and redirect, and deny private, link-local, and internal destinations.'],
-    sources: ['vault','hacktricks','stratus','cloudgoat','mitre','awsCloudTrailInvestigation','awsIr']
+    sources: ['vault','hacktricks','stratus','cloudgoat','mitre','awsAiSts','awsAiEc2','awsAiData','awsCloudTrailInvestigation','awsIr']
   },
   {
     id: 'role-trust-persistence',
@@ -125,7 +191,7 @@ export const scenarios = [
     detect: ['Baseline which principals normally change IAM and role trust.', 'Find policy changes followed by AssumeRole from a new source or session name.', 'Search every enabled Region and linked account; identity activity is not safely analyzed in a single-account view.'],
     contain: ['Disable the exposed principal and revoke active sessions where supported.', 'Remove every persistence artifact created during the compromised interval.', 'Quarantine affected roles with explicit denies while preserving policies and CloudTrail evidence.'],
     harden: ['Prefer workforce federation and temporary credentials over user access keys.', 'Use source identity, external IDs where appropriate, and restrictive trust conditions.', 'Protect IAM and Organizations changes with alerting, approval, and break-glass procedures.'],
-    sources: ['vault','pacu','rhinoIam','mitre','awsCloudTrailInvestigation','awsIr']
+    sources: ['vault','pacu','rhinoIam','mitre','awsAiCredential','awsAiSts','awsCloudTrailInvestigation','awsIr']
   },
   {
     id: 'lambda-shadow-version',
@@ -220,7 +286,7 @@ export const scenarios = [
     detect: ['Alert on backup, vault, deletion, retention, replication, and key-state changes.', 'Monitor destructive actions by principals that do not normally operate recovery services.', 'Continuously prove that protected copies exist in another account and can be restored.'],
     contain: ['Apply emergency denies to destructive APIs and isolate compromised administrators.', 'Cancel scheduled key deletion and preserve remaining versions, snapshots, and recovery points.', 'Prioritize business-defined critical data and perform a clean-room restore test.'],
     harden: ['Use logically isolated vaults, Vault Lock, Object Lock, and separate recovery accounts.', 'Separate workload, backup, and key administrators.', 'Build recovery objectives around tested restores, not successful backup-job status alone.'],
-    sources: ['stratus','prowler','mitre','awsIr']
+    sources: ['stratus','prowler','mitre','awsAiRansomware','awsAiData','awsIr']
   },
   {
     id: 'response-plane-hijack',
@@ -240,6 +306,101 @@ export const scenarios = [
     contain: ['Disable the affected automation path without deleting its execution history.', 'Revoke the response role session and isolate unsafe documents or targets.', 'Manually validate queued and in-flight actions before resuming.'],
     harden: ['Use narrow roles for each response step and explicit resource allowlists.', 'Require approval for destructive actions and make workflows idempotent.', 'Use dead-letter queues, versioned runbooks, complete logging, and routine sandbox tests.'],
     sources: ['pacu','stratus','awsAutomation','awsIr']
+  },
+  {
+    id: 'alb-rule-auth-bypass',
+    title: 'ALB rule before authentication',
+    kicker: 'CONTROL PLANE ACCESS -> AUTHENTICATION BYPASS -> DATA ACCESS',
+    summary: 'A principal already able to change an Application Load Balancer inserts a higher-priority forwarding rule ahead of the Cognito authenticate action, so selected requests reach the target without that check.',
+    confidence: 'Directly demonstrated by a cited safe lab; requires ELB rule-management permission',
+    mitre: [],
+    services: ['iam','elb','cognito','ec2','cloudtrail','waf'],
+    stages: [
+      {service:'iam',title:'ELB configuration authority is used',detail:'The path begins with an AWS principal that can create or modify listener rules; it is not a remote flaw in the load balancer.',signal:'CloudTrail identifies the caller, session, source, Region, and ELB rule-management API activity.'},
+      {service:'elb',title:'A lower-numbered rule wins',detail:'A new condition and forward or fixed-response action is evaluated before the rule that performs Cognito authentication.',signal:'Preserve listener-rule priorities, conditions, transforms, and ordered actions; ALB access logs expose the matched priority and executed actions.'},
+      {service:'cognito',title:'The authenticate action is skipped',detail:'Requests matching the inserted rule are forwarded without running the intended authenticate-cognito action.',signal:'The rule configuration is primary evidence. A missing Cognito event can support the timeline but does not prove bypass by itself.'},
+      {service:'ec2',title:'The target handles an unauthenticated request',detail:'The backend receives the selected request and may return data because it trusted the load balancer to enforce identity.',signal:'Join ALB request records with application authorization logs and the exact response or data-access evidence.'}
+    ],
+    detect: ['Continuously diff listener priorities, conditions, transforms, and ordered actions against reviewed configuration.', 'Correlate CreateRule, ModifyRule, SetRulePriorities, and ModifyListener activity with ALB access-log matched priority and actions.', 'Prove impact in backend logs; a configuration change alone does not establish that protected data was returned.'],
+    contain: ['Block active exploitation at the safest available layer, then preserve the listener configuration before restoring the reviewed rule set.', 'Revoke the control-plane session that changed the listener and check for other ELB, WAF, target-group, and Cognito changes by the same principal.', 'Invalidate affected application sessions if backend evidence shows unauthorized access.'],
+    harden: ['Limit listener-rule changes to a controlled deployment role and reviewed infrastructure code.', 'Alert on priority changes and any protected route whose terminal action is not preceded by authentication.', 'Test protected routes with both matching and adversarial headers, paths, query strings, and cookies.'],
+    sources: ['awsAttackAlb','awsAiApi','awsIr']
+  },
+  {
+    id: 'appsync-api-key-persistence',
+    title: 'AppSync API key beside normal sign-in',
+    kicker: 'CONTROL PLANE ACCESS -> ALTERNATE AUTHORIZATION -> PERSISTENCE',
+    summary: 'A principal with AppSync administration rights adds API-key authorization alongside the existing IAM and Cognito modes, creates a key, and changes schema directives so selected operations accept it.',
+    confidence: 'Directly demonstrated by a cited safe lab; requires AppSync API and schema permissions',
+    mitre: [],
+    services: ['iam','appsync','cognito','dynamodb','cloudtrail','cloudwatch'],
+    stages: [
+      {service:'iam',title:'AppSync administration is available',detail:'The actor must already be able to update the GraphQL API, create an API key, and publish a schema.',signal:'CloudTrail ties each control-plane change to the principal, source, Region, and request parameters.'},
+      {service:'appsync',title:'An additional authorization mode appears',detail:'API-key authorization is added without removing the expected IAM and Cognito providers, allowing normal traffic to continue.',signal:'Compare the current authenticationType, additionalAuthenticationProviders, API-key inventory, descriptions, and expiry times with the approved baseline.'},
+      {service:'appsync',title:'Schema directives widen key access',detail:'Selected GraphQL fields are marked to accept the new authorization mode while other directives preserve the legitimate application path.',signal:'Version and diff the schema; investigate UpdateGraphqlApi, CreateApiKey, and StartSchemaCreation events in the same window.'},
+      {service:'dynamodb',title:'The alternate path reaches data sources',detail:'Operations admitted by the schema run through existing resolvers and the AppSync data-source role.',signal:'AppSync request and field logs, resolver behavior, DynamoDB access evidence, and capacity changes establish which operations succeeded.'}
+    ],
+    detect: ['Inventory every primary and additional authorization mode and every API key, including owner, purpose, creation time, and expiry.', 'Diff schema authorization directives and correlate them with API-key and GraphQL API changes.', 'Use AppSync logs and data-source evidence to scope successful operations; key creation alone is not proof of data access.'],
+    contain: ['Preserve the API configuration, schema, resolver set, and key metadata before deleting the unapproved key and restoring reviewed authorization modes.', 'Revoke the principal that made the control-plane changes and search for changes to resolvers, functions, data sources, logging, and Cognito.', 'Assess affected records and users before returning the API to normal service.'],
+    harden: ['Disallow API-key authorization for sensitive production fields unless it is an explicit design requirement.', 'Deploy authorization providers and schemas only through a reviewed pipeline and alert on out-of-band changes.', 'Keep any approved keys short-lived and test every field against each configured authorization mode.'],
+    sources: ['awsAttackAppSyncKey','awsAiApi','awsAiData','awsIr']
+  },
+  {
+    id: 'appsync-resolver-data-access',
+    title: 'Resolver branch breaks tenant isolation',
+    kicker: 'CONTROL PLANE ACCESS -> AUTHORIZATION CHANGE -> COLLECTION',
+    summary: 'A principal with resolver-update rights adds a hidden branch for an attacker-controlled Cognito identity, causing AppSync to scan and return DynamoDB records outside that user’s normal scope.',
+    confidence: 'Directly demonstrated by a cited safe lab; requires resolver modification permission',
+    mitre: [],
+    services: ['iam','appsync','cognito','dynamodb','cloudtrail','cloudwatch'],
+    stages: [
+      {service:'iam',title:'Resolver deployment rights are used',detail:'The actor must already have AppSync control-plane permission to replace resolver code or configuration.',signal:'CloudTrail establishes who changed the resolver and whether the activity came from the expected deployment role.'},
+      {service:'appsync',title:'Authorization moves into a hidden branch',detail:'Resolver logic treats one selected identity differently and accepts request-controlled input to choose records.',signal:'Diff resolver code, functions, runtime, data source, and caching state against the reviewed version.'},
+      {service:'cognito',title:'An ordinary user token triggers the branch',detail:'The caller authenticates through the legitimate user pool, but the modified resolver grants behavior that the schema and UI do not reveal.',signal:'Correlate Cognito identity context with AppSync request IDs, field logs, headers selected for safe logging, and the changed resolver version.'},
+      {service:'dynamodb',title:'A broad read crosses user boundaries',detail:'The resolver performs a wider table operation and returns records that do not belong to the authenticated user.',signal:'Resolver logs, response evidence, DynamoDB telemetry, and application audit records define the records and users affected.'}
+    ],
+    detect: ['Keep resolver and function code in version control and compare deployed hashes and configuration continuously.', 'Alert when resolver updates bypass the normal deployment principal or coincide with unusual Scan activity and cross-tenant responses.', 'Test object ownership and tenant isolation at the GraphQL field boundary, not only in the web client.'],
+    contain: ['Preserve the changed resolver and logs, then deploy the reviewed resolver version and disable the attacker-controlled application identity.', 'Revoke the principal that changed AppSync and inspect schemas, API keys, data sources, functions, caches, and logging for related persistence.', 'Scope which records were returned and involve data owners, legal, or compliance based on confirmed impact.'],
+    harden: ['Require code review and pipeline-only resolver deployment.', 'Make authorization independent of caller-controlled headers and enforce ownership for every record returned.', 'Enable appropriately scoped AppSync logging and alarms while excluding secrets and tokens from logs.'],
+    sources: ['awsAttackAppSyncResolver','awsAiApi','awsAiData','awsIr']
+  },
+  {
+    id: 'cloudfront-function-cookie-theft',
+    title: 'Viewer response becomes a cookie trap',
+    kicker: 'CONTROL PLANE ACCESS -> EDGE RESPONSE CHANGE -> SESSION THEFT',
+    summary: 'A principal with CloudFront function and distribution permissions publishes viewer-response logic that replaces selected content with a path that sends browser-accessible cookies to an external destination.',
+    confidence: 'Directly demonstrated by a cited safe lab; requires CloudFront function publication and association rights',
+    mitre: ['T1539'],
+    services: ['iam','cloudfront','s3','cloudtrail','cloudwatch'],
+    stages: [
+      {service:'iam',title:'Edge deployment rights are used',detail:'The actor must be able to create or update a CloudFront Function, publish it, and associate it with a distribution behavior.',signal:'CloudTrail captures the principal and the CloudFront create, update, publish, and distribution-change sequence.'},
+      {service:'cloudfront',title:'Viewer-response code is published',detail:'The function alters responses at the edge and conditionally sends a browser down an attacker-selected content path.',signal:'Preserve the development and live function code, ETags, stage, publish time, and distribution configuration.'},
+      {service:'cloudfront',title:'The live behavior gains an association',detail:'The published function is attached to the viewer-response event for a cache behavior, affecting matching requests without an origin deployment.',signal:'Diff FunctionAssociations for every behavior and correlate the change with response anomalies and cache paths.'},
+      {service:'s3',title:'A browser-accessible session value leaves',detail:'The lab’s page stores a simulated session cookie accessible to script; altered content causes that value to be sent externally.',signal:'Browser telemetry, application session records, destination indicators, and CloudFront request logs scope affected clients; CloudFront logs do not reveal response-body code.'}
+    ],
+    detect: ['Inventory every LIVE CloudFront Function and behavior association, then diff code and ETags against reviewed deployment artifacts.', 'Correlate CreateFunction, UpdateFunction, PublishFunction, and UpdateDistribution with unexpected redirects, scripts, or outbound browser requests.', 'Treat a changed function as exposure potential; confirm affected sessions through browser, application, and identity evidence.'],
+    contain: ['Preserve the live function and distribution configuration, then detach the unapproved association or restore the reviewed version.', 'Revoke the AWS principal that made the change and inspect all distributions, functions, origins, response-header policies, and WAF associations it touched.', 'Invalidate confirmed exposed web sessions and block known collection destinations.'],
+    harden: ['Separate function development, publication, and distribution-update permissions.', 'Deploy edge code and associations through reviewed infrastructure code with drift alerts.', 'Use Secure, HttpOnly, and appropriate SameSite settings for real session cookies and keep authorization decisions server-side.'],
+    sources: ['awsAttackCloudFrontFunction','awsAiApi','awsIr']
+  },
+  {
+    id: 'lambda-edge-request-exfiltration',
+    title: 'Lambda@Edge request copy',
+    kicker: 'CONTROL PLANE ACCESS -> EDGE CODE CHANGE -> EXFILTRATION',
+    summary: 'A principal able to change Lambda and CloudFront publishes a modified Lambda@Edge version and associates it with the distribution, allowing request event data to be copied to an external endpoint.',
+    confidence: 'Directly demonstrated by a cited safe lab; requires Lambda code, version, and CloudFront association rights',
+    mitre: [],
+    services: ['iam','lambda','cloudfront','s3','cloudtrail','cloudwatch'],
+    stages: [
+      {service:'iam',title:'Lambda and distribution rights are combined',detail:'The path requires permission to modify function code, publish a version, and update the CloudFront association.',signal:'CloudTrail reveals whether one principal or a chained set of roles performed the required control-plane actions.'},
+      {service:'lambda',title:'A modified version is published',detail:'The edge handler is changed to copy request event data outward, then a numbered function version is created.',signal:'Preserve code hashes, packages, versions, execution role, last-modified time, and UpdateFunctionCode and PublishVersion events.'},
+      {service:'cloudfront',title:'The distribution selects the new version',detail:'A cache behavior is updated to invoke the modified Lambda@Edge version for matching requests.',signal:'Diff LambdaFunctionAssociations, event type, include-body setting, qualified ARN, behavior pattern, and distribution ETag.'},
+      {service:'cloudwatch',title:'Request data leaves during edge execution',detail:'Each matching invocation can transmit the request fields available to that event type to an external service.',signal:'Use Lambda@Edge logs in the execution Regions, DNS or network indicators, CloudFront logs, and application session evidence to scope exposure.'}
+    ],
+    detect: ['Correlate UpdateFunctionCode, PublishVersion, and UpdateDistribution as one sequence and verify the actor and approved change.', 'Continuously compare deployed edge-function hashes and qualified ARNs with release artifacts.', 'Hunt across Lambda@Edge log Regions and external-destination indicators; the distribution configuration alone does not prove successful exfiltration.'],
+    contain: ['Preserve the function package, versions, role, distribution configuration, and logs before restoring a reviewed association.', 'Revoke the changing principal and execution-role sessions as appropriate, then inspect every distribution that references the function.', 'Rotate only data confirmed or reasonably scoped as exposed, prioritizing session tokens and credentials present in request events.'],
+    harden: ['Separate Lambda code publication from CloudFront distribution administration.', 'Permit only reviewed qualified function ARNs in edge associations and alert on drift.', 'Minimize sensitive request data at the edge and test deployment provenance and rollback regularly.'],
+    sources: ['awsAttackCloudFrontLambda','awsAiApi','awsAiCredential','awsIr']
   }
 ];
 

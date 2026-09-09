@@ -27,6 +27,14 @@ export const securityProfiles = {
     responder: 'Was the user session legitimate, and which account assignments expanded its reach?',
     source: 'https://docs.aws.amazon.com/singlesignon/latest/userguide/security-best-practices.html'
   },
+  cognito: {
+    boundary: 'Manages application users, federation, tokens, app clients, user-pool triggers, and identity-pool mappings to AWS roles.',
+    threats: ['Unauthorized user, group, app-client, or identity-provider change', 'Weak token, redirect, or federation configuration', 'Identity-pool role mapping grants unintended AWS access'],
+    evidence: ['CloudTrail-supported Cognito administration and authentication events', 'User-pool risk, sign-in, and application logs where configured', 'App-client, domain, group, trigger, provider, and identity-pool configuration'],
+    defenses: ['Require strong sign-in controls and protect recovery paths', 'Restrict app clients, callback URLs, federation, and privileged groups', 'Alert on user-pool, identity-provider, trigger, and role-mapping changes'],
+    responder: 'Which user or app client authenticated, which token or identity pool was used, and what configuration changed?',
+    source: 'https://docs.aws.amazon.com/cognito/latest/developerguide/security.html'
+  },
   organizations: {
     boundary: 'Defines account hierarchy and organization-wide guardrails, including service control and resource control policies.',
     threats: ['Guardrails weakened or detached', 'Accounts moved, invited, or removed unexpectedly', 'Trusted access or delegated administrators changed'],
@@ -54,10 +62,10 @@ export const securityProfiles = {
   },
   lambda: {
     boundary: 'Runs event-driven code with an execution role, resource policy, triggers, layers, environment variables, and optional network access.',
-    threats: ['Public or weakly restricted invocation path', 'Overpowered execution role', 'Unauthorized code, layer, environment, or permission change'],
-    evidence: ['CloudTrail function and permission changes', 'CloudWatch invocation, error, and application logs', 'GuardDuty Lambda Protection findings where enabled'],
-    defenses: ['Restrict function URLs and resource policies', 'Use a minimal execution role and external secret store', 'Use code signing and control deployment provenance'],
-    responder: 'Which trigger invoked the function, which version ran, and what did its role touch?',
+    threats: ['Public or weakly restricted invocation path', 'Overpowered execution role', 'Unauthorized code, layer, version, alias, trigger, or edge-function change'],
+    evidence: ['CloudTrail function, version, permission, and CloudFront association changes', 'CloudWatch invocation, error, and application logs', 'GuardDuty Lambda Protection findings where enabled'],
+    defenses: ['Restrict function URLs and resource policies', 'Use a minimal execution role and external secret store', 'Use code signing and protect published versions, triggers, and edge associations'],
+    responder: 'Which trigger or CloudFront behavior invoked the function, which version ran, and what data and permissions did it receive?',
     source: 'https://docs.aws.amazon.com/lambda/latest/dg/lambda-security.html'
   },
   ecs: {
@@ -103,10 +111,10 @@ export const securityProfiles = {
   },
   dynamodb: {
     boundary: 'Protects tables, indexes, streams, exports, backups, encryption settings, and item-level API access through IAM.',
-    threats: ['Broad data-plane permissions', 'Bulk read, export, update, or deletion activity', 'Backup, stream, or encryption configuration misuse'],
-    evidence: ['CloudTrail management and enabled data events', 'Table, export, backup, and point-in-time recovery state', 'Capacity, error, and access-pattern metrics'],
-    defenses: ['Scope IAM by action, table, condition, and attribute where practical', 'Use KMS controls and point-in-time recovery', 'Monitor unusual read, export, and delete patterns'],
-    responder: 'Which identity accessed which table operation, and was the behavior normal for that workload?',
+    threats: ['Broad data-plane or data-source role permissions', 'Bulk read, export, update, or deletion activity', 'Tampered application resolver returns records outside the caller scope'],
+    evidence: ['CloudTrail management and enabled data events', 'Table, export, backup, and point-in-time recovery state', 'AppSync resolver logs plus capacity, error, and access-pattern metrics'],
+    defenses: ['Scope IAM by action, table, condition, and attribute where practical', 'Test resolver authorization and object ownership at the API boundary', 'Use KMS controls, point-in-time recovery, and unusual-access monitoring'],
+    responder: 'Which identity or resolver accessed which table operation, and did the returned records exceed that caller’s scope?',
     source: 'https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/security.html'
   },
   efs: {
@@ -152,10 +160,10 @@ export const securityProfiles = {
   },
   cloudfront: {
     boundary: 'Mediates edge requests through distributions, behaviors, origins, cache policy, TLS, signed access, and logging.',
-    threats: ['Direct origin bypass', 'Permissive behavior, method, or cache configuration', 'Distribution, key-group, or origin change'],
-    evidence: ['CloudFront standard or real-time access logs', 'CloudTrail distribution configuration events', 'AWS WAF logs and origin request logs'],
-    defenses: ['Use Origin Access Control and restrict origin reachability', 'Enforce TLS, narrow allowed methods, and attach AWS WAF', 'Protect distribution changes and retain edge logs centrally'],
-    responder: 'Did the request traverse CloudFront, which behavior matched, and was the origin independently reachable?',
+    threats: ['Direct origin bypass', 'CloudFront Function or Lambda@Edge code and association tampering', 'Distribution, behavior, key-group, or origin change'],
+    evidence: ['CloudFront standard or real-time access logs', 'CloudTrail distribution, function, publish, and association changes', 'AWS WAF, origin, Lambda@Edge, and application logs'],
+    defenses: ['Use Origin Access Control and restrict origin reachability', 'Review and test edge code before publication', 'Protect distribution and function changes and retain edge logs centrally'],
+    responder: 'Which behavior and edge-function version handled the request, what changed in the response, and was the origin independently reachable?',
     source: 'https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/security.html'
   },
   waf: {
@@ -168,10 +176,10 @@ export const securityProfiles = {
   },
   elb: {
     boundary: 'Exposes listeners and target groups through security groups, routing rules, TLS policies, certificates, and access logs.',
-    threats: ['Unexpected public listener or permissive security group', 'Listener, target, certificate, or rule manipulation', 'Unsafe HTTP handling or direct-target reachability'],
-    evidence: ['Load balancer access and connection logs', 'CloudTrail ELB configuration changes', 'VPC Flow Logs, target health, and WAF logs'],
-    defenses: ['Use current TLS policies and controlled certificates', 'Restrict load-balancer and target security groups', 'Protect listener rules and attach WAF where applicable'],
-    responder: 'Which listener and rule handled the connection, and could the target be reached around the load balancer?',
+    threats: ['Unexpected public listener or permissive security group', 'Higher-priority rule bypasses an authenticate action', 'Fixed response, target, certificate, or forwarding action tampering'],
+    evidence: ['Load balancer access and connection logs', 'CloudTrail listener and rule configuration changes', 'Rule priorities and actions, Cognito state, VPC flows, target health, and WAF logs'],
+    defenses: ['Use current TLS policies and controlled certificates', 'Continuously diff listener priorities, conditions, and ordered actions', 'Restrict load-balancer and target changes and attach WAF where applicable'],
+    responder: 'Which rule won priority evaluation, did its ordered actions authenticate the request, and which target or fixed response followed?',
     source: 'https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/security.html'
   },
   apigateway: {
@@ -181,6 +189,14 @@ export const securityProfiles = {
     defenses: ['Require route-level authentication and authorization', 'Validate requests and apply throttles, quotas, and WAF', 'Use private endpoints or restrictive resource policies where possible'],
     responder: 'Which route, stage, identity, and integration handled the request?',
     source: 'https://docs.aws.amazon.com/apigateway/latest/developerguide/security.html'
+  },
+  appsync: {
+    boundary: 'Exposes GraphQL operations through authorization modes, schema directives, resolvers, data sources, API keys, and optional real-time endpoints.',
+    threats: ['Unauthorized API key or additional authorization mode', 'Schema directive or resolver change weakens object-level access', 'Data-source role or logging configuration grants excessive reach or hides activity'],
+    evidence: ['CloudTrail AppSync configuration and API-key activity', 'CloudWatch request, field, resolver, and error logs where enabled', 'GraphQL schema, authorization providers, resolvers, functions, data sources, and role state'],
+    defenses: ['Use the strongest suitable authorization mode and short API-key lifetimes', 'Enforce authorization in schema and resolver logic and test object ownership', 'Protect schema, resolver, key, data-source, and logging changes'],
+    responder: 'Which authorization mode admitted the operation, which resolver ran, and which data source and identity context did it use?',
+    source: 'https://docs.aws.amazon.com/appsync/latest/devguide/security.html'
   },
 
   guardduty: {
