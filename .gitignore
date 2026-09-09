@@ -1,0 +1,17 @@
+node_modules/
+artifacts/
+*.log
+.cache/
+__pycache__/
+artifacts-*.png
+dist/
+
+# Local editing helpers and superseded prototype files
+.atlas-*.py
+app.js
+styles.css
+fix.css
+scripts/check_home_layout.py
+.env
+.env.*
+!.env.example

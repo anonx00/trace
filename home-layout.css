@@ -1,0 +1,150 @@
+/* Homepage regions participate in layout; text never competes with graph space. */
+.map-page.universe-view {
+  display: grid;
+  grid-template-columns: clamp(260px, 23vw, 340px) minmax(0, 1fr);
+  grid-template-rows: auto auto auto auto;
+  column-gap: 38px;
+  row-gap: 20px;
+  align-items: start;
+  height: auto;
+  min-height: calc(100vh - 86px);
+  padding: 78px 30px 28px;
+  overflow: visible;
+}
+.universe-view .home-intro {
+  grid-column: 1;
+  grid-row: 1 / 5;
+  display: flex;
+  flex-direction: column;
+  gap: 38px;
+  min-width: 0;
+}
+.universe-view .map-header {
+  position: static;
+  inset: auto;
+  width: auto;
+  padding: 0;
+  pointer-events: auto;
+}
+.universe-view .map-header .breadcrumb { margin: 0 0 32px; }
+.universe-view .map-title {
+  font-size: clamp(52px, 4.3vw, 72px);
+  max-width: 100%;
+  letter-spacing: -.055em;
+  line-height: 1.02;
+}
+.universe-view .map-title em { letter-spacing: -.04em; }
+.universe-view .map-subtitle { max-width: 280px; }
+.universe-view .inspector {
+  position: static;
+  inset: auto;
+  width: auto !important;
+  max-width: 285px;
+  margin: 0;
+  padding: 0 0 0 19px;
+  border: 0;
+  border-left: 1px solid #ab83ba3b;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+}
+.universe-view .entry-stats { position: static; margin: 23px 0 18px; }
+.universe-view .scene-switch {
+  position: static;
+  inset: auto;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  margin: 0;
+}
+.universe-view .explore-column {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  height: clamp(430px, 47vw, 670px);
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.universe-view .canvas-wrap { position: absolute; inset: 0; min-height: 0; }
+.universe-view .world-svg { min-height: 0; }
+.universe-view .domain-dock {
+  position: static;
+  inset: auto;
+  grid-column: 2;
+  grid-row: 3;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  max-height: none;
+  margin: 0;
+}
+.universe-view .home-controls {
+  grid-column: 2;
+  grid-row: 4;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+}
+.universe-view .depth-bar, .universe-view .map-bottom {
+  position: static;
+  inset: auto;
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+.universe-view .map-bottom { margin-left: auto; flex-wrap: wrap; }
+.universe-view .map-key { margin-right: 8px; }
+
+@media (max-width: 1250px) {
+  .map-page.universe-view { column-gap: 24px; }
+  .universe-view .map-title { font-size: 54px; }
+  .universe-view .inspector h2 { font-size: 22px; }
+  .universe-view .inspector-intro { font-size: 11px; }
+  .universe-view .map-key { display: none; }
+}
+@media (max-width: 950px) {
+  .map-page.universe-view {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto auto auto;
+    padding: 76px 25px 28px;
+    gap: 24px;
+  }
+  .universe-view .home-intro { display: contents; }
+  .universe-view .map-header { grid-column: 1; grid-row: 1; width: auto; }
+  .universe-view .map-title { font-size: 58px; max-width: 550px; }
+  .universe-view .map-subtitle { max-width: 460px; }
+  .universe-view .scene-switch { grid-column: 1; grid-row: 2; justify-self: start; }
+  .universe-view .explore-column { grid-column: 1; grid-row: 3; height: auto; aspect-ratio: 1.5; min-height: 390px; }
+  .universe-view .domain-dock { grid-column: 1; grid-row: 4; }
+  .universe-view .home-controls { grid-column: 1; grid-row: 5; }
+  .universe-view .inspector {
+    grid-column: 1;
+    grid-row: 6;
+    max-width: none;
+    padding: 25px;
+    border: 1px solid #ffffff13;
+    border-radius: 14px;
+    background: #19131e;
+  }
+  .universe-view .inspector h2 { font-size: 27px; }
+  .universe-view .inspector-intro { font-size: 12px; max-width: 480px; }
+}
+@media (max-width: 650px) {
+  .map-page.universe-view { padding: 75px 20px 25px; gap: 22px; min-height: calc(100vh - 72px); }
+  .universe-view .map-title { font-size: clamp(46px, 14vw, 58px); max-width: 340px; }
+  .universe-view .map-header .breadcrumb { margin-bottom: 29px; }
+  .universe-view .map-subtitle { max-width: 340px; }
+  .universe-view .explore-column { aspect-ratio: auto; height: 530px; min-height: 0; }
+  .universe-view .domain-dock { display: none; }
+  .universe-view .home-controls { flex-direction: column; align-items: stretch; gap: 20px; }
+  .universe-view .map-bottom { align-self: flex-end; }
+  .universe-view .depth-bar { justify-content: flex-start; }
+  .universe-view .inspector { padding: 23px; }
+  .universe-view .inspector h2 { font-size: 25px; }
+}
