@@ -1,4 +1,3 @@
-"""Regression checks for document extraction and provenance boundaries."""
 import unittest
 from import_docs import canonical, extract
 

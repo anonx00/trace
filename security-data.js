@@ -1,4 +1,3 @@
-// Service security notes. Each profile includes its AWS documentation source.
 
 const securityPillar = 'https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html';
 const incidentResponse = 'https://docs.aws.amazon.com/security-ir/latest/userguide/incident-response.html';

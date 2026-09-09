@@ -1,4 +1,3 @@
-// Incident scenarios. Source references are defined below and linked by each scenario.
 
 export const researchSources = {
   vault: {

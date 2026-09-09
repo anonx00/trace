@@ -1,5 +1,4 @@
 
-"""Prove motion advances, pauses, resumes, and survives route changes."""
 import json
 from playwright.sync_api import sync_playwright,expect
 with sync_playwright() as p:

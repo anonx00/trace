@@ -1,5 +1,4 @@
 
-"""Regression coverage for the connected research experience, not just the homepage."""
 import json
 import re
 from pathlib import Path
@@ -75,7 +74,6 @@ with sync_playwright() as p:
     page.screenshot(path=str(ROOT/'artifacts/mind-investigation-desktop.png'),full_page=True)
     print('Interaction journeys passed',flush=True)
 
-    # Every selected service should show full graph text for each reading lens.
     data=json.loads((ROOT/'generated/docs.json').read_text(encoding='utf-8'))
     overflow=[]
     for doc in data['documents']:

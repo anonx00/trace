@@ -1,4 +1,3 @@
-"""Wait briefly for the CI preview server to become ready."""
 import time
 import urllib.request
 for attempt in range(60):

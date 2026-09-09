@@ -22,7 +22,6 @@ const allServices = [...originalServices,
   extra('redshift','Amazon Redshift','Data warehouse','Amazon Redshift is a managed cloud data warehouse for analyzing data using SQL.','redshift/latest/mgmt/welcome.html'),
 ].map(s=>({...s, source: root+(s.id==='sts'?'STS/latest/APIReference/API_AssumeRole.html':s.doc), short: s.name.replace(/^(Amazon |AWS )/, '')}));
 
-// Limit the map to the services covered by the security notes.
 export const services = allServices.filter(s=>!['glue','redshift'].includes(s.id));
 
 export const domains = [
@@ -39,10 +38,8 @@ export const serviceById = id => services.find(s=>s.id===id);
 export const domainById = id => domains.find(d=>d.id===id);
 export const domainFor = id => domains.find(d=>d.services.includes(id));
 
-// Each capability needs an AWS source. These links describe supported features.
 const link = (from,to,label,detail,path) => ({from,to,label,detail,source:root+path});
 export const connections = [
-  // Additional capability sources checked 9 September 2026.
   link("codepipeline","cloudformation","Can deploy a CloudFormation stack","A configured CloudFormation deploy action runs stack or change-set operations. Its action mode and IAM roles determine what it can do.","codepipeline/latest/userguide/action-reference-CloudFormation.html"),
   link("cloudformation","iam","Can operate through a service role","A stack can have an IAM service role that CloudFormation uses for resource operations. The role permissions define its authority.","AWSCloudFormation/latest/UserGuide/using-iam-servicerole.html"),
   link("ecr","cloudtrail","Records ECR API activity","CloudTrail captures ECR API calls for audit history. Retention and delivery depend on the CloudTrail configuration.","AmazonECR/latest/userguide/logging-using-cloudtrail.html"),

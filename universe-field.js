@@ -1,7 +1,5 @@
 let sharedAdapter;
 ﻿
-// Background animation; graph content and navigation are separate DOM elements.
-// API reference: https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API
 const shader = `
 struct Scene { screen: vec4f, motion: vec4f };
 @group(0) @binding(0) var<uniform> scene: Scene;
@@ -45,7 +43,6 @@ export function mountField(stage,initialPaused=false) {
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else start();},opts);
   function fallback() {
     if(dead)return;
-    // A canvas cannot switch context types after acquiring a GPU context.
     const next=document.createElement('canvas');next.className='atlas-field';next.setAttribute('aria-hidden','true');canvas.replaceWith(next);canvas=next;
     const ctx=canvas.getContext('2d');if(!ctx)return;
     stage.dataset.renderer='canvas2d';
@@ -86,7 +83,6 @@ export function mountField(stage,initialPaused=false) {
       render=null;buffer?.destroy();buffer=null;
       const failed=device;device=null;
       if(context){context.unconfigure();context=null;}
-      // Prevent a second fallback from the device-lost callback.
       if(failed)failed.destroy();
       if(stage.isConnected)fallback();
     }

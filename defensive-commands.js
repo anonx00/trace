@@ -1,6 +1,5 @@
 const cli = 'https://docs.aws.amazon.com/cli/latest/reference/';
 
-// One read-only check per service. Commands use placeholders where a resource ID is required.
 export const defensiveCommands = {
   iam: {
     title: 'Review identities and attached policy material',

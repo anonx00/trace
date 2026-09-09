@@ -1,9 +1,3 @@
-"""Build a source-attributed AWS documentation graph for the static atlas.
-
-Usage: python scripts/import_docs.py [--refresh] [--limit 40]
-Public output contains titles, section anchors, link metadata, and a <=24-word
-excerpt per source. Raw HTML is cached locally and never used as website content.
-"""
 import argparse
 import concurrent.futures
 from datetime import datetime, timezone
@@ -63,7 +57,6 @@ def fetch_one(item, refresh):
         else:
             time.sleep(.35)
             response = requests.get(url, timeout=(10,35), headers={'User-Agent':'TRACE-Documentation-Indexer/1.0 (educational source index)'}, allow_redirects=False)
-            # Preserve provenance: redirects must remain on the official docs host.
             for _ in range(4):
                 if response.status_code not in (301,302,303,307,308):
                     break
@@ -75,7 +68,6 @@ def fetch_one(item, refresh):
             if response.is_redirect:
                 raise ValueError('Redirect limit exceeded')
             stored = {'html':response.text,'resolvedUrl':response.url,'fetchedAt':datetime.now(timezone.utc).isoformat(),'sha256':hashlib.sha256(response.content).hexdigest()}
-            # Validate before caching, so an error page cannot become a permanent hit.
             extract(stored['html'], stored['resolvedUrl'])
             cachefile.write_text(json.dumps(stored,ensure_ascii=False),encoding='utf-8')
         result = extract(stored['html'],stored['resolvedUrl'])
@@ -84,7 +76,7 @@ def fetch_one(item, refresh):
         return {'id':item['id'],'url':url,'status':'error','error':str(error)}
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__)
+    parser=argparse.ArgumentParser(description='Build the AWS documentation graph.')
     parser.add_argument('--refresh',action='store_true')
     parser.add_argument('--limit',type=int,default=40)
     args=parser.parse_args()
@@ -107,8 +99,6 @@ def main():
             matches=[x for x in doc['links'] if urlsplit(x['url']).path.split('/')[1].lower()==prefix]
             if matches:
                 references.append({'from':doc['id'],'to':target,'type':'references','source':doc['resolvedUrl'],'targets':matches})
-    # Services sharing a documentation namespace (e.g. ECS and Fargate) are
-    # ambiguous. Do not infer which service a namespace-level link refers to.
     ambiguous={key for key,value in prefixes.items() if list(prefixes.values()).count(value)>1}
     references=[r for r in references if r['to'] not in ambiguous]
     graph={'schemaVersion':1,'generatedAt':datetime.now(timezone.utc).isoformat(),'documents':sorted(documents,key=lambda x:x['id']),'references':references,'stats':{'requested':len(items),'fetched':sum(d['status']=='ok' for d in documents),'sections':sum(len(d.get('sections',[])) for d in documents),'references':len(references)}}

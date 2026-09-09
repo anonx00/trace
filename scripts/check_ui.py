@@ -1,4 +1,3 @@
-"""Exercise the atlas's user journeys in a real Chromium browser."""
 import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
