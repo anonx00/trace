@@ -417,10 +417,13 @@
 }
 .trace-stages {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--stage-count, 4), minmax(220px, 1fr));
   border: 1px solid #ffffff0f;
   border-radius: 15px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #5b4966 transparent;
   background: #120e17;
 }
 .trace-stage {
@@ -568,9 +571,7 @@
   .canvas-wrap, .is-focus .canvas-wrap { right: 390px; }
   .map-bottom, .depth-bar { right: 390px; }
   .trail-history { right: 420px; }
-  .trace-stages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .trace-stage:nth-child(2) { border-right: 0; }
-  .trace-stage:nth-child(-n+2) { border-bottom: 1px solid #ffffff0e; }
+  .trace-stages { grid-template-columns: repeat(var(--stage-count, 4), minmax(230px, 1fr)); }
   .scenario-grid { gap: 14px; }
 }
 @media (max-width: 950px) {
@@ -593,8 +594,8 @@
   .paths-hero { margin-bottom: 35px; }
   .scenario-card { min-height: 365px; padding: 22px; }
   .scenario-card h2 { font-size: 25px; }
-  .trace-stages { grid-template-columns: 1fr; }
-  .trace-stage, .trace-stage:nth-child(2) { border-right: 0; border-bottom: 1px solid #ffffff0e; }
+  .trace-stages { grid-template-columns: 1fr; overflow: hidden; }
+  .trace-stage { border-right: 0; border-bottom: 1px solid #ffffff0e; }
   .trace-stage:last-child { border-bottom: 0; }
   .trace-stage:not(:last-child):after { top: auto; right: 28px; bottom: -5px; }
   .response-grid { grid-template-columns: 1fr; }

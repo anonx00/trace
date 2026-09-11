@@ -18,7 +18,8 @@ with sync_playwright() as p:
     page.locator('[data-scope="data"]').click()
     expect(page.locator('.atlas-domain-node:not(.scope-muted)')).to_have_count(1)
     page.locator('[data-scope="all"]').click()
-    expect(page.locator('#atlas-motion')).to_have_attribute('aria-pressed','true')
+    expect(page.locator('#atlas-motion')).to_have_attribute('aria-label','Resume atlas animation')
+    assert page.locator('#atlas-motion').get_attribute('aria-pressed') is None
     page.locator('[data-detail="story"]').click()
     expect(page.locator('.atlas-home-story')).to_be_visible()
     assert not page.locator('.atlas-stage').is_visible()
@@ -38,6 +39,26 @@ with sync_playwright() as p:
     page.locator('[data-route="#/service/s3"]').click()
     page.wait_for_url('**/#/service/s3')
     expect(page.locator('.mind-page')).to_be_visible()
+    expected_kms_scenarios = page.evaluate("""async () => {
+      const {scenariosForService} = await import('./scenario-data.js');
+      return scenariosForService('s3').filter(scenario => scenario.stages.some((stage, index) => {
+        const before = scenario.stages[index - 1];
+        return before && new Set([before.service, stage.service]).size === 2 &&
+          [before.service, stage.service].includes('s3') &&
+          [before.service, stage.service].includes('kms');
+      })).map(scenario => scenario.title);
+    }""")
+    kms_node = page.locator('.mind-graph-node[data-route="#/service/kms"]')
+    expect(kms_node).to_have_attribute(
+        'aria-label', re.compile(rf'also adjacent in {len(expected_kms_scenarios)} attack scenarios?')
+    )
+    kms_relation = page.locator('.mind-relation').filter(has_text='AWS KMS')
+    expect(kms_relation.locator('.mind-source-link.attack-source')).to_have_count(
+        len(expected_kms_scenarios)
+    )
+    assert all(
+        title in kms_relation.inner_text() for title in expected_kms_scenarios
+    ), 'The graph ledger must retain every merged S3↔KMS scenario source'
     before=page.locator('.mind-node-copy').first.inner_text()
     page.get_by_role('tab',name='Evidence',exact=True).click()
     after=page.locator('.mind-node-copy').first.inner_text()

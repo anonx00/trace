@@ -12,12 +12,48 @@ with sync_playwright() as pw:
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
     page.goto(URL, wait_until='networkidle')
+
+    # The homepage credibility metrics remain visible, linked navigation—not
+    # decorative counters—and map to the four advertised collections.
+    metrics = page.locator('.atlas-stats a')
+    expect(metrics).to_have_count(4)
+    assert metrics.evaluate_all("""links => links.every(link =>
+      link.getAttribute('href')?.startsWith('#/') &&
+      link.querySelector('b')?.textContent.trim() &&
+      link.querySelector('span')?.textContent.trim()
+    )"""), 'Homepage metrics must be complete internal links'
+    assert metrics.evaluate_all("links => links.map(link => link.getAttribute('href'))") == [
+        '#/library', '#/paths', '#/sources', '#/sources'
+    ]
+    metrics.first.focus()
+    expect(metrics.first).to_have_css('outline-style', 'solid')
+    expect(metrics.first).to_have_css('outline-width', '2px')
+
     page.locator('[data-detail="services"]').click()
     expect(page.locator('.atlas-service-card')).to_have_count(40)
+    expect(page.locator('.atlas-service-degree')).to_have_count(40)
+    expected_degrees = page.evaluate("""async () => {
+      const {services, connections} = await import('./catalog.js');
+      return Object.fromEntries(services.map(service => [
+        service.id,
+        connections.filter(link => link.from === service.id || link.to === service.id).length
+      ]));
+    }""")
+    actual_degrees = page.locator('.atlas-service-node').evaluate_all("""nodes => Object.fromEntries(
+      nodes.map(node => [node.dataset.serviceId, Number(node.querySelector('.atlas-service-degree').textContent)])
+    )""")
+    assert actual_degrees == expected_degrees, 'Every service node must show its sourced-link degree'
     assert page.locator('.atlas-service-node').evaluate_all("""nodes => nodes.every(n => {
       const text = n.querySelector('text').getBBox(), card = n.querySelector('rect').getBBox();
       return text.x >= card.x && text.x + text.width < card.x + card.width - 26;
     })"""), 'Service labels must fit inside their cards'
+
+    # Data has sourced links to KMS. Domain focus must retain that one-hop
+    # endpoint instead of leaving a bright edge terminating at a muted node.
+    page.locator('[data-scope="data"]').click()
+    kms = page.locator('[data-service-id="kms"]')
+    assert 'scope-muted' not in (kms.get_attribute('class') or '').split()
+    expect(kms).to_have_css('opacity', '1')
     node = page.locator('[data-service-id="iam"]')
     node.focus()
     page.keyboard.press('ArrowDown')
@@ -26,7 +62,81 @@ with sync_playwright() as pw:
     expect(page.locator('.atlas-service-node.atlas-related')).to_have_count(2)
     page.locator('.atlas-stage').scroll_into_view_if_needed()
     page.mouse.move(0, 0)
+    expect(page.locator('.atlas-service-node.atlas-related')).to_have_count(2)
+    page.locator('#atlas-motion').focus()
+    expect(page.locator('.atlas-service-node.atlas-related')).to_have_count(0)
+    page.locator('.atlas-edge:not(.scope-muted) .atlas-edge-hit').first.hover(force=True)
+    expect(page.locator('.atlas-service-node.atlas-related')).to_have_count(2)
+    page.mouse.move(0, 0)
+    expect(page.locator('.atlas-service-node.atlas-related')).to_have_count(0)
     page.screenshot(path=str(OUT / 'visual-atlas-services.png'))
+
+    # Stories owns the existing atlas motion control and keeps the toolbar and
+    # preview synchronized for keyboard-driven stage changes.
+    first_scenario = page.evaluate("async () => (await import('./scenario-data.js')).scenarios[0]")
+    page.locator('[data-detail="story"]').click()
+    expect(page.locator('#atlas-motion')).to_have_attribute(
+        'aria-label', 'Resume investigation animation'
+    )
+    expect(page.locator('#atlas-map-context')).to_have_text(
+        f"{len(first_scenario['stages'])} stages · {first_scenario['title']}"
+    )
+    expect(page.locator('#atlas-map-context')).not_to_contain_text('Eight domains')
+    expect(page.locator('.atlas-workspace #atlas-motion')).to_be_visible()
+    expect(page.locator('.atlas-home-story .story-motion')).to_have_count(0)
+    page.locator('.atlas-home-story [data-stage="0"]').focus()
+    page.keyboard.press('End')
+    last_index = len(first_scenario['stages']) - 1
+    last_service = page.evaluate("""async ({scenarioId, stageIndex}) => {
+      const [{scenarioById}, {serviceById}] = await Promise.all([
+        import('./scenario-data.js'), import('./catalog.js')
+      ]);
+      return serviceById(scenarioById(scenarioId).stages[stageIndex].service).name;
+    }""", {'scenarioId': first_scenario['id'], 'stageIndex': last_index})
+    expect(page.locator('.atlas-home-story [aria-current="step"]')).to_have_attribute(
+        'data-stage', str(last_index)
+    )
+    expect(page.locator('.atlas-preview-top span')).to_have_text(
+        f'CURRENT STAGE / {last_index + 1:02d}'
+    )
+    expect(page.locator('.atlas-preview h2')).to_have_text(last_service)
+
+    page.locator('[data-detail="overview"]').click()
+    expect(page.locator('.atlas-preview-top span')).to_contain_text('DOMAIN /')
+    expect(page.locator('.atlas-preview h2')).to_have_text('Data protection')
+
+    # The compact overview keeps both the evidence counters and the visual
+    # domain routes rather than degrading into eight disconnected nodes.
+    page.set_viewport_size({'width': 390, 'height': 1000})
+    page.goto(URL, wait_until='networkidle')
+    expect(page.locator('.atlas-domain-route')).to_have_count(8)
+    assert page.locator('.atlas-domain-route').evaluate_all(
+        "routes => routes.every(route => getComputedStyle(route).display !== 'none')"
+    ), 'Mobile overview must render all eight domain connectors'
+    expect(page.locator('.atlas-stats a')).to_have_count(4)
+    assert page.locator('.atlas-stats a').evaluate_all(
+        "links => links.every(link => link.getClientRects().length > 0)"
+    ), 'All four homepage metrics must remain visible on mobile'
+
+    page.set_viewport_size({'width': 1024, 'height': 1000})
+    page.goto(URL, wait_until='networkidle')
+    page.locator('[data-detail="services"]').click()
+    page.locator('[data-scope="data"]').click()
+    expect(page.locator('.atlas-service-index')).to_be_visible()
+    expect(page.locator('.atlas-service-index section').first.locator('h3 span')).to_have_text(
+        'Data protection'
+    )
+    expect(page.locator('.atlas-service-index a[href="#/service/kms"]')).to_be_visible()
+    expected_neighbor_domains = page.evaluate("""async () => {
+      const {domains, connections} = await import('./catalog.js');
+      const core = new Set(domains.find(domain => domain.id === 'data').services);
+      const scoped = new Set(core);
+      connections.filter(link => core.has(link.from) || core.has(link.to))
+        .forEach(link => { scoped.add(link.from); scoped.add(link.to); });
+      return domains.filter(domain => domain.id !== 'data' &&
+        domain.services.some(service => scoped.has(service))).length;
+    }""")
+    expect(page.locator('.atlas-neighbor-section')).to_have_count(expected_neighbor_domains)
 
     for width in [1440, 1024, 768, 390, 320]:
         page.set_viewport_size({'width': width, 'height': 1000})

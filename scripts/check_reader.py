@@ -16,6 +16,11 @@ with sync_playwright() as pw:
     page.goto(URL+'#/paths', wait_until='networkidle')
     scenarios = page.evaluate("async()=> (await import('./scenario-data.js')).scenarios")
     expect(page.locator('.scenario-card')).to_have_count(len(scenarios))
+    for scenario in scenarios:
+        card = page.locator(f'.reader-path-card[href="#/scenario/{scenario["id"]}"]')
+        expect(card.locator('.path-card-kicker')).to_have_text(scenario['kicker'])
+        expect(card.locator('.reader-mini-chain li')).to_have_count(len(scenario['stages']))
+        expect(card.locator('.reader-chain-node')).to_have_count(len(scenario['stages']))
     page.locator('#path-search').fill('T1552.005')
     expected = sum('T1552.005' in s['mitre'] for s in scenarios)
     expect(page.locator('.scenario-card')).to_have_count(expected)
@@ -31,18 +36,40 @@ with sync_playwright() as pw:
 
     for scenario in scenarios:
         page.goto(URL+'#/scenario/'+scenario['id'], wait_until='domcontentloaded')
-        expect(page.locator('.story-stop')).to_have_count(len(scenario['stages']))
+        stage_count = len(scenario['stages'])
+        expect(page.locator('.story-stop')).to_have_count(stage_count)
+        expect(page.locator('.story-stage-role')).to_have_count(stage_count)
+        expect(page.locator('.story-stage-role').first).to_have_text('START')
+        expect(page.locator('.story-stage-role').last).to_have_text('OUTCOME')
+        expect(page.locator('.story-progress-markers i')).to_have_count(stage_count)
+        expect(page.locator('.story-progress')).to_have_attribute('aria-valuemax', str(stage_count))
+        expect(page.locator('.story-progress')).to_have_attribute('aria-valuenow', '1')
+        expect(page.locator('.story-stop.is-current')).to_have_count(1)
+        expect(page.locator('.story-stop.is-complete')).to_have_count(0)
+        expect(page.locator('.story-stop.is-upcoming')).to_have_count(stage_count - 1)
+        expect(page.locator('.story-progress-markers i.is-current')).to_have_count(1)
+        expect(page.locator('.story-progress-markers i.is-complete')).to_have_count(0)
         for i, stage in enumerate(scenario['stages']):
             page.locator(f'[data-stage="{i}"]').click()
             expect(page.locator('.story-context h3')).to_have_text(stage['title'])
             expect(page.locator('.story-context>p')).to_have_text(stage['detail'])
             expect(page.locator('.story-signal>p')).to_have_text(stage['signal'])
+            expect(page.locator('.story-progress')).to_have_attribute('aria-valuenow', str(i + 1))
+            expect(page.locator('.story-stop.is-current')).to_have_count(1)
+            expect(page.locator('.story-stop.is-complete')).to_have_count(i)
+            expect(page.locator('.story-stop.is-upcoming')).to_have_count(stage_count - i - 1)
+            expect(page.locator('.story-progress-markers i.is-current')).to_have_count(1)
+            expect(page.locator('.story-progress-markers i.is-complete')).to_have_count(i)
         page.locator('.story-overview-toggle').click()
         expect(page.locator('.story-overview')).to_be_visible()
         expect(page.locator('.story-reading')).not_to_be_visible()
         assert page.locator('.story-evidence-grid article>p').all_text_contents() == [stage['signal'] for stage in scenario['stages']]
         page.locator('[data-jump-stage="0"]').click()
         expect(page.locator('[data-stage="0"]')).to_have_attribute('aria-current','step')
+        expect(page.locator('.story-stop.is-complete')).to_have_count(0)
+        expect(page.locator('.story-stop.is-upcoming')).to_have_count(stage_count - 1)
+        expect(page.locator('.story-progress-markers i.is-current')).to_have_count(1)
+        expect(page.locator('.story-progress-markers i.is-complete')).to_have_count(0)
         expect(page.locator('.story-reading')).to_be_visible()
         assert page.locator('.story-references a').count() >= 1
     print('All scenario stages and evidence panels match source data.', flush=True)
@@ -58,6 +85,22 @@ with sync_playwright() as pw:
     page.locator('.scenario-full-notes>summary').click()
     expect(page.locator('.trace-stage').first).to_be_visible()
 
+    # Expanded notes preserve a five-stage causal row on larger screens and
+    # intentionally become a vertical sequence on phones without page overflow.
+    five_stage = next(s for s in scenarios if len(s['stages']) == 5)
+    for width, expected_columns in [(1440, 5), (768, 5), (390, 1)]:
+        page.set_viewport_size({'width':width, 'height':1000})
+        page.goto(URL+'#/scenario/'+five_stage['id'], wait_until='domcontentloaded')
+        page.locator('.scenario-full-notes>summary').click()
+        expect(page.locator('.trace-stage')).to_have_count(5)
+        columns = page.locator('.trace-stages').evaluate(
+            "el => getComputedStyle(el).gridTemplateColumns.split(' ').length"
+        )
+        assert columns == expected_columns, ('expanded trace columns', width, columns)
+        assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'), (
+            'expanded trace overflow', width
+        )
+
     concept = page.evaluate("async()=> (await import('./catalog.js')).insights[0].id")
     routes = ['#/','#/domain/identity','#/service/s3','#/service/rds/topic/13','#/paths','#/scenario/web-to-role','#/library','#/sources','#/concept/'+concept]
     for width in [1440,1024,768,390,320]:
@@ -67,6 +110,10 @@ with sync_playwright() as pw:
             page.locator('h1').wait_for()
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),(width,route)
             assert page.locator('link[href="./reader.css"]').count()==1
+            if route == '#/paths' and width <= 600:
+                assert page.locator('.reader-mini-chain').evaluate_all(
+                    'els=>els.every(el=>el.scrollWidth<=el.clientWidth+1)'
+                ), ('nested path rail overflow', width)
         page.goto(URL+'#/scenario/web-to-role',wait_until='domcontentloaded')
         page.locator('[data-stage="0"]').focus()
         page.keyboard.press('End')
