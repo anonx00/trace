@@ -12,9 +12,11 @@ The map includes **40 services**, **41 documented relationships**, **28 reviewed
 
 - **Domains:** start with identity, workloads, data, networking, detection, response, supply chain, or investigation.
 - **Services:** select a node for security context, rule-backed attack cases, telemetry requirements, tuning notes, controls, and documentation. Select a connection to see why it exists.
-- **Stories:** step through a scenario and switch between threat context, evidence, and response.
+- **Stories:** search by service, scenario, or MITRE ID and filter by domain. Follow numbered service stages, switch between threat context, evidence, and defense, or compare evidence across the sequence.
 
 Ctrl/Cmd+K opens search. **Reading view** puts the notes first; **Focus graph** gives the map more room. Saved services stay in your browser.
+
+Pages share a responsive reading layout. Service notes come before the graph on phones. Investigation pages include section navigation, expandable full stage notes, and keyboard-accessible stage controls (arrow keys, Home, and End).
 
 ## Sources
 
@@ -52,10 +54,12 @@ npm run check
 python scripts/test_import_docs.py
 npm run test:scenarios
 npm run test:detections
+npm run test:commands
 npm run test:ui
 npm run test:connections
 npm run test:motion
 npm run test:mind
+npm run test:reader
 ```
 
 </details>
