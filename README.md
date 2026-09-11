@@ -18,6 +18,8 @@ Ctrl/Cmd+K opens search. **Reading view** puts the notes first; **Focus graph** 
 
 Pages share a responsive reading layout. Service notes come before the graph on phones. Investigation pages include section navigation, expandable full stage notes, and keyboard-accessible stage controls (arrow keys, Home, and End).
 
+Graph cards show service names and relationship labels, with the full explanation and sources in the connection notes. Hover or focus a card to highlight its link; use arrow keys to move between nodes. The service atlas groups nodes by domain and switches to a readable index on smaller screens. Sources and investigations share section shortcuts and the same reading controls.
+
 ## Sources
 
 AWS documentation supports the service relationships. Incident scenarios draw on MITRE ATT&CK, controlled AWS attack labs, AWS incident-response playbooks, and the research linked on the [Sources page](https://anonx00.github.io/trace/#/sources). Community detection cards link to their exact [detections.ai](https://detections.ai/detections?q=AWS) pages and, where reviewed, commit-pinned upstream Sigma rules.
@@ -98,6 +100,7 @@ npm run test:connections
 npm run test:motion
 npm run test:mind
 npm run test:reader
+npm run test:visual
 ```
 
 </details>

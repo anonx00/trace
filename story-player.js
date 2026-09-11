@@ -34,7 +34,8 @@ export function mountStory(host,scenario){
       const active=Number(button.dataset.stage)===index;
       button.setAttribute('aria-pressed',String(active));
       if(active)button.setAttribute('aria-current','step');else button.removeAttribute('aria-current');
-      button.querySelector('.story-stop-state').textContent=active?'Reading this stage':'Read stage';
+      button.querySelector('.story-stop-state').textContent=active?'● Reading this stage':'Read stage →';
+      button.tabIndex=active?0:-1;
     });
     host.querySelectorAll('[data-lens]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.lens===lens&&!overview)));
     host.querySelector('.story-progress span').style.width=`${(index+1)/scenario.stages.length*100}%`;
@@ -48,7 +49,7 @@ export function mountStory(host,scenario){
     host.querySelector('.story-selected').innerHTML=`<div class="story-context"><span class="mind-eyebrow">STAGE ${String(index+1).padStart(2,'0')} / ${esc(service.name)}</span><h3>${esc(heading)}</h3>${body}<a href="#/service/${service.id}">Explore ${esc(service.short)} <span aria-hidden="true">↗</span></a></div><aside class="story-signal">${side}<a href="${esc(profile.source)}" target="_blank" rel="noopener noreferrer">AWS service security guidance ↗</a>${lens==='defense'?'<small>Service controls; assess applicability to this scenario.</small>':''}</aside>`;
     host.querySelector('#story-back').disabled=index===0;
     host.querySelector('#story-next').disabled=index===scenario.stages.length-1;
-    host.querySelector('.story-next-label').textContent=index<scenario.stages.length-1?`Next: ${serviceById(scenario.stages[index+1].service).short}`:'End of sequence';
+    host.querySelector('.story-next-label').textContent=index<scenario.stages.length-1?`Next: ${serviceById(scenario.stages[index+1].service).short}`:'End of sequence · Review the evidence or sources below';
     host.closest('.scenario-page')?.querySelectorAll('.trace-stage').forEach((el,i)=>el.classList.toggle('is-current',i===index));
   }
   function selectStage(next,focus=false){
