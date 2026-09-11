@@ -9,7 +9,7 @@ const pinnedResearch={
   awesomeAwsSecurity:'b613b720f0c2d68636e9f3bfc0e4b295a8848241',
   awsDetectionLab:'4a985c0bb78862748591387b1eaebbd3568df89f'
 };
-assert.equal(scenarios.length,20,'The scenario corpus changed; review provenance and update this invariant');
+assert.equal(scenarios.length,21,'The scenario corpus changed; review provenance and update this invariant');
 assert.equal(new Set(scenarios.map(scenario=>scenario.id)).size,scenarios.length,'Scenario IDs must be unique');
 assert.deepEqual(scenarios.filter(scenario=>expectedNewScenarios.includes(scenario.id)).map(scenario=>scenario.id).sort(),expectedNewScenarios);
 
@@ -47,6 +47,19 @@ for(const id of expectedNewScenarios){
   assert.ok(scenario.sources.includes('offensiveCloud'),id+': missing requested offensive research source');
   assert.ok(scenario.sources.some(key=>researchSources[key].kind==='OFFICIAL'),id+': attack mechanics require an official behavior source');
 }
+
+const datasetScenario=scenarios.find(item=>item.id==='cloudformation-secret-to-rds-access');
+assert.ok(datasetScenario,'Missing vetted dataset-inspired scenario');
+assert.deepEqual(datasetScenario.datasetRows,[10297]);
+assert.match(datasetScenario.confidence,/review prompt only/i);
+assert.ok(datasetScenario.sources.includes('hfAttackDataset'));
+assert.ok(datasetScenario.sources.includes('hfAttackDatasetReview'));
+assert.ok(datasetScenario.sources.includes('awsRdsVpc'));
+assert.ok(datasetScenario.sources.filter(key=>researchSources[key].kind==='OFFICIAL').length>=4,'Dataset-inspired scenario requires independent primary sources');
+assert.equal(researchSources.hfAttackDataset.revision,'878cd3b46278018e17a1aa9333ff67896fe5fa03');
+assert.equal(researchSources.hfAttackDataset.sha256,'130e90c57e33d1791a3f2aad07855dcc80e7d6b0727ecd421376abc2550283d4');
+assert.ok(researchSources.hfAttackDataset.url.includes(researchSources.hfAttackDataset.revision));
+assert.equal(researchSources.hfAttackDatasetReview.url,'https://anonx00.github.io/trace/docs/cybersecurity-attack-dataset-review.md');
 
 const coveredServices=new Set(scenarios.flatMap(scenario=>scenario.services));
 assert.deepEqual([...coveredServices].sort(),[...serviceIds].sort(),'Every service must appear in at least one sourced scenario');

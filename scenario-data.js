@@ -287,6 +287,74 @@ export const researchSources = {
     publisher: 'Amazon Web Services',
     url: 'https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-walkthrough-2.html',
     kind: 'OFFICIAL'
+  },
+  hfAttackDataset: {
+    label: 'Candidate-only attack scenario corpus; supplied prose is not treated as evidence',
+    publisher: 'savaniDhruv / Hugging Face',
+    url: 'https://huggingface.co/datasets/savaniDhruv/Cybersecurity_Attack_Dataset/tree/878cd3b46278018e17a1aa9333ff67896fe5fa03',
+    kind: 'DISCOVERY ONLY',
+    revision: '878cd3b46278018e17a1aa9333ff67896fe5fa03',
+    sha256: '130e90c57e33d1791a3f2aad07855dcc80e7d6b0727ecd421376abc2550283d4'
+  },
+  hfAttackDatasetReview: {
+    label: 'TRACE admission review, measurements, retained prompts, and explicit rejects',
+    publisher: 'TRACE',
+    url: 'https://anonx00.github.io/trace/docs/cybersecurity-attack-dataset-review.md',
+    kind: 'DATASET REVIEW'
+  },
+  awsCloudFormationSecrets: {
+    label: 'CloudFormation parameter masking and secret-exposure boundaries',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html',
+    kind: 'OFFICIAL'
+  },
+  awsCloudFormationDynamicRefs: {
+    label: 'CloudFormation dynamic references and supported secret stores',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/dynamic-references.html',
+    kind: 'OFFICIAL'
+  },
+  awsVpcFlowLimits: {
+    label: 'VPC Flow Log exclusions, including EC2 instance metadata traffic',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-limitations.html',
+    kind: 'OFFICIAL'
+  },
+  awsGuardDutyInstanceCredential: {
+    label: 'GuardDuty findings for unexpected use of EC2-issued credentials',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-iam.html',
+    kind: 'OFFICIAL'
+  },
+  awsRdsCloudTrail: {
+    label: 'CloudTrail coverage for Amazon RDS API operations',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/logging-using-cloudtrail.html',
+    kind: 'OFFICIAL'
+  },
+  awsRdsLogs: {
+    label: 'RDS database-engine logs for auditing and troubleshooting',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.html',
+    kind: 'OFFICIAL'
+  },
+  awsRdsVpc: {
+    label: 'Amazon RDS placement and connectivity in an Amazon VPC',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.html',
+    kind: 'OFFICIAL'
+  },
+  mitreImds: {
+    label: 'T1552.005 Unsecured Credentials: Cloud Instance Metadata API',
+    publisher: 'MITRE ATT&CK',
+    url: 'https://attack.mitre.org/techniques/T1552/005/',
+    kind: 'FRAMEWORK'
+  },
+  mitreCredentialsFiles: {
+    label: 'T1552.001 Unsecured Credentials: Credentials In Files',
+    publisher: 'MITRE ATT&CK',
+    url: 'https://attack.mitre.org/techniques/T1552/001/',
+    kind: 'FRAMEWORK'
   }
 };
 
@@ -315,14 +383,14 @@ export const scenarios = [
     services: ['waf','apigateway','elb','ec2','sts','iam','s3','secretsmanager','cloudtrail','guardduty'],
     stages: [
       {service:'waf',title:'Untrusted server-side fetch',detail:'An application accepts a URL or remote resource and performs the request from a trusted workload.',signal:'WAF and application logs show unusual destinations, encodings, redirect chains, or URL-fetch behavior.'},
-      {service:'ec2',title:'Instance metadata reached',detail:'The workload can reach its metadata endpoint and expose credentials for its attached instance role.',signal:'Host or proxy telemetry may show metadata traffic; IMDS packet-hop and token settings define what is possible.'},
+      {service:'ec2',title:'Instance metadata reached',detail:'The workload can reach its metadata endpoint and expose credentials for its attached instance role.',signal:'Host or proxy telemetry may show the metadata request; VPC Flow Logs will not because AWS excludes IMDS traffic. CloudTrail and GuardDuty can corroborate later use of the issued role credentials, not the original fetch.'},
       {service:'sts',title:'Temporary role session reused',detail:'The obtained role credentials are used from a new network location to call AWS APIs.',signal:'CloudTrail identity context, source IP, user agent, session issuer, and GuardDuty credential findings connect the pivot.'},
       {service:'s3',title:'Permissions become blast radius',detail:'The role discovers or reads objects and secrets allowed by its effective policies.',signal:'S3 data events, Secrets Manager retrieval events, KMS use, and unusual API breadth reveal the collection path.'}
     ],
     detect: ['Correlate the same role session across source IPs and services.', 'Look for first-time API calls, enumeration followed by data access, and access outside the workload baseline.', 'Confirm whether S3 data events and secret retrieval events were enabled before the incident.'],
     contain: ['Block the vulnerable request path and isolate the workload.', 'Replace or remove the role permissions and invalidate dependent secrets; temporary credentials expire but exposed downstream credentials may not.', 'Preserve CloudTrail, application, WAF, VPC, S3, and host evidence before rebuilding.'],
     harden: ['Require IMDSv2, reduce metadata hop limit, and block metadata access where the workload does not need it.', 'Use narrow workload roles and explicit egress controls.', 'Validate URLs after every resolution and redirect, and deny private, link-local, and internal destinations.'],
-    sources: ['vault','hacktricks','offensiveCloud','stratus','cloudgoat','mitre','awsAiSts','awsAiEc2','awsAiData','awsCloudTrailInvestigation','awsIr']
+    sources: ['vault','hacktricks','offensiveCloud','stratus','cloudgoat','mitre','mitreImds','awsVpcFlowLimits','awsGuardDutyInstanceCredential','awsAiSts','awsAiEc2','awsAiData','awsCloudTrailInvestigation','awsIr']
   },
   {
     id: 'role-trust-persistence',
@@ -689,6 +757,26 @@ export const scenarios = [
     contain: ['Preserve both bucket configurations, role and key policies, CloudTrail events, inventories, metrics, and destination evidence before disabling an unauthorized rule.', 'Revoke the modifying session and prevent further role assumption or destination writes while coordinating with owners of legitimate replication workflows.', 'Scope object versions already copied and downstream reads in the destination account; removing the rule does not delete replicas that already exist.'],
     harden: ['Restrict PutReplicationConfiguration and iam:PassRole to reviewed deployment roles and approved replication-role ARNs.', 'Constrain destination accounts and buckets with organization-aware policy conditions where the design permits, and review KMS policies separately.', 'Enable configuration drift alerts, versioning, protected evidence logs, replication metrics for sensitive buckets, and a maintained inventory of approved data flows.'],
     sources: ['offensiveCloud','hackingCloudS3Replication','awsS3Replication','awsAiData','awsCloudTrailInvestigation','awsIr']
+  },
+  {
+    id: 'cloudformation-secret-to-rds-access',
+    title: 'Readable template secret becomes a database path',
+    kicker: 'EXPOSED CREDENTIAL -> REACHABLE DATABASE -> DATA ACCESS',
+    summary: 'An actor who can read a CloudFormation template file obtains a database credential embedded in that file. If the database is reachable, the credential becomes a direct data-plane path; CloudTrail alone cannot prove which database actions occurred.',
+    confidence: 'Dataset row 10297 supplied the review prompt only. This modeled path requires confirmed access to a plaintext template credential; the published mechanics and evidence limits are independently supported by the cited AWS documentation and do not claim an observed incident.',
+    datasetRows: [10297],
+    mitre: ['T1552.001'],
+    services: ['cloudformation','vpc','rds','cloudtrail'],
+    stages: [
+      {service:'cloudformation',title:'Readable source exposes a reusable secret',detail:'A principal with access to the relevant source revision reads a literal database credential from a CloudFormation template file. NoEcho can mask a parameter in selected stack displays, but it does not remove a literal value from source and does not redact Metadata, Outputs, resource metadata, or primary identifiers.',signal:'Prove access to the exact source revision and template, then preserve parameter declarations, NoEcho flags, Metadata, Outputs, resource metadata, stack and change-set identifiers, and the identities able to read each surface. Handle the material as a secret rather than copying it into tickets or alerts.'},
+      {service:'vpc',title:'Reachability determines whether the credential is usable',detail:'Possession of a database credential is not enough by itself. VPC placement, subnets, routing, and access controls determine whether the actor can establish a path to the RDS endpoint; TLS and database authentication still govern admission.',signal:'Reconstruct endpoint placement and tested source-to-destination reachability at the relevant time using VPC configuration, security-group and route changes, and VPC Flow Logs where available.'},
+      {service:'rds',title:'Credential use reaches the database plane',detail:'If network and database controls admit the connection, the exposed credential can authenticate directly to the database engine. Available authentication, connection, statement, and audit records depend on the engine and logging configuration.',signal:'Use the engine-specific RDS logs, database audit facilities, connection telemetry, and data-owner records to establish successful access and affected data. Do not infer queries or rows returned from possession of the secret alone.'},
+      {service:'cloudtrail',title:'Control-plane events bound—but do not complete—the timeline',detail:'CloudTrail records RDS and CloudFormation API operations. Ordinary database authentication and SQL activity require database-plane evidence, so a control-plane event or template exposure is not proof of data access.',signal:'Join template, stack, identity, network, secret-rotation, and RDS API events with engine logs and confirmed database outcomes. Record missing database logging as an evidence gap rather than as proof that no access occurred.'}
+    ],
+    detect: ['Scan reviewed infrastructure source and deployment artifacts for literal credentials, then inspect CloudFormation Metadata, Outputs, resource metadata, primary identifiers, and unsupported dynamic-reference locations.', 'Alert on unexpected GetTemplate, stack-description, output, parameter, and source-artifact access using the available control-plane and repository audit records; avoid placing secret values in the alert.', 'Correlate suspected exposure with endpoint reachability and engine-specific authentication or audit records. Describe template exposure, successful login, and confirmed data access as separate conclusions.'],
+    contain: ['Restrict the database network path and rotate the exposed database credential through a controlled change while preserving active-session and application-impact considerations.', 'Preserve the exact source revision, template, stack metadata, access history, network state, and database logs under evidence controls without reproducing the secret in analyst notes.', 'Remove every known plaintext copy through a reviewed deployment, then scope database actions and downstream disclosures before restoring ordinary access.'],
+    harden: ['Use Secrets Manager or Systems Manager secure-string dynamic references where CloudFormation supports them, and keep sensitive values out of Metadata, Outputs, resource metadata, and primary identifiers.', 'Apply secret scanning before merge and deployment, restrict access to source and stack descriptions, and prevent pipelines or notifications from echoing sensitive parameters.', 'Keep databases privately reachable where the design permits, enable the engine logs required for authentication and data-access investigations, and test credential rotation and evidence collection.'],
+    sources: ['hfAttackDataset','hfAttackDatasetReview','awsCloudFormationSecrets','awsCloudFormationDynamicRefs','awsRdsVpc','awsRdsCloudTrail','awsRdsLogs','mitreCredentialsFiles','awsIr']
   }
 ];
 

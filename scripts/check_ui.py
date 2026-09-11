@@ -111,7 +111,7 @@ with sync_playwright() as pw:
     expect(page.locator('.detection-card')).to_have_count(0)
     page.screenshot(path=str(out/'athena-detection-gap.png'),full_page=True)
     page.goto('http://127.0.0.1:4173/#/paths')
-    assert page.locator('.scenario-card').count()==20
+    assert page.locator('.scenario-card').count()==21
     page.locator('.scenario-card').first.click()
     page.wait_for_url('**/#/scenario/*')
     expect(page.locator('.trace-stage')).to_have_count(4)
@@ -125,7 +125,7 @@ with sync_playwright() as pw:
         expect(page.locator('.trace-stage')).to_have_count(4)
         assert page.locator('.scenario-sources a').count()>=3,scenario
         assert page.locator('.stage-service').count()==4,scenario
-    for scenario in ('cloudformation-template-role-escalation','athena-valid-role-data-access','kinesis-cross-account-stream-access','opensearch-domain-policy-exposure'):
+    for scenario in ('cloudformation-template-role-escalation','athena-valid-role-data-access','kinesis-cross-account-stream-access','opensearch-domain-policy-exposure','cloudformation-secret-to-rds-access'):
         page.goto('http://127.0.0.1:4173/#/scenario/'+scenario,wait_until='domcontentloaded')
         assert page.locator('.trace-stage').count()>=4,scenario
         assert page.locator('.scenario-sources a').count()>=4,scenario
@@ -134,6 +134,20 @@ with sync_playwright() as pw:
         expect(page.locator('.trace-stage')).to_have_count(5)
         assert page.locator('.scenario-sources a').count()>=4,scenario
         assert page.locator('.stage-service').count()==5,scenario
+    page.goto('http://127.0.0.1:4173/#/scenario/cloudformation-secret-to-rds-access',wait_until='domcontentloaded')
+    expect(page.locator('.trace-stage')).to_have_count(4)
+    expect(page.locator('.scenario-confidence')).to_contain_text('review prompt only')
+    expect(page.locator('.scenario-sources')).to_contain_text('DISCOVERY ONLY')
+    expect(page.locator('.scenario-sources')).to_contain_text('DATASET REVIEW')
+    expect(page.locator('.scenario-sources')).to_contain_text('CloudFormation parameter masking')
+    page.screenshot(path=str(out/'dataset-vetted-scenario.png'),full_page=True)
+    page.goto('http://127.0.0.1:4173/#/service/cloudformation',wait_until='domcontentloaded')
+    expect(page.locator('.scenario-mini-list')).to_contain_text('Readable template secret becomes a database path')
+    expect(page.locator('.intel-list')).to_contain_text('NoEcho masking')
+    page.get_by_role('tab',name='Evidence',exact=True).click()
+    expect(page.locator('.evidence-list')).to_contain_text('NoEcho flags')
+    page.get_by_role('tab',name='Defense',exact=True).click()
+    expect(page.locator('.defense-list').first).to_contain_text('secure-string dynamic references')
     page.set_viewport_size({'width':390,'height':844})
     page.goto('http://127.0.0.1:4173/#/')
     assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')

@@ -8,7 +8,7 @@ An interactive map of AWS services and their security controls. Follow a connect
 
 ## Explore
 
-The map includes **40 services**, **41 documented relationships**, **28 reviewed community detections**, and **20 incident scenarios**.
+The map includes **40 services**, **41 documented relationships**, **28 reviewed community detections**, and **21 incident scenarios**.
 
 - **Domains:** start with identity, workloads, data, networking, detection, response, supply chain, or investigation.
 - **Services:** select a node for security context, rule-backed attack cases, telemetry requirements, tuning notes, controls, and documentation. Select a connection to see why it exists.
@@ -27,6 +27,8 @@ AWS documentation supports the service relationships. Incident scenarios draw on
 The service research layer maps 36 TRACE nodes to exact [HackTricks Cloud AWS service pages](https://cloud.hacktricks.wiki/en/pentesting-cloud/aws-security/aws-services/index.html), reviewed against source commit [`4fa4b2f`](https://github.com/HackTricks-wiki/hacktricks-cloud/tree/4fa4b2f11915ab60ffbd7df5c8c96579aad5b023). IAM Identity Center, AWS Backup, AWS Fargate, and Amazon OpenSearch Service remain explicit gaps because no direct service page was found; neighboring material is not used as a substitute.
 
 The attack-research index also includes commit-pinned references from [OffensiveCloud](https://github.com/lutzenfried/OffensiveCloud/tree/main/AWS), the [AWS Detection Engineering Lab](https://github.com/JpsBookOfLife/aws-detection-engineering-lab/tree/main/detections), and [Awesome AWS Security](https://github.com/jassics/awesome-aws-security). The lab's eight native CloudWatch metric-filter files are listed as research references rather than presented as detections.ai community cards.
+
+CloudFormation node enrichment was prompted by three rows in the MIT-labeled [Cybersecurity Attack Dataset](https://huggingface.co/datasets/savaniDhruv/Cybersecurity_Attack_Dataset/tree/878cd3b46278018e17a1aa9333ff67896fe5fa03); one resulting field note uses row 10297 as its discovery prompt. TRACE treats that undocumented, mixed simulated corpus as discovery input only: it pins the reviewed revision and file hash, imports none of its prose or detection logic, corrects unsupported claims, and publishes only mechanics independently verified against claim-specific AWS and MITRE sources. The measurements, retained row IDs, and explicit rejects are preserved in the [dataset review](docs/cybersecurity-attack-dataset-review.md).
 
 TRACE preserves native rule language instead of translating everything into generic SQL. Each detection records its contributor, collection, MITRE mapping, telemetry dependency, and tuning guidance. The UI distinguishes exact upstream selections from publisher summaries and leaves unmapped services visible as coverage gaps.
 
