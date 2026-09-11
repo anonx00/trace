@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.mjs",
     "build": "node scripts/build.mjs",
-    "check": "node --check knowledge-graph.js && node --check story-player.js && node --check research-home.js && node --check universe-field.js && node --check universe.js && node --check catalog.js && node --check security-data.js && node --check defensive-commands.js && node --check hunting-queries.js && node --check scenario-data.js && node --check s3-notes.js && node --check data.js && node --check server.mjs",
+    "check": "node --check knowledge-graph.js && node --check story-player.js && node --check research-home.js && node --check universe-field.js && node --check universe.js && node --check catalog.js && node --check security-data.js && node --check defensive-commands.js && node --check community-detections.js && node --check scenario-data.js && node --check s3-notes.js && node --check data.js && node --check server.mjs",
     "import:docs": "python scripts/import_docs.py",
     "test:ui": "python scripts/check_ui.py",
     "test:mind": "python scripts/check_mind.py",
@@ -14,7 +14,7 @@
     "test:connections": "python scripts/check_connections.py",
     "test:commands": "node scripts/check_defensive_commands.mjs",
     "test:scenarios": "node scripts/check_scenarios.mjs",
-    "test:hunts": "node scripts/check_hunting_queries.mjs"
+    "test:detections": "node scripts/check_community_detections.mjs"
   },
   "type": "module"
 }

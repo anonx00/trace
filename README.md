@@ -8,19 +8,19 @@ An interactive map of AWS services and their security controls. Follow a connect
 
 ## Explore
 
-The map includes **40 services**, **41 documented relationships**, **40 service-specific CloudTrail Lake hunts**, and **17 incident scenarios**.
+The map includes **40 services**, **41 documented relationships**, **28 reviewed community detections**, and **17 incident scenarios**.
 
 - **Domains:** start with identity, workloads, data, networking, detection, response, supply chain, or investigation.
-- **Services:** select a node for security notes, logs, a scoped hunt query, controls, and documentation. Select a connection to see why it exists.
+- **Services:** select a node for security context, rule-backed attack cases, telemetry requirements, tuning notes, controls, and documentation. Select a connection to see why it exists.
 - **Stories:** step through a scenario and switch between threat context, evidence, and response.
 
 Ctrl/Cmd+K opens search. **Reading view** puts the notes first; **Focus graph** gives the map more room. Saved services stay in your browser.
 
 ## Sources
 
-AWS documentation supports the service relationships. Incident scenarios draw on MITRE ATT&CK, controlled AWS attack labs, AWS incident-response playbooks, and the research linked on the [Sources page](https://anonx00.github.io/trace/#/sources).
+AWS documentation supports the service relationships. Incident scenarios draw on MITRE ATT&CK, controlled AWS attack labs, AWS incident-response playbooks, and the research linked on the [Sources page](https://anonx00.github.io/trace/#/sources). Community detection cards link to their exact [detections.ai](https://detections.ai/detections?q=AWS) pages and, where reviewed, commit-pinned upstream Sigma rules.
 
-Node hunts are editable CloudTrail Lake starting points. Replace the event-store and time placeholders, then confirm event-selector coverage before interpreting missing events.
+TRACE preserves native rule language instead of translating everything into generic SQL. Each detection records its contributor, collection, MITRE mapping, telemetry dependency, and tuning guidance. The UI distinguishes exact upstream selections from publisher summaries and leaves unmapped services visible as coverage gaps.
 
 Capability links, scenario sequences, and navigation groupings have separate labels. TRACE describes possible relationships; it does not inspect your AWS account or show live incidents.
 
@@ -51,6 +51,7 @@ python -m playwright install chromium
 npm run check
 python scripts/test_import_docs.py
 npm run test:scenarios
+npm run test:detections
 npm run test:ui
 npm run test:connections
 npm run test:motion

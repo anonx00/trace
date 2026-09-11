@@ -80,14 +80,13 @@ with sync_playwright() as p:
         if doc.get('status')!='ok':continue
         page.goto(URL+'#/service/'+doc['id'],wait_until='domcontentloaded')
         page.locator('.inspector').wait_for()
-        for tab in ['Intel','Evidence','Hunt','Defense','AWS docs']:
+        for tab in ['Intel','Evidence','Detections','Defense','AWS docs']:
             page.get_by_role('tab',name=tab,exact=True).click()
-            if tab=='Hunt':
-                expect(page.locator('.hunt-query')).to_have_count(1)
-                expect(page.locator('.hunt-query code')).to_contain_text('SELECT')
-                expect(page.locator('.hunt-query code')).to_contain_text('eventSource')
-                expect(page.locator('.hunt-coverage')).to_be_visible()
-                expect(page.locator('.hunt-sources a')).to_have_count(3)
+            if tab=='Detections':
+                cards=page.locator('.detection-card').count()
+                gaps=page.locator('.detection-gap').count()
+                assert cards>0 or gaps==1,doc['id']+': detection coverage is neither sourced nor marked as a gap'
+                assert not (cards>0 and gaps),doc['id']+': detection coverage cannot be both mapped and a gap'
             if tab=='Defense':
                 expect(page.locator('.field-command')).to_have_count(1)
                 expect(page.locator('.field-command code')).to_contain_text('aws ')

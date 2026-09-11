@@ -4,6 +4,7 @@ import {mountStory} from './story-player.js';
 import {domains, services, serviceById, domainFor, connections} from './catalog.js';
 import {profileFor} from './security-data.js';
 import {scenarios, scenariosForService} from './scenario-data.js';
+import {communityDetections, detectionsForService, detectionCoverage} from './community-detections.js';
 import {mountField} from './universe-field.js';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -24,7 +25,7 @@ export function mountResearchHome(root,{topicCount=0,openSearch}={}) {
       <h1>Everything connects.<br><em>Learn where it leads.</em></h1>
       <p class="atlas-lede">A visual field guide to cloud security. Explore the identities, workloads, and evidence behind every service boundary.</p>
       <div class="hero-links"><button class="atlas-primary" id="atlas-find">Find a service <span>⌕</span></button><a href="#/paths">Follow an investigation <span>↗</span></a></div></div>
-      <div class="atlas-manifest"><span>BUILT FOR THE CURIOUS DEFENDER</span><p>Understand the surface.<br>Follow the evidence.<br><strong>Make the next decision.</strong></p><div class="atlas-stats"><div><b>${services.length}</b><span>SECURITY NODES</span></div><div><b>${scenarios.length.toString().padStart(2,'0')}</b><span>RESEARCH PATHS</span></div><div><b>${topicCount}</b><span>AWS TOPICS</span></div></div></div>
+      <div class="atlas-manifest"><span>BUILT FOR THE CURIOUS DEFENDER</span><p>Understand the surface.<br>Follow the evidence.<br><strong>Make the next decision.</strong></p><div class="atlas-stats"><div><b>${services.length}</b><span>SECURITY NODES</span></div><div><b>${scenarios.length.toString().padStart(2,'0')}</b><span>RESEARCH PATHS</span></div><div><b>${communityDetections.length}</b><span>COMMUNITY RULES</span></div><div><b>${topicCount}</b><span>AWS TOPICS</span></div></div></div>
     </header>
     <section class="atlas-workspace" aria-label="Interactive security atlas">
       <div class="atlas-toolbar"><div class="atlas-map-heading"><span class="atlas-cross">✳</span><div><h2>The connected surface</h2><p id="atlas-map-context">Eight domains. Choose your point of entry.</p></div></div>
@@ -43,18 +44,18 @@ export function mountResearchHome(root,{topicCount=0,openSearch}={}) {
         <aside class="atlas-preview" aria-label="Selected domain preview"></aside>
       </div>
     </section>
-    <section class="atlas-reading" aria-label="Guided research"><div class="atlas-reading-heading"><div><p class="atlas-eyebrow">A PLACE TO START</p><h2>Follow a question.<br>Find the connections.</h2></div><a href="#/paths">All research paths <span>↗</span></a></div><div class="atlas-paths">${scenarios.slice(0,3).map((s,i)=>`<a class="atlas-path" href="#/scenario/${s.id}"><div><span>FIELD NOTE / 0${i+1}</span><b>↗</b></div><h3>${esc(s.title)}</h3><p>${esc(s.summary)}</p><div class="atlas-path-services">${s.services.slice(0,5).map(id=>`<span style="--node:${domainFor(id).color}">${esc(serviceById(id).short)}</span>`).join('<i>→</i>')}</div><small>${s.services.length} services · Evidence & response</small></a>`).join('')}</div></section>
-    <footer class="atlas-footer"><span>TRACE. <b>INDEPENDENT SECURITY RESEARCH</b></span><a href="#/sources">AWS documentation + cited research ↗</a></footer>
+    <section class="atlas-reading" aria-label="Guided research"><div class="atlas-reading-heading"><div><p class="atlas-eyebrow">A PLACE TO START</p><h2>Follow a question.<br>Find the connections.</h2></div><a href="#/paths">All research paths <span>↗</span></a></div><div class="atlas-paths">${scenarios.slice(0,3).map((s,i)=>`<a class="atlas-path" href="#/scenario/${s.id}"><div><span>FIELD NOTE / 0${i+1}</span><b>↗</b></div><h3>${esc(s.title)}</h3><p>${esc(s.summary)}</p><div class="atlas-path-services">${s.services.slice(0,5).map(id=>`<span style="--node:${domainFor(id).color}">${esc(serviceById(id).short)}</span>`).join('<i>→</i>')}</div><small>${s.services.length} services · ${detectionCoverage(s.services).length} reviewed rules</small></a>`).join('')}</div></section>
+    <footer class="atlas-footer"><span>TRACE. <b>INDEPENDENT SECURITY RESEARCH</b></span><a href="#/sources">AWS documentation + sourced community detections ↗</a></footer>
   </section>`;
   const page=root.querySelector('.research-home'),stage=page.querySelector('.atlas-stage'),svg=page.querySelector('.atlas-graph'),preview=page.querySelector('.atlas-preview');
   const field=mountField(stage,paused);
   function showPreview(domain,service=null) {
     selected=domain;
-    const p=service?profileFor(service.id):null;
+    const p=service?profileFor(service.id):null,rules=service?detectionsForService(service.id):[];
     preview.style.setProperty('--node',domain.color);
     preview.innerHTML=`<div class="atlas-preview-top"><span>${service?'SERVICE':'DOMAIN'} / ${String(domains.indexOf(domain)+1).padStart(2,'0')}</span><i>RESEARCH CONTEXT</i></div><div class="atlas-preview-symbol">${symbol(domain)}</div><h2>${esc(service?.name||domain.name)}</h2><p class="atlas-preview-description">${esc(p?.boundary||domain.description)}</p><a class="atlas-preview-enter" href="#/${service?'service/'+service.id:'domain/'+domain.id}">Open ${service?'security node':'domain'} <span>↗</span></a>
       <div class="atlas-preview-section"><h3>${service?'EVIDENCE TO EXPLORE':'INSIDE THIS DOMAIN'} <span>${service?p.evidence.length:domain.services.length}</span></h3>${service?`<ul class="atlas-preview-evidence">${p.evidence.map(v=>`<li>${esc(v)}</li>`).join('')}</ul>`:`<div class="atlas-preview-services">${domain.services.map(id=>{const s=serviceById(id);return `<a href="#/service/${id}">${esc(s.name)}<span>↗</span></a>`;}).join('')}</div>`}</div>
-      ${service?`<div class="atlas-preview-section"><h3>DOCUMENTED CONNECTIONS</h3><div class="atlas-preview-connections">${connections.filter(c=>c.from===service.id||c.to===service.id).map(c=>`<a href="${esc(c.source)}" target="_blank" rel="noopener noreferrer"><strong>${esc(serviceById(c.from).short)} → ${esc(serviceById(c.to).short)}</strong><span>${esc(c.label)} ↗</span></a>`).join('')}</div></div>`:''}
+      ${service?`<div class="atlas-preview-section atlas-detection-preview"><h3>REVIEWED DETECTIONS <span>${rules.length}</span></h3><div class="atlas-preview-detections">${rules.slice(0,2).map(rule=>`<a href="${esc(rule.source)}" target="_blank" rel="noopener noreferrer"><strong>${esc(rule.title)}</strong><span>${esc(rule.language)} · ${esc(rule.contributor)} ↗</span></a>`).join('')||'<p>No mapped community rule — visible coverage gap.</p>'}</div></div><div class="atlas-preview-section"><h3>DOCUMENTED CONNECTIONS</h3><div class="atlas-preview-connections">${connections.filter(c=>c.from===service.id||c.to===service.id).map(c=>`<a href="${esc(c.source)}" target="_blank" rel="noopener noreferrer"><strong>${esc(serviceById(c.from).short)} → ${esc(serviceById(c.to).short)}</strong><span>${esc(c.label)} ↗</span></a>`).join('')}</div></div>`:''}
       <div class="atlas-preview-bottom"><span>READ THE SIGNAL</span><p>${service?esc(p.responder):'Each service connects security context, observable evidence, defensive controls, and source documentation.'}</p><a href="#/${service?'service/'+service.id:'sources'}">${service?'Explore the full analysis':'Sources & methodology'} ↗</a></div>`;
   }
   function applyCamera(){svg.setAttribute('viewBox',`${camera.x} ${camera.y} ${camera.w} ${camera.h}`);page.querySelector('#zoom-fit').textContent=Math.round(base().w/camera.w*100)+'%';}

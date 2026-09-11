@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
@@ -33,13 +34,20 @@ with sync_playwright() as pw:
     assert not page.locator('.inspector').is_visible()
     page.locator('#focus-graph').click()
     assert page.locator('.inspector').is_visible()
-    page.get_by_role('tab',name='Hunt',exact=True).click()
-    expect(page.locator('.hunt-query code')).to_contain_text("eventSource = 's3.amazonaws.com'")
-    expect(page.locator('.hunt-events span')).to_have_count(8)
-    expect(page.locator('.hunt-sources a')).to_have_count(3)
-    page.screenshot(path=str(out/'s3-hunt.png'),full_page=True)
-    page.locator('.query-copy').click()
-    expect(page.locator('.query-copy')).to_have_text('Copied')
+    page.get_by_role('tab',name='Detections',exact=True).click()
+    expect(page.locator('.detection-card')).to_have_count(1)
+    expect(page.locator('.detection-card h3')).to_have_text('AWS S3 Data Management Tampering')
+    expect(page.locator('.detection-card-head')).to_contain_text('EXACT UPSTREAM SELECTION')
+    expect(page.locator('.detection-signals li')).to_have_count(2)
+    expect(page.locator('.detection-links a')).to_have_count(2)
+    expect(page.locator('.detection-links a').first).to_have_attribute('href',re.compile(r'^https://detections\.ai/detections/'))
+    page.screenshot(path=str(out/'s3-community-detections.png'),full_page=True)
+    page.get_by_role('tab',name='Intel',exact=True).click()
+    expect(page.locator('.detection-intel-list')).to_contain_text('AWS S3 Data Management Tampering')
+    page.get_by_role('tab',name='Evidence',exact=True).click()
+    expect(page.locator('.detection-evidence-list')).to_contain_text('PutBucketLogging')
+    page.get_by_role('tab',name='Defense',exact=True).click()
+    expect(page.locator('.detection-tuning-list')).to_contain_text('configuration alone')
     page.get_by_role('tab',name='AWS docs',exact=True).click()
     assert page.locator('.topic-link').count()>10
     page.locator('.world-layer').evaluate('(el)=>Promise.all(el.getAnimations().map(a=>a.finished))')
@@ -80,8 +88,9 @@ with sync_playwright() as pw:
     page.get_by_role('button',name='Fit graph to view').click()
     assert page.locator('.world-svg').get_attribute('viewBox')==initial
     page.keyboard.press('Control+k')
-    page.locator('#search-input').fill('consistency')
+    page.locator('#search-input').fill('CreateAccessKey')
     assert page.locator('.search-result').count()>0
+    expect(page.locator('.search-result').first).to_contain_text('IAM')
     page.locator('.search-result').first.click()
     assert not page.locator('#search-dialog').is_visible()
     page.goto('http://127.0.0.1:4173/#/library')
@@ -94,11 +103,21 @@ with sync_playwright() as pw:
     page.goto('http://127.0.0.1:4173/#/sources')
     assert page.locator('tbody tr').count()==40
     assert page.locator('.reference-grid a').count()>=10
+    expect(page.locator('.community-source-grid a')).to_have_count(28)
+    page.screenshot(path=str(out/'community-detection-index.png'),full_page=True)
+    page.goto('http://127.0.0.1:4173/#/service/athena')
+    page.get_by_role('tab',name='Detections',exact=True).click()
+    expect(page.locator('.detection-gap')).to_be_visible()
+    expect(page.locator('.detection-card')).to_have_count(0)
+    page.screenshot(path=str(out/'athena-detection-gap.png'),full_page=True)
     page.goto('http://127.0.0.1:4173/#/paths')
     assert page.locator('.scenario-card').count()==17
     page.locator('.scenario-card').first.click()
     page.wait_for_url('**/#/scenario/*')
     expect(page.locator('.trace-stage')).to_have_count(4)
+    expect(page.locator('.scenario-detections')).to_be_visible()
+    assert page.locator('.scenario-detection-grid a').count()>0
+    page.screenshot(path=str(out/'scenario-community-coverage.png'),full_page=True)
     expect(page.locator('.scenario-sources a').first).to_be_visible()
     assert page.locator('.scenario-sources a').count()>=5
     for scenario in ('alb-rule-auth-bypass','appsync-api-key-persistence','appsync-resolver-data-access','cloudfront-function-cookie-theft','lambda-edge-request-exfiltration'):

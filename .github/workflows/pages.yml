@@ -56,7 +56,7 @@ jobs:
           npm run test:connections
           npm run test:commands
           npm run test:scenarios
-          npm run test:hunts
+          npm run test:detections
           npm run test:motion
           npm run test:mind
       - name: Upload static Pages artifact

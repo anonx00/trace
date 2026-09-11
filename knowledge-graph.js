@@ -3,9 +3,11 @@ import {glyphs} from './node-symbols.js';
 import {services,domains,serviceById,domainFor,connections} from './catalog.js';
 import {profileFor} from './security-data.js';
 import {scenariosForService} from './scenario-data.js';
-import {queryFor} from './hunting-queries.js';
+import {detectionsForService} from './community-detections.js';
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const detectionSummary=id=>{const rules=detectionsForService(id);return rules.length?`${rules.length} reviewed rule${rules.length===1?'':'s'} · ${rules[0].title}`:'No reviewed community rule mapped · visible coverage gap';};
+const detectionDetail=id=>{const rules=detectionsForService(id);return rules.length?rules.map(rule=>`${rule.title}: ${rule.signals[0]}`).join('. '):'No reviewed community rule is mapped to this service. TRACE does not generate substitute logic.';};
 export function knowledgeGraph({type,d,s,topic,topicIndex,doc,tab,page=0,references=[]}) {
   let items=[],legend='',hubTitle=s?.short||d.short,hubDescription=topic?'AWS documentation':s?'Selected security node':'Editorial security domain';
   if(type==='domain'){
@@ -34,8 +36,8 @@ export function knowledgeGraph({type,d,s,topic,topicIndex,doc,tab,page=0,referen
     const left=i<3,x=left?30:910,y=75+(i%3)*240,service=v.service,domain=service?domainFor(service.id):d,color=domain.color;
     const title=service?.name||v.title;
     const profile=service?profileFor(service.id):null;
-    const summary=profile?(tab==='evidence'?profile.evidence[0]:tab==='hunt'?queryFor(service.id).title:tab==='defense'?profile.defenses[0]:v.description||profile.boundary):v.description;
-    const lens=tab==='evidence'&&profile?'Evidence':tab==='hunt'&&profile?'Hunt':tab==='defense'&&profile?'Defense':v.relation;
+    const summary=profile?(tab==='evidence'?profile.evidence[0]:tab==='detections'?detectionSummary(service.id):tab==='defense'?profile.defenses[0]:v.description||profile.boundary):v.description;
+    const lens=tab==='evidence'&&profile?'Evidence':tab==='detections'&&profile?'Detection':tab==='defense'&&profile?'Defense':v.relation;
     const a=left?{x:x+260,y:y+84}:{x:hub.x+hub.w,y:hub.y+74},b=left?{x:hub.x,y:hub.y+74}:{x,y:y+84};
     links+=`<path class="map-link ${v.kind} mind-link" d="M${a.x},${a.y} C${(a.x+b.x)/2},${a.y} ${(a.x+b.x)/2},${b.y} ${b.x},${b.y}" style="--color:${color}" id="mind-edge-${i}"><title>${esc(v.relation)}</title></path>`;
     nodes+=`<g class="map-node mind-graph-node" tabindex="0" role="link" aria-label="${esc(title)}" data-route="${esc(v.url)}" data-incoming="${!!v.incoming}" data-kind="${v.kind}" transform="translate(${x},${y})" style="--color:${color}"><title>${esc(title)} — ${esc(v.relation)}</title><rect class="mind-node-back" width="260" height="250" rx="13"/><g class="mind-neuron" transform="translate(130 48)"><circle class="mind-neuron-glow" r="66"/><circle class="mind-neuron-ring" r="49"/><circle class="mind-neuron-body" r="34"/><path class="mind-neuron-icon" d="${glyphs[domain.id]}" /></g><foreignObject x="17" y="111" width="226" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="mind-node-copy"><span>${esc(lens)}</span><h3>${esc(title)}</h3><p>${esc(summary)}</p></div></foreignObject></g>`;
@@ -44,6 +46,6 @@ export function knowledgeGraph({type,d,s,topic,topicIndex,doc,tab,page=0,referen
   const hubMarkup=`<g class="mind-hub mind-neuron-hub" transform="translate(600 400)"><circle class="mind-hub-glow" r="115"/><circle class="mind-hub-ring" r="77"/><circle class="mind-hub-body" r="55"/><path class="mind-hub-icon" d="${glyphs[d.id]}" transform="scale(1.6)"/><text class="mind-hub-name" y="111" style="font-size:${hubTitle.length>16?19:28}px">${esc(hubTitle)}</text><text class="mind-hub-caption" y="137">${esc(hubDescription)}</text></g>`;
   const empty=!total?'<text x="600" y="540" class="node-label">Explore this service using the research panel.</text>':'';
   const markup=`<defs><marker id="mind-direction" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1 9 5 1 9" fill="none" stroke="#c7b2dc" stroke-width="1.5"/></marker><pattern id="mind-grid" width="35" height="35" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#bba6d5" opacity=".15"/></pattern></defs><rect width="1200" height="800" fill="url(#mind-grid)" pointer-events="none"/><g class="world-layer">${links}${hubMarkup}${nodes}${empty}</g>`;
-  const ledger=visible.map(v=>`<div class="mind-relation"><span class="relation-kind ${v.kind}">${v.kind==='documented'?'AWS CAPABILITY':v.kind==='attack'?'SCENARIO SEQUENCE':v.kind==='references'?'GUIDE REFERENCE':'KNOWLEDGE LINK'}</span><a class="mind-relation-title" href="${esc(v.url)}">${esc(v.service?.name||v.title)} <span>↗</span></a><p>${esc(v.service&&tab==='evidence'?profileFor(v.service.id).evidence.join('. '):v.service&&tab==='hunt'?`${queryFor(v.service.id).title}. ${queryFor(v.service.id).eventNames.slice(0,4).join(', ')}.`:v.service&&tab==='defense'?profileFor(v.service.id).defenses.join('. '):v.description||v.relation)}</p>${v.source?`<a class="mind-source-link" href="${esc(v.source)}" target="_blank" rel="noopener noreferrer">${esc(v.relation)} · AWS source ↗</a>`:v.scenario?`<a class="mind-source-link" href="#/scenario/${v.scenario.id}">Read the complete scenario ↗</a>`:''}</div>`).join('');
+  const ledger=visible.map(v=>`<div class="mind-relation"><span class="relation-kind ${v.kind}">${v.kind==='documented'?'AWS CAPABILITY':v.kind==='attack'?'SCENARIO SEQUENCE':v.kind==='references'?'GUIDE REFERENCE':'KNOWLEDGE LINK'}</span><a class="mind-relation-title" href="${esc(v.url)}">${esc(v.service?.name||v.title)} <span>↗</span></a><p>${esc(v.service&&tab==='evidence'?profileFor(v.service.id).evidence.join('. '):v.service&&tab==='detections'?detectionDetail(v.service.id):v.service&&tab==='defense'?profileFor(v.service.id).defenses.join('. '):v.description||v.relation)}</p>${v.source?`<a class="mind-source-link" href="${esc(v.source)}" target="_blank" rel="noopener noreferrer">${esc(v.relation)} · AWS source ↗</a>`:v.scenario?`<a class="mind-source-link" href="#/scenario/${v.scenario.id}">Read the complete scenario ↗</a>`:''}</div>`).join('');
   return {markup,legend,pages,current,total,ledger};
 }
