@@ -137,17 +137,59 @@ export const researchSources = {
     publisher: 'AWS Samples incident-response playbooks',
     url: 'https://github.com/aws-samples/aws-incident-response-playbooks/blob/699c7c7c30f4add23531a3afd1f1803ab61d5f11/ai-playbooks/scenarios/ai-irp-ransomware.md',
     kind: 'IR PLAYBOOK'
+  },
+  rhinoCloudFormation: {
+    label: 'CloudFormation template resource injection research',
+    publisher: 'Rhino Security Labs',
+    url: 'https://rhinosecuritylabs.com/aws/cloud-malware-cloudformation-injection/',
+    kind: 'RESEARCH'
+  },
+  awsCloudFormationRole: {
+    label: 'CloudFormation service role security behavior',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-iam-servicerole.html',
+    kind: 'OFFICIAL'
+  },
+  awsAthenaTrail: {
+    label: 'Logging Athena API calls with CloudTrail',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/athena/latest/ug/monitor-with-cloudtrail.html',
+    kind: 'OFFICIAL'
+  },
+  awsKinesisPolicy: {
+    label: 'Kinesis Data Streams access and cross-account policy model',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/streams/latest/dev/controlling-access.html',
+    kind: 'OFFICIAL'
+  },
+  awsKinesisTrail: {
+    label: 'Logging Kinesis Data Streams API calls with CloudTrail',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/streams/latest/dev/logging-using-cloudtrail.html',
+    kind: 'OFFICIAL'
+  },
+  awsOpenSearchAccess: {
+    label: 'OpenSearch Service access-policy and network controls',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ac.html',
+    kind: 'OFFICIAL'
+  },
+  awsOpenSearchAudit: {
+    label: 'OpenSearch audit-log configuration and event fields',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/opensearch-service/latest/developerguide/audit-logs.html',
+    kind: 'OFFICIAL'
   }
 };
 
 const sourceGroups = {
   identity: ['vault','hacktricks','pacu','rhinoIam','awsAiCredential','awsAiSts','mitre','prowler','awsIr'],
   runtime: ['vault','hacktricks','pacu','stratus','cloudgoat','awsAiEc2','prowler','awsIr'],
-  data: ['vault','hacktricks','pacu','stratus','cloudgoat','awsAiData','awsAiRansomware','prowler','awsCloudTrailInvestigation','awsIr'],
+  data: ['vault','hacktricks','pacu','stratus','cloudgoat','awsAiData','awsAiRansomware','awsAthenaTrail','awsKinesisPolicy','awsOpenSearchAccess','prowler','awsCloudTrailInvestigation','awsIr'],
   edge: ['vault','hacktricks','stratus','awsAttackAlb','awsAttackAppSyncKey','awsAttackAppSyncResolver','awsAttackCloudFrontFunction','awsAttackCloudFrontLambda','awsAiApi','prowler','awsCorrelation','awsIr'],
   detection: ['hacktricks','stratus','prowler','awsCloudTrailInvestigation','awsCorrelation','awsIr'],
   response: ['pacu','stratus','awsAutomation','awsIr'],
-  supply: ['vault','hacktricks','cloudgoat','prowler','mitre','awsIr'],
+  supply: ['vault','hacktricks','cloudgoat','rhinoCloudFormation','awsCloudFormationRole','prowler','mitre','awsIr'],
   investigation: ['stratus','awsCloudTrailInvestigation','awsCorrelation','mitre','awsIr']
 };
 
@@ -401,6 +443,84 @@ export const scenarios = [
     contain: ['Preserve the function package, versions, role, distribution configuration, and logs before restoring a reviewed association.', 'Revoke the changing principal and execution-role sessions as appropriate, then inspect every distribution that references the function.', 'Rotate only data confirmed or reasonably scoped as exposed, prioritizing session tokens and credentials present in request events.'],
     harden: ['Separate Lambda code publication from CloudFront distribution administration.', 'Permit only reviewed qualified function ARNs in edge associations and alert on drift.', 'Minimize sensitive request data at the edge and test deployment provenance and rollback regularly.'],
     sources: ['awsAttackCloudFrontLambda','awsAiApi','awsAiCredential','awsIr']
+  },
+  {
+    id: 'cloudformation-template-role-escalation',
+    title: 'Mutable template to privileged stack execution',
+    kicker: 'TEMPLATE WRITE -> SERVICE ROLE USE -> PRIVILEGED RESOURCE',
+    summary: 'An actor who can alter a referenced CloudFormation template and reach a stack update path inserts an IAM resource. CloudFormation then creates it with the stack service role rather than the actor\'s direct permissions.',
+    confidence: 'Demonstrated by cited research and bounded by documented CloudFormation service-role behavior; requires template write access plus a stack deployment path',
+    mitre: ['T1078.004','T1098.003'],
+    services: ['iam','s3','cloudformation','cloudtrail','config'],
+    stages: [
+      {service:'iam',title:'Two permissions become one path',detail:'The path requires control over template content and a way to create, update, or execute a change set for a stack that uses a more privileged service role.',signal:'Identify the template writer, stack operator, role session, source identity, source IP, and whether these were separate principals.'},
+      {service:'s3',title:'Referenced template content changes',detail:'A template at a mutable S3 location gains an IAM resource or another privileged resource before CloudFormation consumes it.',signal:'Preserve object version IDs, hashes, data-event records, bucket policy, and the exact TemplateURL or change-set input. A latest-object snapshot is not sufficient.'},
+      {service:'cloudformation',title:'The stack executes the changed template',detail:'CreateStack, UpdateStack, or ExecuteChangeSet causes CloudFormation to act with the stack service role. AWS warns that users with stack-operation permissions can use that attached role.',signal:'Preserve stack events, template body, change set, parameters, capabilities, service-role ARN, client request token, and matching CloudTrail events.'},
+      {service:'iam',title:'A privileged identity resource appears',detail:'The injected resource can create or modify a role, policy, user, or credential within the service role\'s authority.',signal:'Join the CloudFormation operation to IAM events through time, actor context, stack resources, tags, and CloudTrail invokedBy fields; verify the resulting permissions directly.'},
+      {service:'config',title:'Drift and resource history confirm state',detail:'AWS Config history can show the resulting resource and later changes when recording was enabled for the resource type.',signal:'Compare configuration history with the reviewed template and deployment artifacts. Missing Config history is a coverage gap, not proof the change did not occur.'}
+    ],
+    detect: ['Alert on stack operations using sensitive service roles and review the submitted template or change set before execution.', 'Version and integrity-check template artifacts, then correlate S3 object writes with CreateChangeSet, UpdateStack, and ExecuteChangeSet.', 'Hunt for IAM resources created through CloudFormation and confirm that every resulting permission matches reviewed infrastructure code.'],
+    contain: ['Preserve the template versions, change sets, stack events, role policies, and CloudTrail records before changing resources.', 'Revoke the template-writer and stack-operator sessions, then block further stack updates through the affected role while impact is scoped.', 'Remove unauthorized IAM access through a reviewed stack correction or controlled response procedure; account for dependencies before deleting resources.'],
+    harden: ['Store templates in versioned, write-restricted artifact locations and deploy immutable object versions or verified hashes.', 'Keep CloudFormation service roles narrowly scoped and separate template publication from stack execution.', 'Require change-set review for IAM and other high-impact resource types, with drift detection and out-of-band change alerts.'],
+    sources: ['rhinoCloudFormation','awsCloudFormationRole','awsCloudTrailInvestigation','awsIr']
+  },
+  {
+    id: 'athena-valid-role-data-access',
+    title: 'Valid analyst role queries sensitive data',
+    kicker: 'VALID SESSION -> ATHENA QUERY -> S3 RESULTS',
+    summary: 'A compromised or overprivileged analyst session uses Athena to query catalogued data and writes results to an allowed S3 location. The incident spans identity, query history, source objects, and the result bucket.',
+    confidence: 'Documented service behavior, not a service vulnerability; requires Athena execution plus catalog, source-data, result-bucket, and any KMS permissions',
+    mitre: ['T1078.004','T1530'],
+    services: ['iam','athena','s3','kms','cloudtrail'],
+    stages: [
+      {service:'iam',title:'An authorized-looking session is used',detail:'The actor enters through a role or user whose permissions allow the required Athena and data-plane operations.',signal:'Establish the session issuer, source identity, MFA state, source IP, user agent, access key ID, and normal owner of the role.'},
+      {service:'athena',title:'A query execution starts',detail:'StartQueryExecution selects a workgroup, catalog, database, and result configuration. CloudTrail records the API activity but omits the SQL query string.',signal:'Preserve queryExecutionId from CloudTrail and retrieve authorized query-history details through Athena; compare workgroup and output configuration with the baseline.'},
+      {service:'s3',title:'Source objects are read and results are written',detail:'The session and Athena execution rely on permitted source objects and an S3 output location; encryption can add KMS authorization requirements.',signal:'Use S3 data events, result-object metadata, version IDs, access logs where available, and KMS events to prove which data paths were used.'},
+      {service:'cloudtrail',title:'Identity and data evidence are joined',detail:'Control-plane records establish the query request while configured S3 and KMS data events help scope access and output.',signal:'Join by time, access key, session, Region, query execution, bucket, object key, and encryption context. Do not infer rows returned from StartQueryExecution alone.'}
+    ],
+    detect: ['Baseline Athena workgroups, principals, catalogs, databases, output buckets, and normal query times; alert on meaningful deviations.', 'Correlate StartQueryExecution with S3 and KMS data events and retain query history long enough for incident response.', 'Investigate output-location changes, cross-account result buckets, disabled workgroup enforcement, and unusually broad source reads.'],
+    contain: ['Revoke the affected session and restrict Athena, source-bucket, result-bucket, Glue catalog, and KMS permissions without destroying query evidence.', 'Preserve query history and result objects under evidence controls before removing unauthorized copies.', 'Scope exposed datasets and downstream access from the result bucket before rotating keys or restoring normal analyst access.'],
+    harden: ['Use enforced workgroup settings, dedicated result buckets, least-privilege catalog and object access, and KMS controls.', 'Separate sensitive datasets by role and account boundaries instead of relying only on query conventions.', 'Log required S3 and KMS data events, retain Athena history, and test joins between query, identity, and object evidence.'],
+    sources: ['awsAthenaTrail','awsAiData','awsCloudTrailInvestigation','awsIr']
+  },
+  {
+    id: 'kinesis-cross-account-stream-access',
+    title: 'Stream policy opens a cross-account reader',
+    kicker: 'POLICY CHANGE -> EXTERNAL PRINCIPAL -> STREAM READ',
+    summary: 'A principal with Kinesis policy authority grants another account access to a stream. When the external identity also has the required identity policy and encryption access, it can read records through the documented cross-account model.',
+    confidence: 'Documented service behavior, not a service vulnerability; requires resource-policy authority, an external identity policy, network/API reachability, and KMS access when applicable',
+    mitre: ['T1078.004','T1530'],
+    services: ['iam','kinesis','kms','cloudtrail'],
+    stages: [
+      {service:'iam',title:'Stream-policy authority is used',detail:'The initiating principal must be allowed to call PutResourcePolicy for the target stream or consumer.',signal:'Identify the caller, session issuer, source identity, source IP, user agent, Region, and prior use of this permission.'},
+      {service:'kinesis',title:'A cross-account grant is written',detail:'The resource policy names an external principal and allowed Kinesis actions. AWS documents that the external account must also grant its principal corresponding identity permissions.',signal:'Preserve the policy before and after, resource ARN, principal, actions, conditions, event record, and approved sharing inventory.'},
+      {service:'kms',title:'Encryption authorization completes the path',detail:'For a customer-managed encrypted stream, the external principal also needs the applicable KMS permissions and key-policy path.',signal:'Review key policy and grants, then correlate Decrypt or GenerateDataKey activity using the key ARN and encryption context. Do not assume policy change equals readable data.'},
+      {service:'cloudtrail',title:'Reads establish actual use',detail:'GetRecords or SubscribeToShard activity, when covered by the configured event selectors and service logging, distinguishes an unused grant from accessed records.',signal:'Validate selector coverage, then join policy changes and read calls by resource, external account, principal, access key, source IP, time, and consumer ARN.'}
+    ],
+    detect: ['Continuously inventory Kinesis resource policies and alert on new accounts, wildcard principals, widened actions, or removed conditions.', 'Correlate PutResourcePolicy with KMS policy or grant changes and subsequent external-principal read activity.', 'Verify CloudTrail coverage for the Kinesis operations under investigation; treat a missing event as inconclusive when selectors do not cover it.'],
+    contain: ['Preserve the stream policy, key policy, grants, consumer inventory, and event records before revoking the unapproved grant.', 'Revoke the modifying session and coordinate with the external account owner when a legitimate trust relationship may be affected.', 'Scope records available during the grant window and rotate only downstream secrets or credentials confirmed to be present.'],
+    harden: ['Limit PutResourcePolicy and KMS policy changes to controlled deployment roles with review.', 'Use exact external principals, minimal actions, resource constraints, and organization or account conditions where the design permits.', 'Alert on policy drift and test that external-access telemetry is present before relying on it for incident response.'],
+    sources: ['awsKinesisPolicy','awsKinesisTrail','awsCloudTrailInvestigation','awsIr']
+  },
+  {
+    id: 'opensearch-domain-policy-exposure',
+    title: 'Domain policy widens a reachable search surface',
+    kicker: 'DOMAIN CHANGE -> REACHABLE ENDPOINT -> INDEX ACCESS',
+    summary: 'A principal with OpenSearch domain administration rights broadens an access policy or endpoint authorization. Data becomes reachable only where network placement, domain policy, and fine-grained access control together permit it.',
+    confidence: 'Documented control interaction, not a service vulnerability; requires domain configuration authority and a reachable endpoint, and remains bounded by fine-grained access control when enabled',
+    mitre: ['T1078.004','T1213'],
+    services: ['iam','opensearch','vpc','cloudwatch','cloudtrail'],
+    stages: [
+      {service:'iam',title:'Domain administration is used',detail:'The actor must already be able to update domain configuration, change endpoint access, or authorize VPC endpoint access.',signal:'Establish the principal, session issuer, source identity, source IP, user agent, Region, and expected change path.'},
+      {service:'opensearch',title:'An access boundary is widened',detail:'UpdateDomainConfig can change a domain access policy and related security options; VPC endpoint APIs can authorize another AWS account to create a managed endpoint to the domain.',signal:'Preserve access policies, endpoint options, fine-grained security settings, authentication configuration, VPC endpoint authorizations, and configuration-change status.'},
+      {service:'vpc',title:'Network reachability determines exposure',detail:'A VPC domain remains subject to routing, security groups, endpoint placement, and name resolution; a broad resource policy alone does not make it internet reachable.',signal:'Capture VPC configuration, security-group changes, endpoint inventories, flow records where enabled, and the tested source-to-endpoint path.'},
+      {service:'cloudwatch',title:'Audit records show index-level activity',detail:'When OpenSearch audit logs were enabled and published, they can record authentication, authorization, REST, and index activity beyond CloudTrail control-plane events.',signal:'Preserve audit-log groups, resource policies, retention, delivery status, requester identity, indices, requests, and responses without assuming disabled logs were available.'},
+      {service:'cloudtrail',title:'Configuration events anchor the timeline',detail:'CloudTrail records OpenSearch Service configuration API calls and the actor that made them, while data-plane proof comes from audit and network evidence.',signal:'Correlate UpdateDomainConfig and VPC endpoint-access events with configuration completion, network evidence, audit records, and confirmed document access.'}
+    ],
+    detect: ['Diff domain access policies, endpoint options, fine-grained security, identity providers, and VPC endpoint authorizations against a reviewed baseline.', 'Correlate domain configuration changes with security-group, route, endpoint, and CloudWatch log-delivery changes.', 'Use audit logs to prove index access when enabled; configuration exposure without access evidence should be described as exposure, not confirmed collection.'],
+    contain: ['Preserve the domain configuration, policy versions, authorization state, CloudTrail records, audit logs, and network evidence before restoring boundaries.', 'Revoke the changing session and restrict endpoint reachability or policy access using the least disruptive verified control.', 'Scope indices, queries, writes, and returned documents before rotating credentials or rebuilding affected application state.'],
+    harden: ['Keep OpenSearch domains private where appropriate and make domain, network, and fine-grained access controls mutually restrictive.', 'Limit UpdateDomainConfig and VPC endpoint authorization to controlled roles with policy review and drift alerts.', 'Enable and retain appropriately scoped audit logs, protect their CloudWatch destination, and routinely validate end-to-end delivery.'],
+    sources: ['awsOpenSearchAccess','awsOpenSearchAudit','awsCloudTrailInvestigation','awsIr']
   }
 ];
 

@@ -1,6 +1,6 @@
 import { services as originalServices } from './data.js';
 
-export const reviewed = '9 September 2026';
+export const reviewed = '11 September 2026';
 const root = 'https://docs.aws.amazon.com/';
 const extra = (id, name, label, summary, doc) => ({ id, name, label, summary, doc });
 const allServices = [...originalServices,

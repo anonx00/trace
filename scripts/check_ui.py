@@ -33,6 +33,13 @@ with sync_playwright() as pw:
     assert not page.locator('.inspector').is_visible()
     page.locator('#focus-graph').click()
     assert page.locator('.inspector').is_visible()
+    page.get_by_role('tab',name='Hunt',exact=True).click()
+    expect(page.locator('.hunt-query code')).to_contain_text("eventSource = 's3.amazonaws.com'")
+    expect(page.locator('.hunt-events span')).to_have_count(8)
+    expect(page.locator('.hunt-sources a')).to_have_count(3)
+    page.screenshot(path=str(out/'s3-hunt.png'),full_page=True)
+    page.locator('.query-copy').click()
+    expect(page.locator('.query-copy')).to_have_text('Copied')
     page.get_by_role('tab',name='AWS docs',exact=True).click()
     assert page.locator('.topic-link').count()>10
     page.locator('.world-layer').evaluate('(el)=>Promise.all(el.getAnimations().map(a=>a.finished))')
@@ -88,7 +95,7 @@ with sync_playwright() as pw:
     assert page.locator('tbody tr').count()==40
     assert page.locator('.reference-grid a').count()>=10
     page.goto('http://127.0.0.1:4173/#/paths')
-    assert page.locator('.scenario-card').count()==13
+    assert page.locator('.scenario-card').count()==17
     page.locator('.scenario-card').first.click()
     page.wait_for_url('**/#/scenario/*')
     expect(page.locator('.trace-stage')).to_have_count(4)
@@ -99,6 +106,10 @@ with sync_playwright() as pw:
         expect(page.locator('.trace-stage')).to_have_count(4)
         assert page.locator('.scenario-sources a').count()>=3,scenario
         assert page.locator('.stage-service').count()==4,scenario
+    for scenario in ('cloudformation-template-role-escalation','athena-valid-role-data-access','kinesis-cross-account-stream-access','opensearch-domain-policy-exposure'):
+        page.goto('http://127.0.0.1:4173/#/scenario/'+scenario,wait_until='domcontentloaded')
+        assert page.locator('.trace-stage').count()>=4,scenario
+        assert page.locator('.scenario-sources a').count()>=4,scenario
     page.set_viewport_size({'width':390,'height':844})
     page.goto('http://127.0.0.1:4173/#/')
     assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')

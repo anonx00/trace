@@ -80,8 +80,14 @@ with sync_playwright() as p:
         if doc.get('status')!='ok':continue
         page.goto(URL+'#/service/'+doc['id'],wait_until='domcontentloaded')
         page.locator('.inspector').wait_for()
-        for tab in ['Intel','Evidence','Defense','AWS docs']:
+        for tab in ['Intel','Evidence','Hunt','Defense','AWS docs']:
             page.get_by_role('tab',name=tab,exact=True).click()
+            if tab=='Hunt':
+                expect(page.locator('.hunt-query')).to_have_count(1)
+                expect(page.locator('.hunt-query code')).to_contain_text('SELECT')
+                expect(page.locator('.hunt-query code')).to_contain_text('eventSource')
+                expect(page.locator('.hunt-coverage')).to_be_visible()
+                expect(page.locator('.hunt-sources a')).to_have_count(3)
             if tab=='Defense':
                 expect(page.locator('.field-command')).to_have_count(1)
                 expect(page.locator('.field-command code')).to_contain_text('aws ')
@@ -89,9 +95,9 @@ with sync_playwright() as p:
             clipped=page.locator('.mind-node-copy').evaluate_all("(els)=>els.filter(e=>e.scrollHeight>Number(e.parentElement.getAttribute('height'))+1).map(e=>e.innerText)")
             if clipped:overflow.append({'service':doc['id'],'tab':tab,'text':clipped})
     assert not overflow,overflow
-    print('All 40 services / four lenses: full graph text',flush=True)
+    print('All 40 services / five lenses: full graph text',flush=True)
 
-    routes=['#/','#/domain/data','#/service/s3','#/service/rds/topic/13','#/paths','#/scenario/web-to-role','#/scenario/appsync-api-key-persistence','#/scenario/lambda-edge-request-exfiltration','#/library','#/sources']
+    routes=['#/','#/domain/data','#/service/s3','#/service/rds/topic/13','#/paths','#/scenario/web-to-role','#/scenario/cloudformation-template-role-escalation','#/scenario/lambda-edge-request-exfiltration','#/library','#/sources']
     layout=[]
     for width in [1440,1024,768,390,320]:
         page.set_viewport_size({'width':width,'height':900})

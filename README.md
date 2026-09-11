@@ -8,10 +8,10 @@ An interactive map of AWS services and their security controls. Follow a connect
 
 ## Explore
 
-The map includes **40 services**, **41 documented relationships**, and **13 incident scenarios**.
+The map includes **40 services**, **41 documented relationships**, **40 service-specific CloudTrail Lake hunts**, and **17 incident scenarios**.
 
 - **Domains:** start with identity, workloads, data, networking, detection, response, supply chain, or investigation.
-- **Services:** select a node for security notes, logs, controls, and documentation. Select a connection to see why it exists.
+- **Services:** select a node for security notes, logs, a scoped hunt query, controls, and documentation. Select a connection to see why it exists.
 - **Stories:** step through a scenario and switch between threat context, evidence, and response.
 
 Ctrl/Cmd+K opens search. **Reading view** puts the notes first; **Focus graph** gives the map more room. Saved services stay in your browser.
@@ -19,6 +19,8 @@ Ctrl/Cmd+K opens search. **Reading view** puts the notes first; **Focus graph** 
 ## Sources
 
 AWS documentation supports the service relationships. Incident scenarios draw on MITRE ATT&CK, controlled AWS attack labs, AWS incident-response playbooks, and the research linked on the [Sources page](https://anonx00.github.io/trace/#/sources).
+
+Node hunts are editable CloudTrail Lake starting points. Replace the event-store and time placeholders, then confirm event-selector coverage before interpreting missing events.
 
 Capability links, scenario sequences, and navigation groupings have separate labels. TRACE describes possible relationships; it does not inspect your AWS account or show live incidents.
 

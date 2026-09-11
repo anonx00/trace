@@ -24,4 +24,7 @@ for(const [id,source] of Object.entries(researchSources)){
   assert.ok(source.label&&source.publisher&&source.kind,id+': incomplete source metadata');
 }
 
+const coveredServices=new Set(scenarios.flatMap(scenario=>scenario.services));
+assert.deepEqual([...coveredServices].sort(),[...serviceIds].sort(),'Every service must appear in at least one sourced scenario');
+
 console.log('Checked '+scenarios.length+' sourced attack and response scenarios.');
