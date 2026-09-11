@@ -179,18 +179,126 @@ export const researchSources = {
     publisher: 'Amazon Web Services',
     url: 'https://docs.aws.amazon.com/opensearch-service/latest/developerguide/audit-logs.html',
     kind: 'OFFICIAL'
+  },
+  offensiveCloud: {
+    label: 'AWS reconnaissance, privilege-escalation, persistence, execution, and exfiltration technique catalog',
+    publisher: 'OffensiveCloud / lutzenfried',
+    url: 'https://github.com/lutzenfried/OffensiveCloud/blob/f91d349debbd6fc697962c42c6922c8e14a4967e/AWS/AWS%20Pentest%20Cloud%20-%20Resources.md',
+    kind: 'COMMUNITY RESEARCH'
+  },
+  awesomeAwsSecurity: {
+    label: 'Curated directory of AWS security research, labs, tools, training, and incident references',
+    publisher: 'Awesome AWS Security / jassics',
+    url: 'https://github.com/jassics/awesome-aws-security/blob/b613b720f0c2d68636e9f3bfc0e4b295a8848241/README.md',
+    kind: 'CURATED INDEX'
+  },
+  awsDetectionLab: {
+    label: 'Eight native CloudWatch Logs metric-filter detections with telemetry, response, false-positive, and tuning notes',
+    publisher: 'AWS Detection Engineering Lab / Jan Paul Sanchez Sierra',
+    url: 'https://github.com/JpsBookOfLife/aws-detection-engineering-lab/tree/4a985c0bb78862748591387b1eaebbd3568df89f/detections',
+    kind: 'DETECTION LAB'
+  },
+  awsDetectionRoot: {
+    label: 'DET-001 — Root account usage metric filter',
+    publisher: 'AWS Detection Engineering Lab / Jan Paul Sanchez Sierra',
+    url: 'https://github.com/JpsBookOfLife/aws-detection-engineering-lab/blob/4a985c0bb78862748591387b1eaebbd3568df89f/detections/DET-001-root-account-usage.yml',
+    kind: 'NATIVE DETECTION'
+  },
+  awsDetectionCloudTrail: {
+    label: 'DET-002 — CloudTrail logging disabled, deleted, or reconfigured',
+    publisher: 'AWS Detection Engineering Lab / Jan Paul Sanchez Sierra',
+    url: 'https://github.com/JpsBookOfLife/aws-detection-engineering-lab/blob/4a985c0bb78862748591387b1eaebbd3568df89f/detections/DET-002-cloudtrail-tampering.yml',
+    kind: 'NATIVE DETECTION'
+  },
+  awsDetectionNoMfa: {
+    label: 'DET-003 — Successful IAM-user console login without MFA',
+    publisher: 'AWS Detection Engineering Lab / Jan Paul Sanchez Sierra',
+    url: 'https://github.com/JpsBookOfLife/aws-detection-engineering-lab/blob/4a985c0bb78862748591387b1eaebbd3568df89f/detections/DET-003-console-login-without-mfa.yml',
+    kind: 'NATIVE DETECTION'
+  },
+  awsDetectionConsoleBrute: {
+    label: 'DET-004 — Repeated failed AWS Console authentication',
+    publisher: 'AWS Detection Engineering Lab / Jan Paul Sanchez Sierra',
+    url: 'https://github.com/JpsBookOfLife/aws-detection-engineering-lab/blob/4a985c0bb78862748591387b1eaebbd3568df89f/detections/DET-004-console-brute-force.yml',
+    kind: 'NATIVE DETECTION'
+  },
+  awsDetectionS3Public: {
+    label: 'DET-005 — S3 public-exposure configuration changes',
+    publisher: 'AWS Detection Engineering Lab / Jan Paul Sanchez Sierra',
+    url: 'https://github.com/JpsBookOfLife/aws-detection-engineering-lab/blob/4a985c0bb78862748591387b1eaebbd3568df89f/detections/DET-005-s3-public-exposure.yml',
+    kind: 'NATIVE DETECTION'
+  },
+  awsDetectionIamPolicy: {
+    label: 'DET-006 — IAM policy attachment, inline policy, policy version, and role-trust changes',
+    publisher: 'AWS Detection Engineering Lab / Jan Paul Sanchez Sierra',
+    url: 'https://github.com/JpsBookOfLife/aws-detection-engineering-lab/blob/4a985c0bb78862748591387b1eaebbd3568df89f/detections/DET-006-iam-privilege-escalation.yml',
+    kind: 'NATIVE DETECTION'
+  },
+  awsDetectionSecurityGroup: {
+    label: 'DET-007 — IPv4 security-group ingress opened to 0.0.0.0/0',
+    publisher: 'AWS Detection Engineering Lab / Jan Paul Sanchez Sierra',
+    url: 'https://github.com/JpsBookOfLife/aws-detection-engineering-lab/blob/4a985c0bb78862748591387b1eaebbd3568df89f/detections/DET-007-security-group-open-to-world.yml',
+    kind: 'NATIVE DETECTION'
+  },
+  awsDetectionUnusedRegion: {
+    label: 'DET-008 — Mutating API activity outside an approved Region allowlist',
+    publisher: 'AWS Detection Engineering Lab / Jan Paul Sanchez Sierra',
+    url: 'https://github.com/JpsBookOfLife/aws-detection-engineering-lab/blob/4a985c0bb78862748591387b1eaebbd3568df89f/detections/DET-008-access-key-new-region.yml',
+    kind: 'NATIVE DETECTION'
+  },
+  rhinoEcsTask: {
+    label: 'Weaponizing ECS task definitions to reach credentials from running containers',
+    publisher: 'Rhino Security Labs',
+    url: 'https://rhinosecuritylabs.com/aws/weaponizing-ecs-task-definitions-steal-credentials-running-containers/',
+    kind: 'RESEARCH'
+  },
+  rhinoEbsSnapshots: {
+    label: 'Downloading and examining EBS snapshots for exposed data',
+    publisher: 'Rhino Security Labs',
+    url: 'https://rhinosecuritylabs.com/aws/exploring-aws-ebs-snapshots/',
+    kind: 'RESEARCH'
+  },
+  bishopIamVulnerable: {
+    label: 'Vulnerable-by-design IAM privilege-escalation paths for isolated labs',
+    publisher: 'Bishop Fox / iam-vulnerable',
+    url: 'https://github.com/BishopFox/iam-vulnerable',
+    kind: 'SAFE LAB'
+  },
+  hackingCloudS3Replication: {
+    label: 'S3 bucket-replication exfiltration prerequisites and attack path',
+    publisher: 'Hacking the Cloud',
+    url: 'https://hackingthe.cloud/aws/exploitation/s3-bucket-replication-exfiltration/',
+    kind: 'COMMUNITY RESEARCH'
+  },
+  awsSsmRunCommand: {
+    label: 'Run Command behavior, authorization, targeting, and command history',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html',
+    kind: 'OFFICIAL'
+  },
+  awsEbsSnapshotPermissions: {
+    label: 'EBS snapshot sharing, public access, and encryption restrictions',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/ebs/latest/userguide/ebs-modifying-snapshot-permissions.html',
+    kind: 'OFFICIAL'
+  },
+  awsS3Replication: {
+    label: 'Cross-account S3 replication requirements and destination ownership',
+    publisher: 'Amazon Web Services',
+    url: 'https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-walkthrough-2.html',
+    kind: 'OFFICIAL'
   }
 };
 
 const sourceGroups = {
-  identity: ['vault','hacktricks','pacu','rhinoIam','awsAiCredential','awsAiSts','mitre','prowler','awsIr'],
-  runtime: ['vault','hacktricks','pacu','stratus','cloudgoat','awsAiEc2','prowler','awsIr'],
-  data: ['vault','hacktricks','pacu','stratus','cloudgoat','awsAiData','awsAiRansomware','awsAthenaTrail','awsKinesisPolicy','awsOpenSearchAccess','prowler','awsCloudTrailInvestigation','awsIr'],
-  edge: ['vault','hacktricks','stratus','awsAttackAlb','awsAttackAppSyncKey','awsAttackAppSyncResolver','awsAttackCloudFrontFunction','awsAttackCloudFrontLambda','awsAiApi','prowler','awsCorrelation','awsIr'],
-  detection: ['hacktricks','stratus','prowler','awsCloudTrailInvestigation','awsCorrelation','awsIr'],
-  response: ['pacu','stratus','awsAutomation','awsIr'],
-  supply: ['vault','hacktricks','cloudgoat','rhinoCloudFormation','awsCloudFormationRole','prowler','mitre','awsIr'],
-  investigation: ['stratus','awsCloudTrailInvestigation','awsCorrelation','mitre','awsIr']
+  identity: ['vault','hacktricks','offensiveCloud','pacu','rhinoIam','bishopIamVulnerable','awsDetectionRoot','awsDetectionNoMfa','awsDetectionConsoleBrute','awsDetectionIamPolicy','awsDetectionUnusedRegion','awsAiCredential','awsAiSts','mitre','prowler','awesomeAwsSecurity','awsIr'],
+  runtime: ['vault','hacktricks','offensiveCloud','pacu','stratus','cloudgoat','rhinoEcsTask','rhinoEbsSnapshots','awsSsmRunCommand','awsEbsSnapshotPermissions','awsDetectionSecurityGroup','awsAiEc2','prowler','awesomeAwsSecurity','awsIr'],
+  data: ['vault','hacktricks','offensiveCloud','pacu','stratus','cloudgoat','hackingCloudS3Replication','awsS3Replication','awsDetectionS3Public','awsAiData','awsAiRansomware','awsAthenaTrail','awsKinesisPolicy','awsOpenSearchAccess','prowler','awsCloudTrailInvestigation','awesomeAwsSecurity','awsIr'],
+  edge: ['vault','hacktricks','offensiveCloud','stratus','awsAttackAlb','awsAttackAppSyncKey','awsAttackAppSyncResolver','awsAttackCloudFrontFunction','awsAttackCloudFrontLambda','awsDetectionSecurityGroup','awsAiApi','prowler','awsCorrelation','awesomeAwsSecurity','awsIr'],
+  detection: ['hacktricks','stratus','awsDetectionLab','awsDetectionRoot','awsDetectionCloudTrail','awsDetectionNoMfa','awsDetectionConsoleBrute','awsDetectionS3Public','awsDetectionIamPolicy','awsDetectionSecurityGroup','awsDetectionUnusedRegion','prowler','awsCloudTrailInvestigation','awsCorrelation','awesomeAwsSecurity','awsIr'],
+  response: ['pacu','stratus','offensiveCloud','awsSsmRunCommand','awsAutomation','awesomeAwsSecurity','awsIr'],
+  supply: ['vault','hacktricks','offensiveCloud','cloudgoat','rhinoEcsTask','bishopIamVulnerable','rhinoCloudFormation','awsCloudFormationRole','prowler','mitre','awesomeAwsSecurity','awsIr'],
+  investigation: ['stratus','awsDetectionLab','awsDetectionCloudTrail','awsDetectionUnusedRegion','awsCloudTrailInvestigation','awsCorrelation','mitre','awesomeAwsSecurity','awsIr']
 };
 
 export const researchForDomain = domainId =>
@@ -214,7 +322,7 @@ export const scenarios = [
     detect: ['Correlate the same role session across source IPs and services.', 'Look for first-time API calls, enumeration followed by data access, and access outside the workload baseline.', 'Confirm whether S3 data events and secret retrieval events were enabled before the incident.'],
     contain: ['Block the vulnerable request path and isolate the workload.', 'Replace or remove the role permissions and invalidate dependent secrets; temporary credentials expire but exposed downstream credentials may not.', 'Preserve CloudTrail, application, WAF, VPC, S3, and host evidence before rebuilding.'],
     harden: ['Require IMDSv2, reduce metadata hop limit, and block metadata access where the workload does not need it.', 'Use narrow workload roles and explicit egress controls.', 'Validate URLs after every resolution and redirect, and deny private, link-local, and internal destinations.'],
-    sources: ['vault','hacktricks','stratus','cloudgoat','mitre','awsAiSts','awsAiEc2','awsAiData','awsCloudTrailInvestigation','awsIr']
+    sources: ['vault','hacktricks','offensiveCloud','stratus','cloudgoat','mitre','awsAiSts','awsAiEc2','awsAiData','awsCloudTrailInvestigation','awsIr']
   },
   {
     id: 'role-trust-persistence',
@@ -233,7 +341,7 @@ export const scenarios = [
     detect: ['Baseline which principals normally change IAM and role trust.', 'Find policy changes followed by AssumeRole from a new source or session name.', 'Search every enabled Region and linked account; identity activity is not safely analyzed in a single-account view.'],
     contain: ['Disable the exposed principal and revoke active sessions where supported.', 'Remove every persistence artifact created during the compromised interval.', 'Quarantine affected roles with explicit denies while preserving policies and CloudTrail evidence.'],
     harden: ['Prefer workforce federation and temporary credentials over user access keys.', 'Use source identity, external IDs where appropriate, and restrictive trust conditions.', 'Protect IAM and Organizations changes with alerting, approval, and break-glass procedures.'],
-    sources: ['vault','pacu','rhinoIam','mitre','awsAiCredential','awsAiSts','awsCloudTrailInvestigation','awsIr']
+    sources: ['vault','offensiveCloud','pacu','rhinoIam','bishopIamVulnerable','awsDetectionIamPolicy','mitre','awsAiCredential','awsAiSts','awsCloudTrailInvestigation','awsIr']
   },
   {
     id: 'lambda-shadow-version',
@@ -252,7 +360,7 @@ export const scenarios = [
     detect: ['Diff function code hashes, layers, aliases, versions, resource policy, environment, and VPC configuration.', 'Link CloudTrail update events to the actor and deployment pipeline.', 'Inspect low-volume versions and qualified invocations, not only the primary alias.'],
     contain: ['Disable untrusted invocation paths and pin traffic to a known-good version.', 'Replace exposed execution-role and application credentials.', 'Preserve the function package, layers, configuration, logs, and deployment artifacts.'],
     harden: ['Use code signing and controlled deployment roles.', 'Deny direct production updates outside the release pipeline.', 'Alert on AddPermission, UpdateFunctionCode, UpdateFunctionConfiguration, PublishVersion, and alias changes.'],
-    sources: ['hacktricks','pacu','stratus','cloudgoat','awsIr']
+    sources: ['hacktricks','offensiveCloud','pacu','stratus','cloudgoat','awsIr']
   },
   {
     id: 'image-to-runtime',
@@ -271,7 +379,7 @@ export const scenarios = [
     detect: ['Resolve every deployed tag to an immutable digest and trusted build.', 'Correlate image push, task-definition or deployment change, and first runtime activity.', 'Look for workload roles calling services never used by the previous image.'],
     contain: ['Stop the affected rollout and isolate running tasks or pods.', 'Revoke the affected workload identities and rotate reachable secrets.', 'Retain the image, SBOM, signature, pipeline logs, task definitions, and runtime evidence.'],
     harden: ['Use immutable tags or deploy by digest and verify signatures.', 'Separate build, push, deploy, task, and node permissions.', 'Apply image scanning, admission controls, minimal roles, and runtime monitoring.'],
-    sources: ['vault','hacktricks','stratus','cloudgoat','mitre','awsCorrelation','awsIr']
+    sources: ['vault','hacktricks','offensiveCloud','rhinoEcsTask','stratus','cloudgoat','mitre','awsCorrelation','awsIr']
   },
   {
     id: 'trail-impairment',
@@ -290,7 +398,7 @@ export const scenarios = [
     detect: ['Alert from a separate security account on every logging-control change.', 'Continuously compare expected and actual trail, selector, bucket, KMS, Config, and subscription state.', 'Use log validation and independent signals such as GuardDuty findings and service-native logs.'],
     contain: ['Restore collection through a protected administrative path.', 'Snapshot current policies and configurations before repair.', 'Identify the exact blind interval and reconstruct it from independent evidence sources.'],
     harden: ['Centralize organization trails in a dedicated log archive account.', 'Use immutable retention controls and tightly separated KMS and S3 administration.', 'Test alert delivery when collection or downstream routing is deliberately interrupted in a sandbox.'],
-    sources: ['hacktricks','stratus','awsCloudTrailInvestigation','awsCorrelation','awsIr']
+    sources: ['hacktricks','offensiveCloud','stratus','awsDetectionCloudTrail','awsCloudTrailInvestigation','awsCorrelation','awsIr']
   },
   {
     id: 'dns-origin-bypass',
@@ -309,7 +417,7 @@ export const scenarios = [
     detect: ['Join edge request IDs, origin logs, and flow records to identify origin-only traffic.', 'Inventory every public listener, API stage, distribution origin, DNS record, and certificate name.', 'Alert on origin, listener, security-group, distribution, and resource-policy changes.'],
     contain: ['Restrict the origin to approved edge identities or network paths.', 'Block direct traffic while preserving representative requests and configuration state.', 'Rotate any application credentials exposed through the bypassed route.'],
     harden: ['Use CloudFront Origin Access Control for supported S3 origins.', 'Apply restrictive origin security groups, resource policies, or private integrations.', 'Test the architecture from the Internet using the origin hostname and address, not only the public application URL.'],
-    sources: ['vault','hacktricks','stratus','prowler','awsIr']
+    sources: ['vault','hacktricks','offensiveCloud','stratus','awsDetectionSecurityGroup','prowler','awsIr']
   },
   {
     id: 'recovery-erasure',
@@ -328,7 +436,7 @@ export const scenarios = [
     detect: ['Alert on backup, vault, deletion, retention, replication, and key-state changes.', 'Monitor destructive actions by principals that do not normally operate recovery services.', 'Continuously prove that protected copies exist in another account and can be restored.'],
     contain: ['Apply emergency denies to destructive APIs and isolate compromised administrators.', 'Cancel scheduled key deletion and preserve remaining versions, snapshots, and recovery points.', 'Prioritize business-defined critical data and perform a clean-room restore test.'],
     harden: ['Use logically isolated vaults, Vault Lock, Object Lock, and separate recovery accounts.', 'Separate workload, backup, and key administrators.', 'Build recovery objectives around tested restores, not successful backup-job status alone.'],
-    sources: ['stratus','prowler','mitre','awsAiRansomware','awsAiData','awsIr']
+    sources: ['offensiveCloud','stratus','awsDetectionS3Public','prowler','mitre','awsAiRansomware','awsAiData','awsIr']
   },
   {
     id: 'response-plane-hijack',
@@ -347,7 +455,7 @@ export const scenarios = [
     detect: ['Monitor changes to rules, targets, bus policies, state machines, documents, and response roles.', 'Require every action to carry the source finding and workflow execution identifiers.', 'Alert when response identities act outside approved resources or without a current finding.'],
     contain: ['Disable the affected automation path without deleting its execution history.', 'Revoke the response role session and isolate unsafe documents or targets.', 'Manually validate queued and in-flight actions before resuming.'],
     harden: ['Use narrow roles for each response step and explicit resource allowlists.', 'Require approval for destructive actions and make workflows idempotent.', 'Use dead-letter queues, versioned runbooks, complete logging, and routine sandbox tests.'],
-    sources: ['pacu','stratus','awsAutomation','awsIr']
+    sources: ['offensiveCloud','pacu','stratus','awsSsmRunCommand','awsAutomation','awsIr']
   },
   {
     id: 'alb-rule-auth-bypass',
@@ -462,7 +570,7 @@ export const scenarios = [
     detect: ['Alert on stack operations using sensitive service roles and review the submitted template or change set before execution.', 'Version and integrity-check template artifacts, then correlate S3 object writes with CreateChangeSet, UpdateStack, and ExecuteChangeSet.', 'Hunt for IAM resources created through CloudFormation and confirm that every resulting permission matches reviewed infrastructure code.'],
     contain: ['Preserve the template versions, change sets, stack events, role policies, and CloudTrail records before changing resources.', 'Revoke the template-writer and stack-operator sessions, then block further stack updates through the affected role while impact is scoped.', 'Remove unauthorized IAM access through a reviewed stack correction or controlled response procedure; account for dependencies before deleting resources.'],
     harden: ['Store templates in versioned, write-restricted artifact locations and deploy immutable object versions or verified hashes.', 'Keep CloudFormation service roles narrowly scoped and separate template publication from stack execution.', 'Require change-set review for IAM and other high-impact resource types, with drift detection and out-of-band change alerts.'],
-    sources: ['rhinoCloudFormation','awsCloudFormationRole','awsCloudTrailInvestigation','awsIr']
+    sources: ['offensiveCloud','bishopIamVulnerable','rhinoCloudFormation','awsCloudFormationRole','awsCloudTrailInvestigation','awsIr']
   },
   {
     id: 'athena-valid-role-data-access',
@@ -521,6 +629,66 @@ export const scenarios = [
     contain: ['Preserve the domain configuration, policy versions, authorization state, CloudTrail records, audit logs, and network evidence before restoring boundaries.', 'Revoke the changing session and restrict endpoint reachability or policy access using the least disruptive verified control.', 'Scope indices, queries, writes, and returned documents before rotating credentials or rebuilding affected application state.'],
     harden: ['Keep OpenSearch domains private where appropriate and make domain, network, and fine-grained access controls mutually restrictive.', 'Limit UpdateDomainConfig and VPC endpoint authorization to controlled roles with policy review and drift alerts.', 'Enable and retain appropriately scoped audit logs, protect their CloudWatch destination, and routinely validate end-to-end delivery.'],
     sources: ['awsOpenSearchAccess','awsOpenSearchAudit','awsCloudTrailInvestigation','awsIr']
+  },
+  {
+    id: 'ssm-run-command-host-execution',
+    title: 'Run Command turns cloud authority into host execution',
+    kicker: 'VALID SESSION -> MANAGEMENT COMMAND -> HOST EXECUTION',
+    summary: 'A principal allowed to use Systems Manager Run Command selects a managed EC2 node and an approved command document. The action crosses from AWS control-plane authority into the operating-system context of SSM Agent. The document, target, output settings, and host evidence determine impact.',
+    confidence: 'Documented Systems Manager behavior and a cited community technique; requires an online managed node plus permission for SendCommand, the selected document, and the target',
+    mitre: ['T1078.004','T1651','T1059'],
+    services: ['iam','systemsmanager','ec2','cloudwatch','s3','cloudtrail'],
+    stages: [
+      {service:'iam',title:'A session has command authority',detail:'The initiating identity must be allowed to call SendCommand against both the selected Systems Manager document and the managed-node targets. Pass-through permissions, tag conditions, and document restrictions determine the actual boundary.',signal:'Establish the caller ARN, session issuer, source identity, MFA state, source IP, user agent, policies, permission boundaries, and target and document conditions.'},
+      {service:'systemsmanager',title:'Run Command dispatches a document',detail:'SendCommand identifies a document, document version, targets or instance IDs, parameters, concurrency and error controls, and optional output destinations. A successful API call means the request was accepted, not that every target executed it.',signal:'Preserve the command ID, document name and version, target selectors, requested parameters where recorded, timeout, concurrency, error threshold, notification settings, and invocation status per node.'},
+      {service:'ec2',title:'SSM Agent processes the command on the node',detail:'An online managed node receives the document through SSM Agent and runs the applicable plugin in the agent’s configured operating-system context. Host configuration and the document decide which local actions are possible.',signal:'Collect SSM Agent logs, process creation, shell or PowerShell history where available, EDR events, file changes, network activity, logged-on users, and the node’s instance-profile and registration state.'},
+      {service:'cloudwatch',title:'Configured output becomes response evidence',detail:'Run Command can stream command output to CloudWatch Logs or write output to S3 when those options were configured and their delivery permissions worked. Neither destination is automatic evidence for every command.',signal:'Verify the exact CloudWatch log group and S3 output settings, delivery status, retention and bucket versions; reconcile them with invocation output and host telemetry rather than assuming output was complete.'},
+      {service:'cloudtrail',title:'Control-plane events anchor the sequence',detail:'CloudTrail records Systems Manager API activity such as SendCommand and follow-on administrative actions. Command execution and host impact still require Systems Manager and endpoint evidence.',signal:'Join the SendCommand event to command ID, caller session, document, targets, Region, invocation history, host timeline, output objects or log streams, and any downstream AWS API activity.'}
+    ],
+    detect: ['Alert when SendCommand uses an unexpected principal, document, document version, target set, Region, source network, or time window.', 'Correlate SendCommand with command invocation status, CloudWatch or S3 delivery, and process and network telemetry on each selected node.', 'Hunt for commands against sensitive fleets, broad tag targets, public documents, unusual concurrency, disabled output, or subsequent use of the node’s instance role.'],
+    contain: ['Preserve command history, CloudTrail, SSM Agent logs, output destinations, and endpoint telemetry before terminating active commands or isolating nodes.', 'Revoke the initiating session and restrict SendCommand, document use, and target access while preserving authorized fleet-management paths.', 'Isolate confirmed affected nodes, scope local changes and downstream AWS activity, and rebuild or restore through the approved recovery process when integrity cannot be established.'],
+    harden: ['Allow only approved documents and narrow node targets with explicit resource and tag conditions; separate document authors from command operators.', 'Protect and retain CloudTrail, command history, SSM Agent logs, and configured CloudWatch or S3 output in a security-owned destination.', 'Use private connectivity where appropriate, minimize managed-node roles, monitor association and document changes, and routinely test command attribution end to end.'],
+    sources: ['offensiveCloud','awsSsmRunCommand','awsCloudTrailInvestigation','awsIr']
+  },
+  {
+    id: 'ebs-snapshot-cross-account-exposure',
+    title: 'Snapshot permission becomes an offline data path',
+    kicker: 'SNAPSHOT AUTHORITY -> EXTERNAL SHARE -> OFFLINE ACCESS',
+    summary: 'A principal changes an EBS snapshot’s createVolumePermission so another account—or, for an unencrypted snapshot, the public—can use it. The recipient can create a volume or copy the snapshot and inspect data without reaching the original instance.',
+    confidence: 'Documented EBS sharing behavior and cited research; requires snapshot-modification authority, and encrypted snapshots additionally require a customer-managed KMS key shared with the recipient',
+    mitre: ['T1078.004','T1537'],
+    services: ['iam','ec2','kms','cloudtrail'],
+    stages: [
+      {service:'iam',title:'Snapshot-sharing authority is used',detail:'The initiating principal must be able to change the snapshot attribute. Effective IAM policy, organization controls, snapshot ownership, and Block Public Access for EBS snapshots constrain the request.',signal:'Identify the caller session, source, Region, affected snapshot owner, effective policies, organization guardrails, and whether the change followed an approved backup or migration workflow.'},
+      {service:'ec2',title:'Create-volume permission is widened',detail:'ModifySnapshotAttribute can grant selected AWS accounts permission to use a private snapshot. An unencrypted snapshot can also be made public when account and Regional controls allow it; encrypted snapshots cannot be public.',signal:'Preserve the before-and-after createVolumePermission, snapshot ID, owner, description, tags, source volume and instance, encryption flag, key ARN, and the exact CloudTrail request.'},
+      {service:'kms',title:'Encryption either blocks or completes sharing',detail:'A snapshot encrypted with the default AWS managed key cannot be shared. A snapshot using a customer-managed key requires a separate valid KMS authorization path for the recipient; snapshot permission alone does not make it usable.',signal:'Capture the key policy, grants, aliases, enabled state, recipient principal, encryption context, and KMS events. Record a failed key path as a constraint, not as proof that no sharing was attempted.'},
+      {service:'ec2',title:'The recipient creates an offline copy',detail:'An authorized recipient can copy the shared snapshot or create a volume from it, attach that volume to an instance it controls, and inspect the filesystem independently of the source workload.',signal:'Correlate CopySnapshot, CreateVolume and AttachVolume activity where visible, recipient account, copied snapshot or volume IDs, tags, timing, and any sanctioned migration record.'},
+      {service:'cloudtrail',title:'Permission and copy events form the timeline',detail:'EC2 management events anchor the sharing and local resource operations. Cross-account visibility may be incomplete unless logs from both accounts are available.',signal:'Join the permission change, snapshot copy or volume creation, KMS activity, and reversal by snapshot ID, owner, recipient account, key ARN, access key, source IP, Region, and time.'}
+    ],
+    detect: ['Alert on ModifySnapshotAttribute that adds an unfamiliar account or the all group, and independently inventory the resulting effective sharing state.', 'Correlate snapshot sharing with KMS key-policy or grant changes and subsequent CopySnapshot, CreateVolume, or AttachVolume activity.', 'Prioritize snapshots tied to sensitive systems, directories, databases, identity stores, or secrets; permission change alone does not prove the recipient read data.'],
+    contain: ['Preserve snapshot attributes, CloudTrail, key configuration, and related resource identifiers before removing unauthorized permissions.', 'Revoke the initiating session, remove unapproved account or public access, and constrain the KMS key without disrupting legitimate encrypted workloads.', 'Coordinate with the recipient account owner and data owners to determine whether a copy or volume was created and which data requires downstream response.'],
+    harden: ['Enable Block Public Access for EBS snapshots in every governed Region and continuously inventory cross-account snapshot permissions.', 'Restrict ModifySnapshotAttribute and KMS policy or grant administration to reviewed backup and migration roles.', 'Use customer-managed keys with narrow policies for approved sharing, tag snapshot ownership and sensitivity, and alert on permission drift.'],
+    sources: ['offensiveCloud','rhinoEbsSnapshots','awsEbsSnapshotPermissions','awsCloudTrailInvestigation','awsIr']
+  },
+  {
+    id: 's3-replication-cross-account-exfiltration',
+    title: 'Replication configuration becomes an exfiltration route',
+    kicker: 'CONFIGURATION CHANGE -> SERVICE ROLE -> CROSS-ACCOUNT COPY',
+    summary: 'A principal able to configure S3 replication and pass a suitable role points eligible objects at a destination bucket in another account. S3 then performs asynchronous copies through the configured role, with additional KMS permissions required for SSE-KMS objects.',
+    confidence: 'Documented cross-account replication behavior and a cited community attack path; requires PutReplicationConfiguration, PassRole, a usable replication role, destination authorization, versioning, and any necessary KMS permissions',
+    mitre: ['T1078.004','T1537','T1530'],
+    services: ['iam','s3','kms','cloudtrail'],
+    stages: [
+      {service:'iam',title:'Configuration and role permissions combine',detail:'The actor needs authority to set the replication configuration and pass a role that S3 can assume. The role trust and policies, destination bucket policy, and organization controls must together permit the copy path.',signal:'Identify the caller session, iam:PassRole decision, replication-role ARN, role trust, policy versions, destination owner, source IP, Region, and approved data-movement design.'},
+      {service:'s3',title:'The bucket gains a replication rule',detail:'PutBucketReplication writes a rule containing status, priority, filters, destination, storage class and optional ownership, delete-marker, metrics, and encryption settings. Source and destination buckets must be versioning-enabled.',signal:'Preserve the full replication configuration before and after, bucket versioning, rule IDs, destination ARN and account, filters, ownership settings, role ARN, and the CloudTrail management event.'},
+      {service:'kms',title:'SSE-KMS objects require another authorization path',detail:'Replicating objects encrypted with AWS KMS requires replication configuration for encrypted objects plus permission to use the source and destination customer-managed keys. A replication rule without that path may exist while encrypted copies fail.',signal:'Capture key ARNs, policies, grants, encryption configuration, replication failure metrics, and KMS events; distinguish unencrypted, SSE-S3, and SSE-KMS object populations.'},
+      {service:'s3',title:'Eligible object versions reach the destination',detail:'S3 asynchronously replicates new eligible object versions under the configured rule. Existing objects are not copied by ordinary live replication unless they are re-copied or a separate S3 Batch Replication job is used.',signal:'Use destination object metadata and versions, replication status, source inventory, replication metrics, bucket access evidence where enabled, and destination-account logs to establish what actually moved.'},
+      {service:'cloudtrail',title:'Configuration and data evidence are correlated',detail:'CloudTrail management events establish who changed replication. Object and destination evidence, rather than configuration alone, is required to claim successful exfiltration.',signal:'Join PutBucketReplication, role and key changes, source object versions, replication status, destination objects and later reads by bucket, key, version, role session, destination account, Region, and time.'}
+    ],
+    detect: ['Alert on new or changed replication destinations, roles, filters, ownership settings, RTC or metrics configuration, and KMS key paths—especially external accounts.', 'Continuously diff replication configurations and destination bucket policies, then correlate changes with replication bytes, failed operations, destination versions, and reads.', 'Separate ordinary live replication from S3 Batch Replication and from manual copies; prove the affected object versions before declaring exfiltration.'],
+    contain: ['Preserve both bucket configurations, role and key policies, CloudTrail events, inventories, metrics, and destination evidence before disabling an unauthorized rule.', 'Revoke the modifying session and prevent further role assumption or destination writes while coordinating with owners of legitimate replication workflows.', 'Scope object versions already copied and downstream reads in the destination account; removing the rule does not delete replicas that already exist.'],
+    harden: ['Restrict PutReplicationConfiguration and iam:PassRole to reviewed deployment roles and approved replication-role ARNs.', 'Constrain destination accounts and buckets with organization-aware policy conditions where the design permits, and review KMS policies separately.', 'Enable configuration drift alerts, versioning, protected evidence logs, replication metrics for sensitive buckets, and a maintained inventory of approved data flows.'],
+    sources: ['offensiveCloud','hackingCloudS3Replication','awsS3Replication','awsAiData','awsCloudTrailInvestigation','awsIr']
   }
 ];
 

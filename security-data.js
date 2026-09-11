@@ -5,8 +5,8 @@ const incidentResponse = 'https://docs.aws.amazon.com/security-ir/latest/usergui
 export const securityProfiles = {
   iam: {
     boundary: 'Controls who can authenticate, which actions they can perform, and which resources those actions can reach.',
-    threats: ['Stolen or exposed long-term access keys', 'Overly broad identity and resource policies', 'Role trust policies that admit unintended principals'],
-    evidence: ['CloudTrail sign-in and IAM API activity', 'Credential reports and access-key age', 'IAM Access Analyzer findings and effective policy paths'],
+    threats: ['Stolen access keys or single-factor console credentials used outside their owner’s baseline', 'CreateAccessKey, CreateLoginProfile, AddUserToGroup, policy attachment, inline-policy, or policy-version actions that widen an existing identity', 'UpdateAssumeRolePolicy or other trust changes that admit an external principal or create durable role access', 'iam:PassRole combined with a workload-creation path that transfers a more privileged service role to attacker-controlled code'],
+    evidence: ['CloudTrail sign-in, credential, policy, trust, group-membership, and PassRole-dependent API activity', 'Credential reports, access-key age and last-used data, console-login MFA context, and identity ownership', 'IAM Access Analyzer findings, policy and trust versions, permission boundaries, organization controls, and the effective policy path'],
     defenses: ['Prefer federation and temporary credentials', 'Require phishing-resistant MFA for privileged access', 'Continuously reduce unused permissions and credentials'],
     responder: 'Which principal and session made the request, and which policy statement allowed it?',
     source: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html'
@@ -54,15 +54,15 @@ export const securityProfiles = {
 
   ec2: {
     boundary: 'Combines operating-system exposure, network reachability, instance metadata, images, and instance-role credentials.',
-    threats: ['Internet-exposed service or vulnerable software', 'Instance-role credential access through metadata', 'Persistence through startup data, images, volumes, or management agents'],
-    evidence: ['GuardDuty findings and VPC Flow Logs', 'CloudTrail instance, image, volume, and security-group changes', 'Host, EDR, Systems Manager, and application logs'],
+    threats: ['Internet-exposed service or vulnerable software reached through a permissive security-group or routing path', 'Instance-role credential access through IMDS after server-side request forgery or host execution', 'EBS snapshot permission changed so another account can create an offline copy of workload data', 'User data, images, volumes, Systems Manager commands, or management agents used for execution or persistence'],
+    evidence: ['GuardDuty findings, VPC Flow Logs, load-balancer records, and the security-group and route state at event time', 'CloudTrail instance, image, snapshot, volume, security-group, user-data, and Systems Manager changes', 'IMDS configuration plus host, EDR, SSM Agent, process, filesystem, and application logs'],
     defenses: ['Minimize inbound and outbound network paths', 'Require IMDSv2 and narrow the instance role', 'Patch, harden, inventory, and monitor the operating system'],
     responder: 'What reached the instance, what changed on the host, and what could its role access?',
     source: 'https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html'
   },
   lambda: {
     boundary: 'Runs event-driven code with an execution role, resource policy, triggers, layers, environment variables, and optional network access.',
-    threats: ['Public or weakly restricted invocation path', 'Overpowered execution role', 'Unauthorized code, layer, version, alias, trigger, or edge-function change'],
+    threats: ['Public or weakly restricted invocation path', 'iam:PassRole with CreateFunction and InvokeFunction used to run code under a more privileged execution role', 'UpdateFunctionCode, layer, environment, version, alias, trigger, or edge association changed outside the deployment path', 'Runtime code execution exposes temporary execution-role credentials and sensitive environment or log data'],
     evidence: ['CloudTrail function, version, permission, and CloudFront association changes', 'CloudWatch invocation, error, and application logs', 'GuardDuty Lambda Protection findings where enabled'],
     defenses: ['Restrict function URLs and resource policies', 'Use a minimal execution role and external secret store', 'Use code signing and protect published versions, triggers, and edge associations'],
     responder: 'Which trigger or CloudFront behavior invoked the function, which version ran, and what data and permissions did it receive?',
@@ -70,8 +70,8 @@ export const securityProfiles = {
   },
   ecs: {
     boundary: 'Connects container images, task definitions, task and execution roles, clusters, networking, and ECS Exec.',
-    threats: ['Malicious or replaced container image', 'Broad task-role credential use', 'Task-definition or ECS Exec misuse'],
-    evidence: ['CloudTrail ECS and ECR activity', 'Task-definition revisions and image digests', 'Container logs, runtime findings, and ECS Exec records'],
+    threats: ['Malicious or replaced container image', 'Task-definition commands, environment settings, secrets, mounts, or logging options changed to expose workload data', 'Container-credential endpoint access or broad task-role credentials used beyond the intended task behavior', 'RunTask, service update, or ECS Exec used to place or control an unexpected workload'],
+    evidence: ['CloudTrail ECS and ECR activity, including task registration, run, service update, and execute-command events', 'Complete task-definition revisions, image digests, task and execution roles, secrets references, network mode, mounts, and overrides', 'Container and credential-endpoint access telemetry, runtime findings, outbound connections, and ECS Exec session records'],
     defenses: ['Separate and minimize task and execution roles', 'Deploy immutable image digests and scan images', 'Log and tightly restrict ECS Exec'],
     responder: 'Which task revision and image ran, and what actions came from its task role?',
     source: 'https://docs.aws.amazon.com/AmazonECS/latest/developerguide/security.html'
@@ -95,8 +95,8 @@ export const securityProfiles = {
 
   s3: {
     boundary: 'Protects buckets, objects, access points, versions, policies, replication paths, and encryption keys.',
-    threats: ['Public or unintended cross-account access', 'Credential-based object discovery or exfiltration', 'Destructive deletion, overwrite, replication, or encryption activity'],
-    evidence: ['CloudTrail S3 data and management events', 'S3 server access logs and GuardDuty S3 findings', 'Access Analyzer, bucket policy, version, and replication state'],
+    threats: ['Bucket policy, ACL, access point, or Public Access Block change creates public or unintended cross-account access', 'Credential-based object discovery, bulk reads, streaming copies, or result-bucket collection', 'Replication configuration and service-role permissions copy eligible object versions to an unapproved destination account', 'Destructive deletion, overwrite, lifecycle, retention, replication, or encryption activity impairs primary data and recovery'],
+    evidence: ['CloudTrail S3 data and management events with selector coverage recorded', 'S3 server access logs, GuardDuty S3 findings, object metadata, versions, replication status, inventories, and destination evidence', 'Access Analyzer, bucket and access-point policies, ACL and ownership state, Public Access Block, replication role and rules, lifecycle, retention, and KMS configuration'],
     defenses: ['Keep Block Public Access and Object Ownership enabled', 'Use least-privilege policies, versioning, and Object Lock where required', 'Encrypt with controlled KMS keys and protect logging destinations'],
     responder: 'Which principal accessed which key and version, through which policy and network path?',
     source: 'https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-best-practices.html'
@@ -144,7 +144,7 @@ export const securityProfiles = {
 
   vpc: {
     boundary: 'Defines network reachability through subnets, routing, security groups, network ACLs, endpoints, peering, and egress.',
-    threats: ['Unexpected ingress or unrestricted egress', 'Security-group, route, endpoint, or peering changes', 'Lateral movement through trusted network paths'],
+    threats: ['Security-group ingress opened to 0.0.0.0/0 or ::/0 on a management or data-service port', 'Unexpected egress, route, endpoint, network ACL, peering, or transit change creates a new reachability path', 'Traffic mirroring or flow-log configuration changed to capture traffic or impair network evidence', 'Lateral movement through a network path that application or identity controls incorrectly treat as trusted'],
     evidence: ['VPC Flow Logs and traffic-mirroring data', 'CloudTrail EC2 networking changes', 'Reachability Analyzer and current route/security-group state'],
     defenses: ['Segment workloads and minimize allowed paths', 'Prefer private service endpoints and controlled egress', 'Continuously detect drift in routes and security groups'],
     responder: 'Was the path reachable at event time, and which configuration made that traffic possible?',
@@ -209,7 +209,7 @@ export const securityProfiles = {
   },
   cloudtrail: {
     boundary: 'Records control-plane and selected data-plane activity, preserving identity, request, response, source, time, and resource context.',
-    threats: ['Logging stopped or trail deleted', 'Event selectors changed to create visibility gaps', 'Delivery bucket, key, or validation settings weakened'],
+    threats: ['StopLogging or DeleteTrail removes expected collection', 'UpdateTrail or PutEventSelectors redirects delivery or removes required management, data, or network activity coverage', 'Delivery bucket, resource policy, KMS key, CloudWatch integration, or log-file validation weakened', 'A principal moves activity to an unmonitored account or Region and exploits assumptions about trail scope'],
     evidence: ['CloudTrail event history and trail status', 'Organization trail, event selectors, channels, and integrations', 'S3 delivery, digest validation, and CloudWatch delivery state'],
     defenses: ['Use an organization-wide multi-Region trail', 'Centralize logs in an immutable security account', 'Enable required data events and alert on trail changes'],
     responder: 'What was the earliest suspicious API event, and which identity context links subsequent actions?',
@@ -242,8 +242,8 @@ export const securityProfiles = {
 
   systemsmanager: {
     boundary: 'Provides privileged fleet access through Session Manager, Run Command, Automation, documents, inventory, patching, and managed-node roles.',
-    threats: ['Unauthorized command, session, or automation execution', 'Document or association tampering', 'Broad managed-node or operator role'],
-    evidence: ['CloudTrail Systems Manager activity', 'Session, command, automation, and document history', 'Session log destinations and managed-node inventory'],
+    threats: ['SendCommand, StartSession, or Automation execution turns cloud API permission into operating-system or workflow actions', 'Document content, version, sharing, default version, association, or target selectors changed outside the approved path', 'Broad tag targeting or concurrency sends one action across an unexpectedly large fleet', 'Managed-node role, operator role, output destination, or transcript settings allow excessive reach or suppress useful evidence'],
+    evidence: ['CloudTrail Systems Manager activity with caller, command or execution ID, document, version, targets, parameters where recorded, and Region', 'Session, command, invocation, automation, association, and document history plus SSM Agent and endpoint process telemetry', 'CloudWatch and S3 output configuration and delivery status, session transcripts, managed-node inventory, registration, tags, and instance profile'],
     defenses: ['Scope operators, documents, targets, and node roles', 'Log sessions and commands to protected destinations', 'Use approved documents, change controls, and private endpoints'],
     responder: 'Who initiated the action, which document and targets were used, and where is the command output?',
     source: 'https://docs.aws.amazon.com/systems-manager/latest/userguide/security.html'
@@ -291,7 +291,7 @@ export const securityProfiles = {
   },
   cloudformation: {
     boundary: 'Creates infrastructure from templates and change sets using caller or service-role permissions, stack policies, hooks, and resource providers.',
-    threats: ['Malicious template or change set', 'Overprivileged service role expands deployment impact', 'Out-of-band drift or destructive stack action'],
+    threats: ['A mutable local or S3-hosted template is changed before CreateStack, UpdateStack, or change-set execution', 'iam:PassRole and stack-operation permissions transfer an overprivileged CloudFormation service role to the submitted template', 'Nested stacks, macros, transforms, custom resources, or hooks expand execution beyond the apparent top-level template', 'Out-of-band drift, rollback manipulation, termination-protection change, or destructive stack action impairs recovery'],
     evidence: ['Stack events, change sets, template versions, and drift results', 'CloudTrail CloudFormation and downstream resource activity', 'Service role, termination protection, stack policy, and hook state'],
     defenses: ['Review change sets and control template provenance', 'Use a scoped service role and policy validation', 'Apply stack policies, termination protection, hooks, and drift detection'],
     responder: 'Which template and role produced the resource change, and was it part of an approved stack operation?',
@@ -299,8 +299,8 @@ export const securityProfiles = {
   },
   ecr: {
     boundary: 'Stores deployable container images behind repository policies, registry settings, tags, digests, scanning, replication, and encryption.',
-    threats: ['Malicious image pushed or trusted tag replaced', 'Cross-account repository policy grants unintended access', 'Scanning, signing, or replication controls bypassed'],
-    evidence: ['CloudTrail image push and repository configuration activity', 'Image digest, tag, scan findings, provenance, and replication state', 'Downstream task and deployment references to the digest'],
+    threats: ['Malicious image pushed or a trusted mutable tag moved to a different digest', 'Cross-account repository policy grants unintended pull, push, or administrative access', 'Authorized credentials pull an image so embedded secrets, configuration, or software can be inspected offline', 'Scanning, signing, lifecycle, encryption, tag immutability, or replication controls bypassed'],
+    evidence: ['CloudTrail image-layer upload, PutImage, BatchGetImage, layer download, and repository-configuration activity', 'Image digest and manifest, tag history, scan findings, signature and build provenance, repository policy, lifecycle, and replication state', 'Downstream task, deployment, admission, and release records that identify the exact digest used'],
     defenses: ['Use immutable tags and deploy by digest', 'Scan images and enforce trusted build provenance', 'Restrict repository policies and lifecycle administration'],
     responder: 'Who pushed the digest, what source produced it, and which workloads deployed it?',
     source: 'https://docs.aws.amazon.com/AmazonECR/latest/userguide/security.html'

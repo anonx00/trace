@@ -8,7 +8,7 @@ An interactive map of AWS services and their security controls. Follow a connect
 
 ## Explore
 
-The map includes **40 services**, **41 documented relationships**, **28 reviewed community detections**, and **17 incident scenarios**.
+The map includes **40 services**, **41 documented relationships**, **28 reviewed community detections**, and **20 incident scenarios**.
 
 - **Domains:** start with identity, workloads, data, networking, detection, response, supply chain, or investigation.
 - **Services:** select a node for security context, rule-backed attack cases, telemetry requirements, tuning notes, controls, and documentation. Select a connection to see why it exists.
@@ -21,6 +21,8 @@ Pages share a responsive reading layout. Service notes come before the graph on 
 ## Sources
 
 AWS documentation supports the service relationships. Incident scenarios draw on MITRE ATT&CK, controlled AWS attack labs, AWS incident-response playbooks, and the research linked on the [Sources page](https://anonx00.github.io/trace/#/sources). Community detection cards link to their exact [detections.ai](https://detections.ai/detections?q=AWS) pages and, where reviewed, commit-pinned upstream Sigma rules.
+
+The attack-research index also includes commit-pinned references from [OffensiveCloud](https://github.com/lutzenfried/OffensiveCloud/tree/main/AWS), the [AWS Detection Engineering Lab](https://github.com/JpsBookOfLife/aws-detection-engineering-lab/tree/main/detections), and [Awesome AWS Security](https://github.com/jassics/awesome-aws-security). The lab's eight native CloudWatch metric-filter files are listed as research references rather than presented as detections.ai community cards.
 
 TRACE preserves native rule language instead of translating everything into generic SQL. Each detection records its contributor, collection, MITRE mapping, telemetry dependency, and tuning guidance. The UI distinguishes exact upstream selections from publisher summaries and leaves unmapped services visible as coverage gaps.
 
