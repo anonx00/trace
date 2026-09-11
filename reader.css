@@ -103,6 +103,38 @@ button:disabled { opacity: .4; cursor: default; }
 .source-section-nav { margin: 26px 0; }
 .source-section-nav+section { margin-top: 36px; }
 
+/* Service research stays compact in the node reader and explicit about provenance. */
+.service-research-card { padding: 18px; border: 1px solid color-mix(in srgb,var(--color) 32%,var(--reader-line)); border-left: 3px solid var(--color); border-radius: 10px; background: linear-gradient(135deg,color-mix(in srgb,var(--color) 7%,#17121e),#15111c); }
+.service-research-head { display: flex; justify-content: space-between; gap: 14px; color: var(--color); font: 9px/1.6 var(--mono); letter-spacing: .8px; }
+.service-research-head small { color: var(--reader-dim); font: inherit; text-align: right; }
+.service-research-card h3 { margin: 12px 0 7px; color: #eee4f4; font: 500 19px/1.35 var(--display); }
+.service-research-card>p { margin: 0; color: var(--reader-muted); font-size: 13px; line-height: 1.75; }
+.service-research-card ul { margin: 14px 0 0; padding: 13px 0 0 18px; border-top: 1px solid var(--reader-line); color: #c5b5ce; font-size: 12px; line-height: 1.75; }
+.service-research-links { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 15px; }
+.service-research-links a { min-width: 0; padding: 9px 10px; border: 1px solid var(--reader-line); border-radius: 6px; color: var(--color); font-size: 10px; line-height: 1.5; }
+.service-research-links a:hover { border-color: var(--color); background: color-mix(in srgb,var(--color) 7%,transparent); }
+.service-research-gap,.research-link-gap { padding: 15px 16px; border: 1px dashed #bda8ca42; border-radius: 8px; background: #1a1520; }
+.service-research-gap span,.research-link-gap span { color: #c1a9ce; font: 9px/1.6 var(--mono); letter-spacing: .7px; }
+.service-research-gap p,.research-link-gap small { display: block; margin: 7px 0 0; color: var(--reader-muted); font-size: 12px; line-height: 1.7; }
+.card-research-state { display: inline-block; margin-top: 7px; color: #9fe5cc; font: 9px/1.5 var(--mono); letter-spacing: .5px; }
+.card-research-state.is-gap { color: #bda8ca; }
+
+/* The sources route groups exact HackTricks mappings by TRACE's existing domains. */
+.hacktricks-source-index { margin-top: 62px; }
+.hacktricks-domain-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+.hacktricks-domain { min-width: 0; border: 1px solid var(--reader-line); border-radius: 12px; background: #15111b; overflow: hidden; }
+.hacktricks-domain>header { display: flex; justify-content: space-between; gap: 12px; padding: 15px 17px; border-bottom: 1px solid var(--reader-line); background: color-mix(in srgb,var(--color) 7%,#18131e); color: var(--color); font: 9px/1.6 var(--mono); letter-spacing: .8px; }
+.hacktricks-domain>header strong { color: var(--reader-dim); font-weight: 500; }
+.hacktricks-domain>div { display: grid; }
+.hacktricks-domain a { display: grid; grid-template-columns: minmax(105px,.42fr) minmax(0,1fr); gap: 5px 16px; padding: 15px 17px; border-bottom: 1px solid var(--reader-line); }
+.hacktricks-domain a:last-child { border-bottom: 0; }
+.hacktricks-domain a:hover { background: color-mix(in srgb,var(--color) 6%,transparent); }
+.hacktricks-domain a>span { color: var(--color); font: 10px/1.55 var(--mono); }
+.hacktricks-domain a>strong { min-width: 0; color: #e9dfef; font: 500 14px/1.5 var(--display); }
+.hacktricks-domain a>small { grid-column: 2; color: var(--reader-dim); font-size: 11px; line-height: 1.65; }
+.hacktricks-domain>div>p { margin: 0; padding: 17px; color: var(--reader-muted); font-size: 12px; }
+.sources-note a { color: var(--mint); text-decoration: underline; text-underline-offset: 3px; }
+
 /* Graph cards carry a name and relationship; the ledger holds full evidence. */
 .mind-page .canvas-wrap { height: clamp(440px,39vw,610px); }
 .mind-page .atlas-field { opacity: .24; }
@@ -310,6 +342,7 @@ button:disabled { opacity: .4; cursor: default; }
   .atlas-preview>.atlas-preview-section { grid-column: 1/-1; grid-row: auto; }
   .atlas-preview-bottom { grid-row: auto; }
   .path-results-line { align-items: start; flex-direction: column; gap: 0; }
+  .hacktricks-domain-grid { grid-template-columns: 1fr; }
 }
 @media (max-width:600px) {
   .content-page, .map-page.mind-page { padding-inline: 16px; }
@@ -325,6 +358,11 @@ button:disabled { opacity: .4; cursor: default; }
   .detection-card-head { flex-wrap: wrap; }
   .detection-card-head span:last-child { text-align: left; }
   .community-source-grid, .reference-grid { grid-template-columns: 1fr; }
+  .service-research-head { flex-direction: column; gap: 2px; }
+  .service-research-head small { text-align: left; }
+  .service-research-links { grid-template-columns: 1fr; }
+  .hacktricks-domain a { grid-template-columns: 1fr; }
+  .hacktricks-domain a>small { grid-column: 1; }
   .reader-path-card { padding: 22px; }
   .reader-path-card h2 { font-size: 25px; }
   .path-discovery { padding: 16px; }

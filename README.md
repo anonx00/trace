@@ -24,6 +24,8 @@ Graph cards show service names and relationship labels, with the full explanatio
 
 AWS documentation supports the service relationships. Incident scenarios draw on MITRE ATT&CK, controlled AWS attack labs, AWS incident-response playbooks, and the research linked on the [Sources page](https://anonx00.github.io/trace/#/sources). Community detection cards link to their exact [detections.ai](https://detections.ai/detections?q=AWS) pages and, where reviewed, commit-pinned upstream Sigma rules.
 
+The service research layer maps 36 TRACE nodes to exact [HackTricks Cloud AWS service pages](https://cloud.hacktricks.wiki/en/pentesting-cloud/aws-security/aws-services/index.html), reviewed against source commit [`4fa4b2f`](https://github.com/HackTricks-wiki/hacktricks-cloud/tree/4fa4b2f11915ab60ffbd7df5c8c96579aad5b023). IAM Identity Center, AWS Backup, AWS Fargate, and Amazon OpenSearch Service remain explicit gaps because no direct service page was found; neighboring material is not used as a substitute.
+
 The attack-research index also includes commit-pinned references from [OffensiveCloud](https://github.com/lutzenfried/OffensiveCloud/tree/main/AWS), the [AWS Detection Engineering Lab](https://github.com/JpsBookOfLife/aws-detection-engineering-lab/tree/main/detections), and [Awesome AWS Security](https://github.com/jassics/awesome-aws-security). The lab's eight native CloudWatch metric-filter files are listed as research references rather than presented as detections.ai community cards.
 
 TRACE preserves native rule language instead of translating everything into generic SQL. Each detection records its contributor, collection, MITRE mapping, telemetry dependency, and tuning guidance. The UI distinguishes exact upstream selections from publisher summaries and leaves unmapped services visible as coverage gaps.
@@ -94,6 +96,7 @@ npm run check
 python scripts/test_import_docs.py
 npm run test:scenarios
 npm run test:detections
+npm run test:hacktricks
 npm run test:commands
 npm run test:ui
 npm run test:connections

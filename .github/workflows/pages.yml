@@ -57,6 +57,7 @@ jobs:
           npm run test:commands
           npm run test:scenarios
           npm run test:detections
+          npm run test:hacktricks
           npm run test:motion
           npm run test:mind
           npm run test:reader
