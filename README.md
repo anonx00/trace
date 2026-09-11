@@ -45,6 +45,42 @@ Open http://127.0.0.1:4173.
 The frontend is plain JavaScript, CSS, and SVG. The background uses WebGPU where available, with a Canvas 2D fallback. Fonts are included in the repository.
 
 <details>
+<summary>Connect the Copilot cloud agent to AWS documentation</summary>
+
+In **Settings → Copilot → Model Context Protocol (MCP)**, save this repository configuration:
+
+```json
+{
+  "mcpServers": {
+    "aws-documentation": {
+      "type": "local",
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-documentation-mcp-server@1.2.1"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AWS_DOCUMENTATION_PARTITION": "aws"
+      },
+      "tools": [
+        "search_documentation",
+        "read_documentation",
+        "read_sections",
+        "search_table",
+        "recommend"
+      ]
+    }
+  }
+}
+```
+
+The repository's Copilot setup workflow installs `uvx`; this server needs no AWS credentials or Agents secrets. GitHub and Playwright MCP servers remain available through GitHub's built-in integrations.
+
+The AWS documentation tools are read-only. The current upstream package does not publish MCP's `annotations.readOnlyHint`, so GitHub may exclude these tools from Copilot code review while still making them available to the Copilot cloud agent.
+
+</details>
+
+<details>
 <summary>Run the checks</summary>
 
 Keep `npm start` running in another terminal.
