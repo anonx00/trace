@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "maxItemsPerService": 3,
+    "maxCandidates": 48,
+    "maxCandidatesPerSource": 6,
+    "staleAfterDays": 14,
+    "defaultTtlDays": 30,
+    "maxFeedBytes": 2500000,
+    "requestTimeoutSeconds": 25
+  },
+  "sources": [
+    {
+      "id": "aws-security-bulletins",
+      "publisher": "AWS",
+      "feedLabel": "AWS Security Bulletins",
+      "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/",
+      "kind": "official-bulletin",
+      "ttlDays": 45,
+      "allowedItemHosts": ["aws.amazon.com"]
+    },
+    {
+      "id": "aws-security-blog",
+      "publisher": "AWS",
+      "feedLabel": "AWS Security Blog",
+      "feedUrl": "https://aws.amazon.com/blogs/security/feed/",
+      "kind": "official-research",
+      "ttlDays": 45,
+      "allowedItemHosts": ["aws.amazon.com"]
+    },
+    {
+      "id": "aws-whats-new",
+      "publisher": "AWS",
+      "feedLabel": "AWS What's New",
+      "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/",
+      "kind": "official-update",
+      "ttlDays": 30,
+      "allowedItemHosts": ["aws.amazon.com"]
+    },
+    {
+      "id": "guardduty-doc-history",
+      "publisher": "AWS",
+      "feedLabel": "Amazon GuardDuty documentation history",
+      "feedUrl": "https://docs.aws.amazon.com/guardduty/latest/ug/amazon-guardduty-doc-history.rss",
+      "kind": "official-doc-update",
+      "ttlDays": 45,
+      "fixedServices": ["guardduty"],
+      "allowedItemHosts": ["docs.aws.amazon.com"]
+    },
+    {
+      "id": "securityhub-doc-history",
+      "publisher": "AWS",
+      "feedLabel": "AWS Security Hub documentation history",
+      "feedUrl": "https://docs.aws.amazon.com/securityhub/latest/userguide/aws-security-hub-doc-updates.rss",
+      "kind": "official-doc-update",
+      "ttlDays": 45,
+      "fixedServices": ["securityhub"],
+      "allowedItemHosts": ["docs.aws.amazon.com"]
+    },
+    {
+      "id": "iam-doc-history",
+      "publisher": "AWS",
+      "feedLabel": "AWS IAM release notes",
+      "feedUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/aws-iam-release-notes.rss",
+      "kind": "official-doc-update",
+      "ttlDays": 45,
+      "fixedServices": ["iam"],
+      "allowedItemHosts": ["docs.aws.amazon.com"]
+    },
+    {
+      "id": "eks-doc-history",
+      "publisher": "AWS",
+      "feedLabel": "Amazon EKS documentation history",
+      "feedUrl": "https://docs.aws.amazon.com/eks/latest/userguide/doc-history.rss",
+      "kind": "official-doc-update",
+      "ttlDays": 45,
+      "fixedServices": ["eks"],
+      "allowedItemHosts": ["docs.aws.amazon.com"]
+    },
+    {
+      "id": "organizations-doc-history",
+      "publisher": "AWS",
+      "feedLabel": "AWS Organizations release notes",
+      "feedUrl": "https://docs.aws.amazon.com/organizations/latest/userguide/aws-organizations-release-notes.rss",
+      "kind": "official-doc-update",
+      "ttlDays": 45,
+      "fixedServices": ["organizations"],
+      "allowedItemHosts": ["docs.aws.amazon.com"]
+    },
+    {
+      "id": "amazon-linux-2023-advisories",
+      "publisher": "AWS",
+      "feedLabel": "Amazon Linux 2023 Security Advisories",
+      "feedUrl": "https://alas.aws.amazon.com/AL2023/alas.rss",
+      "kind": "official-advisory",
+      "ttlDays": 45,
+      "allowedItemHosts": ["alas.aws.amazon.com"]
+    },
+    {
+      "id": "datadog-security-labs",
+      "publisher": "Datadog Security Labs",
+      "feedLabel": "Datadog Security Labs",
+      "feedUrl": "https://securitylabs.datadoghq.com/rss/feed.xml",
+      "kind": "independent-research",
+      "ttlDays": 60,
+      "allowedItemHosts": ["securitylabs.datadoghq.com"]
+    },
+    {
+      "id": "unit42-cloud-research",
+      "publisher": "Unit 42",
+      "feedLabel": "Unit 42 Cloud Cybersecurity Research",
+      "feedUrl": "https://unit42.paloaltonetworks.com/category/cloud-cybersecurity-research/feed/",
+      "kind": "independent-research",
+      "ttlDays": 60,
+      "allowedItemHosts": ["unit42.paloaltonetworks.com"]
+    },
+    {
+      "id": "wiz-research",
+      "publisher": "Wiz Research",
+      "feedLabel": "Wiz Research",
+      "feedUrl": "https://www.wiz.io/feed/rss.xml",
+      "kind": "independent-research",
+      "ttlDays": 60,
+      "allowedItemHosts": ["www.wiz.io", "wiz.io"]
+    },
+    {
+      "id": "aqua-research",
+      "publisher": "Aqua Security",
+      "feedLabel": "Aqua Security Research",
+      "feedUrl": "https://www.aquasec.com/category/research/feed/",
+      "kind": "independent-research",
+      "ttlDays": 60,
+      "allowedItemHosts": ["www.aquasec.com", "aquasec.com"]
+    }
+  ],
+  "serviceAliases": {
+    "iam": ["AWS IAM", "AWS Identity and Access Management", "Identity and Access Management", "IAM role", "IAM user", "IAM policy", "IAM permission"],
+    "sts": ["AWS STS", "AWS Security Token Service", "AssumeRole", "AssumeRoot", "temporary AWS credentials"],
+    "identity-center": ["IAM Identity Center", "AWS IAM Identity Center", "AWS SSO"],
+    "kms": ["AWS KMS", "AWS Key Management Service", "KMS key"],
+    "ec2": ["Amazon EC2", "AWS EC2", "EC2 instance", "EC2 metadata", "instance metadata service", "IMDS"],
+    "lambda": ["AWS Lambda", "Lambda function", "Lambda@Edge"],
+    "ecs": ["Amazon ECS", "AWS ECS", "ECS task", "Elastic Container Service"],
+    "eks": ["Amazon EKS", "AWS EKS", "Elastic Kubernetes Service", "EKS cluster"],
+    "s3": ["Amazon S3", "AWS S3", "S3 bucket", "S3 object"],
+    "rds": ["Amazon RDS", "AWS RDS", "Relational Database Service"],
+    "dynamodb": ["Amazon DynamoDB", "AWS DynamoDB", "DynamoDB table"],
+    "backup": ["AWS Backup"],
+    "vpc": ["Amazon VPC", "AWS VPC", "VPC Flow Logs", "VPC Lattice", "virtual private cloud"],
+    "route53": ["Amazon Route 53", "AWS Route 53", "Route 53 Resolver"],
+    "cloudfront": ["Amazon CloudFront", "AWS CloudFront", "CloudFront distribution"],
+    "waf": ["AWS WAF", "web ACL"],
+    "guardduty": ["Amazon GuardDuty", "AWS GuardDuty", "GuardDuty finding", "GuardDuty Runtime Monitoring"],
+    "cloudtrail": ["AWS CloudTrail", "Amazon CloudTrail", "CloudTrail trail", "CloudTrail event"],
+    "securityhub": ["AWS Security Hub", "Amazon Security Hub", "Security Hub CSPM"],
+    "cloudwatch": ["Amazon CloudWatch", "AWS CloudWatch", "CloudWatch Logs", "CloudWatch metric"],
+    "codepipeline": ["AWS CodePipeline", "Amazon CodePipeline", "CodePipeline pipeline"],
+    "cloudformation": ["AWS CloudFormation", "Amazon CloudFormation", "CloudFormation stack"],
+    "ecr": ["Amazon ECR", "AWS ECR", "Elastic Container Registry", "ECR image"],
+    "secretsmanager": ["AWS Secrets Manager", "Amazon Secrets Manager", "Secrets Manager secret"],
+    "organizations": ["AWS Organizations", "Amazon Organizations", "Organizations management account", "Organizations member account"],
+    "cognito": ["Amazon Cognito", "AWS Cognito", "Cognito user pool", "Cognito identity pool"],
+    "fargate": ["AWS Fargate", "Amazon Fargate", "ECS Fargate"],
+    "efs": ["Amazon EFS", "AWS EFS", "Elastic File System", "EFS file system"],
+    "elb": ["Elastic Load Balancing", "Application Load Balancer", "Network Load Balancer", "Classic Load Balancer", "AWS ELB"],
+    "config": ["AWS Config", "AWS Config rule", "AWS Config recorder"],
+    "systemsmanager": ["AWS Systems Manager", "Amazon Systems Manager", "SSM Agent", "Session Manager", "ssm:StartSession"],
+    "sns": ["Amazon SNS", "AWS SNS", "Simple Notification Service", "SNS topic"],
+    "sqs": ["Amazon SQS", "AWS SQS", "Simple Queue Service", "SQS queue"],
+    "eventbridge": ["Amazon EventBridge", "AWS EventBridge", "EventBridge rule", "EventBridge event bus"],
+    "stepfunctions": ["AWS Step Functions", "Amazon Step Functions", "Step Functions state machine"],
+    "apigateway": ["Amazon API Gateway", "AWS API Gateway", "API Gateway REST API", "API Gateway HTTP API"],
+    "appsync": ["AWS AppSync", "Amazon AppSync", "AppSync GraphQL"],
+    "athena": ["Amazon Athena", "AWS Athena", "Athena workgroup"],
+    "kinesis": ["Amazon Kinesis Data Streams", "AWS Kinesis Data Streams", "Kinesis data stream"],
+    "opensearch": ["Amazon OpenSearch Service", "AWS OpenSearch Service", "OpenSearch domain"]
+  },
+  "actionablePatterns": [
+    "CVE-\\d{4}-\\d{4,}",
+    "GHSA-[a-z0-9-]+",
+    "critical severity|important severity|high severity|severity: (?:critical|important|high)",
+    "affected versions?|impacted versions?|fixed versions?|patched versions?",
+    "security advisory|security bulletin|vulnerabilit",
+    "permission|policy|trust polic|condition key|service-linked role",
+    "finding type|security control|detection rule|telemetry|logging|audit log",
+    "authentication|authorization|encryption|cross-account|public access",
+    "deprecat|end.of.life|workaround|mitigat|remediat"
+  ],
+  "suppressPatterns": [
+    "webinar|conference|event recap|podcast|certification|training course",
+    "customer stor|partner announcement|marketplace|pricing|cost optimization",
+    "weekly roundup|monthly roundup|newsletter|year in review",
+    "now available in .+ region|expands? to .+ region"
+  ]
+}

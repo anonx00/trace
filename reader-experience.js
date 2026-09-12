@@ -46,10 +46,10 @@ export function enhanceSourceReader(page){
   nav.className='scenario-section-nav source-section-nav';
   nav.setAttribute('aria-label','On this sources page');
   nav.innerHTML='<span>ON THIS PAGE</span>';
-  [['Research & playbooks','.reference-catalog'],['Service research','.hacktricks-source-index'],['Community rules','.community-source-index'],['AWS documentation','.aws-source-index']].forEach(([label,selector])=>{
-    const section=page.querySelector(selector),button=document.createElement('button');
+  [['Research & playbooks','.reference-catalog'],['Service research','.hacktricks-source-index'],['Community rules','.community-source-index'],['Current intel','.news-source-index'],['AWS documentation','.aws-source-index']].forEach(([label,selector])=>{
+    const button=document.createElement('button');
     button.textContent=label;
-    button.onclick=()=>{section.scrollIntoView({behavior:'instant',block:'start'});section.setAttribute('tabindex','-1');section.focus({preventScroll:true});};
+    button.onclick=()=>{const section=page.querySelector(selector);if(!section)return;section.scrollIntoView({behavior:'instant',block:'start'});section.setAttribute('tabindex','-1');section.focus({preventScroll:true});};
     nav.append(button);
   });
   page.querySelector('.source-principles').after(nav);

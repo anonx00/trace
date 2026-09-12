@@ -13,6 +13,7 @@ The map includes **40 services**, **41 documented relationships**, **28 reviewed
 - **Domains:** start with identity, workloads, data, networking, detection, response, supply chain, or investigation.
 - **Services:** select a node for security context, rule-backed attack cases, telemetry requirements, tuning notes, controls, and documentation. Select a connection to see why it exists.
 - **Stories:** search by service, scenario, or MITRE ID and filter by domain. Follow numbered service stages, switch between threat context, evidence, and defense, or compare evidence across the sequence.
+- **Current intel:** approved AWS security changes and attributed threat research appear only on explicitly mapped service nodes, with defensive checks, original sources, review dates, and expiry dates.
 
 Ctrl/Cmd+K opens search. **Reading view** puts the notes first; **Focus graph** gives the map more room. Saved services stay in your browser.
 
@@ -31,6 +32,8 @@ The attack-research index also includes commit-pinned references from [Offensive
 CloudFormation node enrichment was prompted by three rows in the MIT-labeled [Cybersecurity Attack Dataset](https://huggingface.co/datasets/savaniDhruv/Cybersecurity_Attack_Dataset/tree/878cd3b46278018e17a1aa9333ff67896fe5fa03); one resulting field note uses row 10297 as its discovery prompt. TRACE treats that undocumented, mixed simulated corpus as discovery input only: it pins the reviewed revision and file hash, imports none of its prose or detection logic, corrects unsupported claims, and publishes only mechanics independently verified against claim-specific AWS and MITRE sources. The measurements, retained row IDs, and explicit rejects are preserved in the [dataset review](docs/cybersecurity-attack-dataset-review.md).
 
 TRACE preserves native rule language instead of translating everything into generic SQL. Each detection records its contributor, collection, MITRE mapping, telemetry dependency, and tuning guidance. The UI distinguishes exact upstream selections from publisher summaries and leaves unmapped services visible as coverage gaps.
+
+Time-sensitive intelligence is built from 13 allowlisted, credential-free AWS and cloud-security feeds. Feed entries first enter a review-only candidate file; they are never published automatically. The public snapshot contains concise plain-text summaries, explicit service-mapping reasons, defensive checks, and no raw article bodies. Expired items disappear from service nodes, and a snapshot older than 14 days is suppressed rather than presented as current. The [Sources page](https://anonx00.github.io/trace/#/sources) shows the active provenance index and the next refresh boundary.
 
 Capability links, scenario sequences, and navigation groupings have separate labels. TRACE describes possible relationships; it does not inspect your AWS account or show live incidents.
 
@@ -106,7 +109,27 @@ npm run test:motion
 npm run test:mind
 npm run test:reader
 npm run test:visual
+npm run test:news
+npm run test:news-ui
 ```
+
+</details>
+
+<details>
+<summary>Refresh reviewed AWS security news</summary>
+
+```sh
+npm run import:news
+```
+
+This fetches only the endpoints in `scripts/news_sources.json` and writes pending records to `generated/news-candidates.json`. Review a candidate’s source and service mappings, replace its automated `basis`, change each confirmed mapping method to `editorial-review`, and add sourced `whyItMatters` plus defensive `checks`. Then promote selected IDs:
+
+```sh
+python scripts/import_news.py --promote <candidate-id>
+npm run test:news
+```
+
+The daily `Refresh AWS security news` workflow performs the same fetch, prunes expired approved items, and opens or updates a review pull request. Candidate discovery never merges itself into the published snapshot.
 
 </details>
 

@@ -1,0 +1,147 @@
+name: Refresh AWS security news candidates
+
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: trace-news-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Fetch, normalize, and propose
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out reviewed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node for catalog validation
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+
+      - name: Load prior review data without executing branch code
+        id: prior
+        env:
+          REVIEW_BRANCH: automation/aws-security-news
+        run: |
+          git fetch origin main
+          if git fetch origin "+refs/heads/${REVIEW_BRANCH}:refs/remotes/origin/${REVIEW_BRANCH}"; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse "refs/remotes/origin/${REVIEW_BRANCH}")" >> "$GITHUB_OUTPUT"
+            review_ref="refs/remotes/origin/${REVIEW_BRANCH}"
+            merge_base="$(git merge-base origin/main "${review_ref}")"
+            if git cat-file -e "${review_ref}:generated/news.json" 2>/dev/null; then
+              mode="$(git ls-tree "${review_ref}" -- generated/news.json | awk '{print $1}')"
+              test "${mode}" = "100644"
+              main_changed=false
+              review_changed=false
+              if ! git diff --quiet "${merge_base}" origin/main -- generated/news.json; then main_changed=true; fi
+              if ! git diff --quiet "${merge_base}" "${review_ref}" -- generated/news.json; then review_changed=true; fi
+              if [ "${main_changed}" = "true" ] && [ "${review_changed}" = "true" ] && ! git diff --quiet origin/main "${review_ref}" -- generated/news.json; then
+                echo "generated/news.json changed independently on main and the review branch; resolve that review PR first." >&2
+                exit 1
+              fi
+              if [ "${review_changed}" = "true" ]; then
+                git checkout "${review_ref}" -- generated/news.json
+              fi
+            fi
+            if git cat-file -e "${review_ref}:generated/news-candidates.json" 2>/dev/null; then
+              mode="$(git ls-tree "${review_ref}" -- generated/news-candidates.json | awk '{print $1}')"
+              test "${mode}" = "100644"
+              git checkout "${review_ref}" -- generated/news-candidates.json
+            fi
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prune expired approved items and fetch candidates
+        run: |
+          python scripts/import_news.py --prune --refresh
+          python scripts/import_news.py --check
+
+      - name: Validate the publication boundary
+        run: |
+          npm run check
+          npm run test:news
+          npm run build
+
+      - name: Prepare a clean review-only commit
+        id: changes
+        env:
+          REVIEW_BRANCH: automation/aws-security-news
+          PRIOR_EXISTS: ${{ steps.prior.outputs.exists }}
+        run: |
+          baseline="origin/main"
+          if [ "${PRIOR_EXISTS}" = "true" ]; then
+            baseline="refs/remotes/origin/${REVIEW_BRANCH}"
+          fi
+          git add generated/news.json generated/news-candidates.json
+          if git diff --cached --quiet "${baseline}" -- generated/news.json generated/news-candidates.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          output_dir="${RUNNER_TEMP}/trace-news-output/generated"
+          mkdir -p "${output_dir}"
+          cp generated/news.json "${output_dir}/news.json"
+          cp generated/news-candidates.json "${output_dir}/news-candidates.json"
+          git switch --force-create "${REVIEW_BRANCH}" origin/main
+          cp "${output_dir}/news.json" generated/news.json
+          cp "${output_dir}/news-candidates.json" generated/news-candidates.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add generated/news.json generated/news-candidates.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "Propose AWS security news refresh"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push the review branch
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVIEW_BRANCH: automation/aws-security-news
+          PRIOR_EXISTS: ${{ steps.prior.outputs.exists }}
+          PRIOR_SHA: ${{ steps.prior.outputs.sha }}
+        run: |
+          gh auth setup-git
+          if [ "${PRIOR_EXISTS}" = "true" ]; then
+            git push --force-with-lease="refs/heads/${REVIEW_BRANCH}:${PRIOR_SHA}" origin "HEAD:${REVIEW_BRANCH}"
+          else
+            git push origin "HEAD:${REVIEW_BRANCH}"
+          fi
+
+      - name: Open a review pull request
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVIEW_BRANCH: automation/aws-security-news
+        run: |
+          existing="$(gh pr list --base main --head "${REVIEW_BRANCH}" --state open --json number --jq '.[0].number // empty')"
+          if [ -n "${existing}" ]; then
+            echo "Updated existing review PR #${existing}."
+            exit 0
+          fi
+          gh pr create \
+            --base main \
+            --head "${REVIEW_BRANCH}" \
+            --title "Review AWS security news refresh" \
+            --body "Automated, allowlisted RSS/Atom refresh for TRACE. New entries are normalized into generated/news-candidates.json, which is review-only and is not copied into the Pages build. Expired approved entries may be removed from generated/news.json without advancing its editorial review clock. Review source claims, replace the automated basis, mark each confirmed mapping as editorial-review, and add concise whyItMatters plus checks before promotion. Existing reviewer edits and promotions on this branch are preserved across refreshes. Nothing from an external feed is silently published."
