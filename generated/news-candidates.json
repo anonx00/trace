@@ -1,0 +1,799 @@
+{
+  "schemaVersion": 1,
+  "publication": "review-only",
+  "generatedAt": "2026-09-12T07:50:48Z",
+  "snapshotExpiresAt": "2026-09-26T07:50:48Z",
+  "policy": {
+    "maxItemsPerService": 3,
+    "staleAfterDays": 14,
+    "expiredItems": "hidden",
+    "pendingItems": "excluded",
+    "linksPerItem": 2
+  },
+  "items": [
+    {
+      "id": "news-aws-whats-new-c242ee7e65d13a",
+      "title": "Amazon ECS expands IAM condition key support for RunTask and StartTask APIs",
+      "summary": "Amazon Elastic Container Service (Amazon ECS) now supports the IAM condition keys for CPU and memory resources on the RunTask and StartTask APIs. Administrators can use these keys to enforce consistent CPU and memory limits across all methods of launching ECS tasks. This helps organizations prevent unexpected cost overruns and keep workloads aligned with their resource policies. Previously, the ecs:task-cpu and…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "ecs"
+      ],
+      "mapping": [
+        {
+          "service": "ecs",
+          "method": "title-exact",
+          "term": "Amazon ECS",
+          "basis": "Exact title phrase: Amazon ECS"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon ECS. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-10T16:52:00Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-10T16:52:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-update",
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/09/amazon-ecs-expands-condition-key-support/",
+        "feedLabel": "AWS What's New",
+        "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-2026-099-aws",
+      "title": "CVE-2026-85781 - Unverified access point ownership in Amazon EFS CSI Driver",
+      "summary": "Bulletin ID: 2026-099-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 09/04/2026 11:45 AM PDT Description: The Amazon EFS CSI Driver is an open-source Kubernetes Container Storage Interface (CSI) driver that lets Kubernetes workloads use Amazon EFS file systems. We identified CVE-2026-85781, an issue in the driver's volume-deletion logic. When the controller is configured with the…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "efs"
+      ],
+      "mapping": [
+        {
+          "service": "efs",
+          "method": "title-exact",
+          "term": "Amazon EFS",
+          "basis": "Exact title phrase: Amazon EFS"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon EFS. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-09T21:30:11Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-24T21:30:11Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-099-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-2026-097-aws",
+      "title": "CVE-2026-85654 - Code injection in the CDK generator in Amazon awslabs.dynamodb-mcp-server",
+      "summary": "Bulletin ID: 2026-097-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 09/04/2026 10:00 AM PDT Description: Amazon awslabs.dynamodb-mcp-server is an open-source Model Context Protocol (MCP) server that enables AI coding assistants to interact with Amazon DynamoDB, including table design, data modeling, and CDK infrastructure generation. We identified CVE-2026-85654, an improper…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "dynamodb"
+      ],
+      "mapping": [
+        {
+          "service": "dynamodb",
+          "method": "component-exact",
+          "term": "Amazon DynamoDB",
+          "basis": "Exact summary phrase: Amazon DynamoDB"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: Amazon DynamoDB. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-09T21:30:11Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-24T21:30:11Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-097-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-2026-091-aws",
+      "title": "CVE-2026-81849 - Path traversal in the aws:downloadContent plugin in amazon-ssm-agent",
+      "summary": "Bulletin ID: 2026-091-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 08/28/2026 11:00 AM PDT Description: AWS Systems Manager Agent (amazon-ssm-agent) is Amazon software that runs on Amazon Elastic Compute Cloud (Amazon EC2) instances, edge devices, on-premises servers, and virtual machines (VMs). Amazon-ssm-agent makes it possible for Systems Manager to update, manage, and configure…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "systemsmanager",
+        "ec2"
+      ],
+      "mapping": [
+        {
+          "service": "systemsmanager",
+          "method": "component-exact",
+          "term": "AWS Systems Manager",
+          "basis": "Exact summary phrase: AWS Systems Manager"
+        },
+        {
+          "service": "ec2",
+          "method": "component-exact",
+          "term": "Amazon EC2",
+          "basis": "Exact summary phrase: Amazon EC2"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: AWS Systems Manager; Exact summary phrase: Amazon EC2. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-09T21:30:11Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-24T21:30:11Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-091-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-2026-087-aws",
+      "title": "CVE-2026-77810 - Issue with Athena Federated Query Neptune Connector",
+      "summary": "Bulletin ID: 2026-087-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 08/21/2026 12:30 PM PDT Description: Amazon Athena is a serverless, interactive query service that lets you analyze data directly in Amazon S3 using standard SQL. Athena Query Federation is a feature that allows you to connect to data sources outside of Amazon S3 like DynamoDB, Azure Synapse, and custom connectors…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "athena",
+        "s3"
+      ],
+      "mapping": [
+        {
+          "service": "athena",
+          "method": "component-exact",
+          "term": "Amazon Athena",
+          "basis": "Exact summary phrase: Amazon Athena"
+        },
+        {
+          "service": "s3",
+          "method": "component-exact",
+          "term": "Amazon S3",
+          "basis": "Exact summary phrase: Amazon S3"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: Amazon Athena; Exact summary phrase: Amazon S3. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-09T21:30:11Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-24T21:30:11Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-087-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-2026-084-aws",
+      "title": "CVE-2026-75910 - Issue with Athena Federated Query Clickhouse Connector",
+      "summary": "Bulletin ID: 2026-084-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 08/20/2026 13:00 PM PDT Description: Amazon Athena is a serverless, interactive query service that lets you analyze data directly in Amazon S3 using standard SQL. Athena Query Federation is a feature that allows you to connect to data sources outside of Amazon S3 like DynamoDB, Azure Synapse, and custom connectors…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "athena",
+        "s3"
+      ],
+      "mapping": [
+        {
+          "service": "athena",
+          "method": "component-exact",
+          "term": "Amazon Athena",
+          "basis": "Exact summary phrase: Amazon Athena"
+        },
+        {
+          "service": "s3",
+          "method": "component-exact",
+          "term": "Amazon S3",
+          "basis": "Exact summary phrase: Amazon S3"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: Amazon Athena; Exact summary phrase: Amazon S3. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-09T21:30:11Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-24T21:30:11Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-084-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-2026-082-aws",
+      "title": "CVE-2026-75897 - Uncontrolled resource consumption in OpenSearch Dashboards capabilities route",
+      "summary": "Bulletin ID: 2026-082-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 08/18/2026 10:00 AM PDT Description: OpenSearch Dashboards is the open-source visualization and management UI for OpenSearch, and ships as part of Amazon OpenSearch Service. We identified CVE-2026-75897, an improper input validation in the capabilities route handler in OpenSearch Dashboards. The handler does not…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "opensearch"
+      ],
+      "mapping": [
+        {
+          "service": "opensearch",
+          "method": "component-exact",
+          "term": "Amazon OpenSearch Service",
+          "basis": "Exact summary phrase: Amazon OpenSearch Service"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: Amazon OpenSearch Service. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-09T21:30:11Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-24T21:30:11Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-082-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-guardduty-doc-history-29ab75da3f7e77",
+      "title": "Updated GuardDuty service-linked role (SLR)",
+      "summary": "GuardDuty has updated the service-linked role (SLR) to include the vpc-lattice:CreateServiceNetworkVpcAssociation and vpc-lattice:AssociateViaAWSService permissions. These permissions allow GuardDuty to use Amazon VPC Lattice actions to enable connectivity for the Runtime Monitoring agent. For more information, see Service-linked role permissions for GuardDuty .",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "guardduty",
+        "vpc"
+      ],
+      "mapping": [
+        {
+          "service": "guardduty",
+          "method": "fixed-source",
+          "term": "Amazon GuardDuty documentation history",
+          "basis": "Source feed is scoped to guardduty"
+        },
+        {
+          "service": "vpc",
+          "method": "component-exact",
+          "term": "VPC Lattice",
+          "basis": "Exact summary phrase: VPC Lattice"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Source feed is scoped to guardduty; Exact summary phrase: VPC Lattice. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-09T19:00:00Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-24T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-doc-update",
+        "url": "https://docs.aws.amazon.com/guardduty/latest/ug/doc-history.html",
+        "feedLabel": "Amazon GuardDuty documentation history",
+        "feedUrl": "https://docs.aws.amazon.com/guardduty/latest/ug/amazon-guardduty-doc-history.rss"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-whats-new-1104a7d9dbd696",
+      "title": "Amazon EBS Volume Clones now supports copying volumes across accounts",
+      "summary": "Amazon Elastic Block Store (Amazon EBS) Volume Clones now supports copying EBS volumes across AWS accounts with re-encryption. You can copy EBS volumes to any AWS account, re-encrypting with an AWS Key Management Service (AWS KMS) key in the target account. This enables organizations that separate production and development workloads into different accounts to copy data across those account boundaries. With…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "service-change",
+      "services": [
+        "kms"
+      ],
+      "mapping": [
+        {
+          "service": "kms",
+          "method": "component-exact",
+          "term": "AWS Key Management Service",
+          "basis": "Exact summary phrase: AWS Key Management Service"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: AWS Key Management Service. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-09T10:00:00Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-09T10:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-update",
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/09/ebs-volume-clones-cross-account-copy/",
+        "feedLabel": "AWS What's New",
+        "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-whats-new-990efefa846957",
+      "title": "Amazon GuardDuty adds optional threat detection rules",
+      "summary": "Amazon GuardDuty now offers Custom Detection Rules, a library of 35 prebuilt, opt-in rules for CloudTrail management events that let you extend threat detection coverage to match your environment. Custom Detection Rules produces 26 unique finding types mapped to 10 MITRE ATT&CK® tactics, without the heavy lifting of log ingestion, normalization, or storage. Some threat techniques, such as sharing an AMI externally…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "detection-change",
+      "services": [
+        "guardduty"
+      ],
+      "mapping": [
+        {
+          "service": "guardduty",
+          "method": "title-exact",
+          "term": "Amazon GuardDuty",
+          "basis": "Exact title phrase: Amazon GuardDuty"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon GuardDuty. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-04T17:01:00Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-04T17:01:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-update",
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/09/guardduty-optional-detection-rules/",
+        "feedLabel": "AWS What's New",
+        "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-blog-717287dfd64030",
+      "title": "Incident response guide for AWS CloudTrail investigations – Part 2",
+      "summary": "In Part 1 of this guide, we examined two common incident scenarios: cross-account Amazon Simple Storage Service (Amazon S3) data deletion with ransomware implications, and cryptocurrency mining deployed through AWS CloudFormation using exposed AWS Management Console credentials. We also introduced key incident response terminology and investigative frameworks for analyzing AWS CloudTrail events. In this second […]…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "service-change",
+      "services": [
+        "cloudtrail",
+        "s3",
+        "cloudformation"
+      ],
+      "mapping": [
+        {
+          "service": "cloudtrail",
+          "method": "title-exact",
+          "term": "AWS CloudTrail",
+          "basis": "Exact title phrase: AWS CloudTrail"
+        },
+        {
+          "service": "s3",
+          "method": "component-exact",
+          "term": "Amazon S3",
+          "basis": "Exact summary phrase: Amazon S3"
+        },
+        {
+          "service": "cloudformation",
+          "method": "component-exact",
+          "term": "AWS CloudFormation",
+          "basis": "Exact summary phrase: AWS CloudFormation"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: AWS CloudTrail; Exact summary phrase: Amazon S3; Exact summary phrase: AWS CloudFormation. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-03T21:15:53Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-18T21:15:53Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-research",
+        "url": "https://aws.amazon.com/blogs/security/incident-response-guide-for-aws-cloudtrail-investigations-part-2/",
+        "feedLabel": "AWS Security Blog",
+        "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-blog-04e5ef26dd5b03",
+      "title": "Managing identity source transition for AWS IAM Identity Center",
+      "summary": "September 2, 2026: This post was republished to include Active Directory migration strategies and automation for permission sets. AWS IAM Identity Center manages user access to Amazon Web Services (AWS) resources, including both AWS accounts and applications. You can use IAM Identity Center to create and manage user identities within the Identity Center identity store […] September 2, 2026 : This post was…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "identity-center"
+      ],
+      "mapping": [
+        {
+          "service": "identity-center",
+          "method": "title-exact",
+          "term": "AWS IAM Identity Center",
+          "basis": "Exact title phrase: AWS IAM Identity Center"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: AWS IAM Identity Center. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-02T20:36:31Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-17T20:36:31Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-research",
+        "url": "https://aws.amazon.com/blogs/security/managing-identity-source-transition-for-aws-iam-identity-center/",
+        "feedLabel": "AWS Security Blog",
+        "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-eks-doc-history-86f3ff5bdcef5a",
+      "title": "AWS managed policy updates",
+      "summary": "Added wafv2:ListWebACLs permission in AmazonEKSLoadBalancingPolicy to allow Amazon EKS Auto Mode Controller to list AWS WAF Web ACLs when reconciling Application Load Balancer associations. Added gateway.eks.amazonaws.com.alb/stack , gateway.eks.amazonaws.com.alb/resource , gateway.eks.amazonaws.com.nlb/stack , and gateway.eks.amazonaws.com.nlb/resource tag keys to the resource-tagging allowlist in…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "eks",
+        "waf",
+        "elb"
+      ],
+      "mapping": [
+        {
+          "service": "eks",
+          "method": "fixed-source",
+          "term": "Amazon EKS documentation history",
+          "basis": "Source feed is scoped to eks"
+        },
+        {
+          "service": "waf",
+          "method": "component-exact",
+          "term": "AWS WAF",
+          "basis": "Exact summary phrase: AWS WAF"
+        },
+        {
+          "service": "elb",
+          "method": "component-exact",
+          "term": "Application Load Balancer",
+          "basis": "Exact summary phrase: Application Load Balancer"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Source feed is scoped to eks; Exact summary phrase: AWS WAF; Exact summary phrase: Application Load Balancer. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-02T19:00:00Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-17T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-doc-update",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/security-iam-awsmanpol.html",
+        "feedLabel": "Amazon EKS documentation history",
+        "feedUrl": "https://docs.aws.amazon.com/eks/latest/userguide/doc-history.rss"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-whats-new-33f5df30ef4e4e",
+      "title": "AWS Config now supports 60 new resource types",
+      "summary": "AWS Config now supports 60 additional AWS resource types across key services including Amazon Bedrock, Amazon EC2, Amazon SageMaker, and AWS Organizations. This expansion provides greater coverage over your AWS environment, enabling you to more effectively discover, assess, audit, and remediate an even broader range of resources. With this launch, if you have enabled recording for all resource types, then AWS…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "service-change",
+      "services": [
+        "config",
+        "ec2",
+        "organizations"
+      ],
+      "mapping": [
+        {
+          "service": "config",
+          "method": "title-exact",
+          "term": "AWS Config",
+          "basis": "Exact title phrase: AWS Config"
+        },
+        {
+          "service": "ec2",
+          "method": "component-exact",
+          "term": "Amazon EC2",
+          "basis": "Exact summary phrase: Amazon EC2"
+        },
+        {
+          "service": "organizations",
+          "method": "component-exact",
+          "term": "AWS Organizations",
+          "basis": "Exact summary phrase: AWS Organizations"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: AWS Config; Exact summary phrase: Amazon EC2; Exact summary phrase: AWS Organizations. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-02T15:00:00Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-02T15:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-update",
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/09/aws-config-new-resource-types/",
+        "feedLabel": "AWS What's New",
+        "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-guardduty-doc-history-91009e6a012bf2",
+      "title": "New feature - Custom Detection Rules",
+      "summary": "GuardDuty introduces Custom Detection Rules, a curated library of detection rules aligned with threat actor techniques. You can browse, enable, and manage rules to detect specific techniques in your environment. For more information, see Custom Detection Rules .",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "detection-change",
+      "services": [
+        "guardduty"
+      ],
+      "mapping": [
+        {
+          "service": "guardduty",
+          "method": "fixed-source",
+          "term": "Amazon GuardDuty documentation history",
+          "basis": "Source feed is scoped to guardduty"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Source feed is scoped to guardduty. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-01T19:00:00Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-16T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-doc-update",
+        "url": "https://docs.aws.amazon.com/guardduty/latest/ug/doc-history.html",
+        "feedLabel": "Amazon GuardDuty documentation history",
+        "feedUrl": "https://docs.aws.amazon.com/guardduty/latest/ug/amazon-guardduty-doc-history.rss"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-whats-new-f5b7e8abfc2f6a",
+      "title": "Amazon Kinesis Data Streams now supports a dry run feature to validate API requests",
+      "summary": "Amazon Kinesis Data Streams now supports a dry run feature to check whether an API request would succeed without executing the operation. Customers can now set the new optional parameter ‘DryRun’ to true in their API requests to validate permissions before interacting with a stream in production. Previously, customers had no safe way to test whether their application had the correct permissions to access a stream.…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "kinesis"
+      ],
+      "mapping": [
+        {
+          "service": "kinesis",
+          "method": "title-exact",
+          "term": "Amazon Kinesis Data Streams",
+          "basis": "Exact title phrase: Amazon Kinesis Data Streams"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon Kinesis Data Streams. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-01T19:00:00Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-01T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-update",
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/09/amazon-kinesis-data-streams-api/",
+        "feedLabel": "AWS What's New",
+        "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-blog-cb1e5498bed1ab",
+      "title": "Automate IAM Identity Center governance with continuous discovery and reporting",
+      "summary": "AWS IAM Identity Center integrates with external identity provider (IdP) to provide customers with a centralized authentication and authorization solution for AWS resources across AWS Organizations. AWS continues to invest into IAM Identity Center with a growing number of AWS services that natively integrate with IAM Identity Center. As your AWS organization scales, maintaining visibility […] AWS IAM Identity…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "identity-center",
+        "organizations"
+      ],
+      "mapping": [
+        {
+          "service": "identity-center",
+          "method": "title-exact",
+          "term": "IAM Identity Center",
+          "basis": "Exact title phrase: IAM Identity Center"
+        },
+        {
+          "service": "organizations",
+          "method": "component-exact",
+          "term": "AWS Organizations",
+          "basis": "Exact summary phrase: AWS Organizations"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: IAM Identity Center; Exact summary phrase: AWS Organizations. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-08-31T17:18:31Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-15T17:18:31Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-research",
+        "url": "https://aws.amazon.com/blogs/security/automate-iam-identity-center-governance-with-continuous-discovery-and-reporting/",
+        "feedLabel": "AWS Security Blog",
+        "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-blog-2478bf11bf98e1",
+      "title": "Propagate user authorization context in AI agents with Amazon Bedrock AgentCore",
+      "summary": "Many teams now deploy AI agents that pull from Amazon DynamoDB tables, document repositories, software as a service (SaaS) platforms, and internal knowledge bases to answer questions and automate workflows. A key risk in these deployments is that the agent has no awareness of who’s asking, so it might return data the user shouldn’t see. […] Many teams now deploy AI agents that pull from Amazon DynamoDB tables…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "dynamodb"
+      ],
+      "mapping": [
+        {
+          "service": "dynamodb",
+          "method": "component-exact",
+          "term": "Amazon DynamoDB",
+          "basis": "Exact summary phrase: Amazon DynamoDB"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: Amazon DynamoDB. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-08-19T17:24:15Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-03T17:24:15Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-research",
+        "url": "https://aws.amazon.com/blogs/security/propagate-user-authorization-context-in-ai-agents-with-amazon-bedrock-agentcore/",
+        "feedLabel": "AWS Security Blog",
+        "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-blog-7f14f0576e9fa0",
+      "title": "Implement custom authentication for tools integration using request Lambda interceptor in AgentCore Gateway",
+      "summary": "When deploying AI agents with Amazon Bedrock AgentCore, organizations benefit from built-in modern support for OAuth 2.0, AWS Identity and Access Management (IAM), and API key authentication through Amazon Bedrock AgentCore Gateway. However, some enterprise environments still use legacy authentication mechanisms such as HTTP Basic Authentication (Basic Auth) (RFC 7617). The extensible architecture of AgentCore […]…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "iam",
+        "lambda"
+      ],
+      "mapping": [
+        {
+          "service": "iam",
+          "method": "component-exact",
+          "term": "AWS Identity and Access Management",
+          "basis": "Exact summary phrase: AWS Identity and Access Management"
+        },
+        {
+          "service": "lambda",
+          "method": "component-exact",
+          "term": "AWS Lambda",
+          "basis": "Exact summary phrase: AWS Lambda"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: AWS Identity and Access Management; Exact summary phrase: AWS Lambda. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-08-18T20:46:26Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-10-02T20:46:26Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-research",
+        "url": "https://aws.amazon.com/blogs/security/implement-custom-authentication-for-tools-integration-using-request-lambda-interceptor-in-agentcore-gateway/",
+        "feedLabel": "AWS Security Blog",
+        "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-securityhub-doc-history-b8ec80bb536d59",
+      "title": "Updated security controls",
+      "summary": "Security Hub CSPM removed the EFS.6 control from the AWS Foundational Security Best Practices (FSBP) standard . This control remains available in the NIST SP 800-53 Rev. 5, NIST SP 800-171 Revision 2, and PCI DSS v4.0.1 standards.",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "detection-change",
+      "services": [
+        "securityhub"
+      ],
+      "mapping": [
+        {
+          "service": "securityhub",
+          "method": "fixed-source",
+          "term": "AWS Security Hub documentation history",
+          "basis": "Source feed is scoped to securityhub"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Source feed is scoped to securityhub. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-08-03T19:00:00Z",
+      "retrievedAt": "2026-09-12T07:50:48Z",
+      "expiresAt": "2026-09-17T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-doc-update",
+        "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/doc-history.html",
+        "feedLabel": "AWS Security Hub documentation history",
+        "feedUrl": "https://docs.aws.amazon.com/securityhub/latest/userguide/aws-security-hub-doc-updates.rss"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    }
+  ]
+}
