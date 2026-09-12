@@ -129,7 +129,7 @@ python scripts/import_news.py --promote <candidate-id>
 npm run test:news
 ```
 
-The daily `Refresh AWS security news` workflow performs the same fetch, prunes expired approved items, and opens or updates a review pull request. Candidate discovery never merges itself into the published snapshot.
+The daily `Refresh AWS security news` workflow performs the same fetch, prunes expired approved items, and updates a dedicated pull-request branch. Candidate discovery never merges itself into the published snapshot. A repository maintainer bootstraps the first pull request; later runs update that same branch without granting Actions repository-wide permission to approve pull requests.
 
 </details>
 

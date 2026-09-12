@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
+  pull-requests: read
 
 concurrency:
   group: trace-news-refresh
@@ -129,7 +129,7 @@ jobs:
             git push origin "HEAD:${REVIEW_BRANCH}"
           fi
 
-      - name: Open a review pull request
+      - name: Locate the review pull request
         if: steps.changes.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -140,8 +140,13 @@ jobs:
             echo "Updated existing review PR #${existing}."
             exit 0
           fi
-          gh pr create \
-            --base main \
-            --head "${REVIEW_BRANCH}" \
-            --title "Review AWS security news refresh" \
-            --body "Automated, allowlisted RSS/Atom refresh for TRACE. New entries are normalized into generated/news-candidates.json, which is review-only and is not copied into the Pages build. Expired approved entries may be removed from generated/news.json without advancing its editorial review clock. Review source claims, replace the automated basis, mark each confirmed mapping as editorial-review, and add concise whyItMatters plus checks before promotion. Existing reviewer edits and promotions on this branch are preserved across refreshes. Nothing from an external feed is silently published."
+          compare_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/main...${REVIEW_BRANCH}?expand=1"
+          {
+            echo "### AWS security news review branch"
+            echo
+            echo "The review branch is ready, but no open pull request exists."
+            echo "Bootstrap it from: ${compare_url}"
+            echo
+            echo "The workflow intentionally does not request repository-wide pull-request approval authority."
+          } >> "${GITHUB_STEP_SUMMARY}"
+          echo "Review branch ready: ${compare_url}"
