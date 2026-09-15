@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "publication": "review-only",
-  "generatedAt": "2026-09-12T07:50:48Z",
-  "snapshotExpiresAt": "2026-09-26T07:50:48Z",
+  "generatedAt": "2026-09-15T10:05:33Z",
+  "snapshotExpiresAt": "2026-09-29T10:05:33Z",
   "policy": {
     "maxItemsPerService": 3,
     "staleAfterDays": 14,
@@ -11,6 +11,76 @@
     "linksPerItem": 2
   },
   "items": [
+    {
+      "id": "news-aws-security-bulletins-2026-112-aws",
+      "title": "CVE-2026-86830 - Incorrect privilege assignment in Temporary Elevated Access Management (TEAM) for AWS IAM Identity Center",
+      "summary": "Bulletin ID: 2026-112-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 09/14/2026 10:45 AM PDT Description: Temporary Elevated Access Management (TEAM) is an open source AWS sample solution for managing temporary elevated access via AWS IAM Identity Center. We identified CVE-2026-86830, where an authenticated user with application-level access could gain unintended temporary elevated…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "identity-center"
+      ],
+      "mapping": [
+        {
+          "service": "identity-center",
+          "method": "title-exact",
+          "term": "AWS IAM Identity Center",
+          "basis": "Exact title phrase: AWS IAM Identity Center"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: AWS IAM Identity Center. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-14T18:04:59Z",
+      "retrievedAt": "2026-09-15T10:05:33Z",
+      "expiresAt": "2026-10-29T18:04:59Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-112-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-unit42-cloud-research-a548598c065f36",
+      "title": "Unmasking Cloud Identities: From Behavioral Clustering to Automated Detection",
+      "summary": "We designed a behavioral clustering model to map cloud identity roles from audit logs, enabling continuous threat detection using standard SQL queries. The post Unmasking Cloud Identities: From Behavioral Clustering to Automated Detection appeared first on Unit 42 .",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "service-change",
+      "services": [
+        "cloudtrail"
+      ],
+      "mapping": [
+        {
+          "service": "cloudtrail",
+          "method": "component-exact",
+          "term": "AWS CloudTrail",
+          "basis": "Exact summary phrase: AWS CloudTrail"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: AWS CloudTrail. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-14T10:00:01Z",
+      "retrievedAt": "2026-09-14T10:40:55Z",
+      "expiresAt": "2026-11-13T10:00:01Z",
+      "source": {
+        "publisher": "Unit 42",
+        "kind": "independent-research",
+        "url": "https://unit42.paloaltonetworks.com/behavioral-clustering-map-to-cloud-identities/",
+        "feedLabel": "Unit 42 Cloud Cybersecurity Research",
+        "feedUrl": "https://unit42.paloaltonetworks.com/category/cloud-cybersecurity-research/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
     {
       "id": "news-aws-whats-new-c242ee7e65d13a",
       "title": "Amazon ECS expands IAM condition key support for RunTask and StartTask APIs",
