@@ -13,6 +13,8 @@ The map includes **40 services**, **41 documented relationships**, **28 reviewed
 - **Domains:** start with identity, workloads, data, networking, detection, response, supply chain, or investigation.
 - **Services:** select a node for security context, rule-backed attack cases, telemetry requirements, tuning notes, controls, and documentation. Select a connection to see why it exists.
 - **Stories:** search by service, scenario, or MITRE ID and filter by domain. Follow numbered service stages, switch between threat context, evidence, and defense, or compare evidence across the sequence.
+- **Path discovery:** combine domain, service, and rule-mapping filters; sort by stage count, reference count, or title; switch between illustrated cards and a compact index. Global search also returns scenarios and their evidence terms.
+- **Coverage:** compare imported AWS topics, documented links, research paths, reviewed rule mappings, and direct service research across all 40 services. Filter for missing mappings or select a domain. Counts describe TRACE's research collections, not the security of an AWS account.
 - **Current intel:** approved AWS security changes and attributed threat research appear only on explicitly mapped service nodes, with defensive checks, original sources, review dates, and expiry dates.
 
 Ctrl/Cmd+K opens search. **Reading view** puts the notes first; **Focus graph** gives the map more room. Saved services stay in your browser.
@@ -108,6 +110,7 @@ npm run test:connections
 npm run test:motion
 npm run test:mind
 npm run test:reader
+npm run test:research
 npm run test:visual
 npm run test:news
 npm run test:news-ui

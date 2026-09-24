@@ -61,6 +61,10 @@ export function mountResearchHome(root,{topicCount=0,openSearch}={}) {
     <section class="atlas-reading" aria-label="Guided research"><div class="atlas-reading-heading"><div><p class="atlas-eyebrow">A PLACE TO START</p><h2>Follow a question.<br>Find the connections.</h2></div><a href="#/paths">All research paths <span>↗</span></a></div><div class="atlas-paths">${scenarios.slice(0,3).map((s,i)=>`<a class="atlas-path" href="#/scenario/${s.id}"><div><span>FIELD NOTE / 0${i+1}</span><b>↗</b></div><h3>${esc(s.title)}</h3><p>${esc(s.summary)}</p><div class="atlas-path-services">${s.services.slice(0,5).map(id=>`<span style="--node:${domainFor(id).color}">${esc(serviceById(id).short)}</span>`).join('<i>→</i>')}</div><small>${s.services.length} services · ${detectionCoverage(s.services).length} reviewed rules</small></a>`).join('')}</div></section>
     <footer class="atlas-footer"><span>TRACE. <b>INDEPENDENT SECURITY RESEARCH</b></span><a href="#/sources">AWS documentation + sourced community detections ↗</a></footer>
   </section>`;
+  const coverage=document.createElement('section');coverage.className='atlas-coverage';coverage.setAttribute('aria-label','Research coverage');
+  const mappedServices=services.filter(service=>detectionsForService(service.id).length).length;
+  coverage.innerHTML=`<div><h2>The gaps are part of the map.</h2><p>${mappedServices} of ${services.length} services have reviewed rule mappings. Explore documentation, research paths, and missing mappings across every domain.</p></div><a href="#/coverage">Explore coverage <span aria-hidden="true">↗</span></a>`;
+  root.querySelector('.atlas-workspace').after(coverage);
   const page=root.querySelector('.research-home'),stage=page.querySelector('.atlas-stage'),svg=page.querySelector('.atlas-graph'),preview=page.querySelector('.atlas-preview');
   const field=mountField(stage,paused);
   function showPreview(domain,service=null) {
