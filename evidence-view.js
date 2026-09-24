@@ -1,0 +1,17 @@
+import {services,serviceById} from './catalog.js';
+import {evidenceGuides,evidenceForService,evidenceReviewDate} from './evidence-data.js';
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function evidenceCards(guides,{compact=false}={}) {
+  return guides.map((g,i)=>`<article class="evidence-guide ${compact?'is-condensed':''}" id="evidence-${g.id}"><header><span class="evidence-guide-number">${String(i+1).padStart(2,'0')}</span><div><small>${esc(g.category)}</small><h2>${esc(g.title)}</h2></div><span class="evidence-availability">${esc(g.availability)}</span></header><p>${esc(g.describes)}</p><dl><div><dt>COLLECT</dt><dd>${esc(g.prerequisite)}</dd></div><div><dt>KNOW THE LIMIT</dt><dd>${esc(g.limitation)}</dd></div></dl><details><summary>Review checklist</summary><ul>${g.checks.map(check=>`<li>${esc(check)}</li>`).join('')}</ul></details><footer><div>${g.services.map(id=>`<a href="#/service/${id}">${esc(serviceById(id).short)}</a>`).join('')}</div><a class="evidence-official-source" href="${esc(g.source)}" target="_blank" rel="noopener noreferrer">AWS source ↗</a></footer></article>`).join('');
+}
+export function serviceEvidence(id) {
+  const guides=evidenceForService(id);
+  return guides.length?`<section class="service-evidence-guides"><div class="panel-label">COLLECTION REQUIREMENTS / REVIEWED ${evidenceReviewDate}</div>${evidenceCards(guides,{compact:true})}<a class="text-link" href="#/evidence?service=${id}">Open evidence workspace ↗</a></section>`:'';
+}
+export function mountEvidence(root,params=new URLSearchParams()) {
+  const mapped=services.filter(service=>evidenceForService(service.id).length);
+  root.innerHTML=`<section class="content-page evidence-page"><div class="breadcrumb"><a href="#/">Atlas</a><span>/</span><span>Evidence</span></div><header class="content-hero"><div><span class="eyebrow">EVIDENCE WORKSPACE / ${evidenceGuides.length} COLLECTION GUIDES</span><h1>Know what the<br><em>logs can tell you.</em></h1><p>Check collection requirements before interpreting a signal. Each guide separates recorded activity, prerequisites, and documented limits.</p></div><div class="evidence-review"><strong>AWS documentation</strong><span>Reviewed ${evidenceReviewDate}</span><a href="#/coverage">See all service coverage ↗</a></div></header><div class="evidence-tools"><label for="evidence-service">Service<select id="evidence-service"><option value="all">All mapped services</option>${mapped.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></label><p class="evidence-result-count" role="status" aria-live="polite"></p></div><div class="evidence-guide-grid"></div><p class="evidence-scope-note">These guides cover ${mapped.length} services with explicit mappings. They describe AWS collection behavior, not your account configuration. Other services remain outside this collection.</p></section>`;
+  const select=root.querySelector('#evidence-service');select.value=mapped.some(s=>s.id===params.get('service'))?params.get('service'):'all';
+  function render(){const guides=select.value==='all'?evidenceGuides:evidenceForService(select.value);root.querySelector('.evidence-guide-grid').innerHTML=evidenceCards(guides);root.querySelector('.evidence-result-count').textContent=`${guides.length} collection guides · each linked to AWS documentation`;history.replaceState(null,'',select.value==='all'?'#/evidence':'#/evidence?service='+select.value);}
+  select.onchange=render;render();
+}

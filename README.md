@@ -15,6 +15,7 @@ The map includes **40 services**, **41 documented relationships**, **28 reviewed
 - **Stories:** search by service, scenario, or MITRE ID and filter by domain. Follow numbered service stages, switch between threat context, evidence, and defense, or compare evidence across the sequence.
 - **Path discovery:** combine domain, service, and rule-mapping filters; sort by stage count, reference count, or title; switch between illustrated cards and a compact index. Global search also returns scenarios and their evidence terms.
 - **Coverage:** compare imported AWS topics, documented links, research paths, reviewed rule mappings, and direct service research across all 40 services. Filter for missing mappings or select a domain. Counts describe TRACE's research collections, not the security of an AWS account.
+- **Evidence:** six AWS-sourced collection guides explain prerequisites and limits for CloudTrail event history, data events, VPC Flow Logs, EKS control-plane logs, Lambda logs, and S3 access logs. The same guides appear on mapped service evidence tabs, with source links and a review date.
 - **Current intel:** approved AWS security changes and attributed threat research appear only on explicitly mapped service nodes, with defensive checks, original sources, review dates, and expiry dates.
 
 Ctrl/Cmd+K opens search. **Reading view** puts the notes first; **Focus graph** gives the map more room. Saved services stay in your browser.
@@ -54,6 +55,8 @@ Open http://127.0.0.1:4173.
 ## Development
 
 The frontend is plain JavaScript, CSS, and SVG. The background uses WebGPU where available, with a Canvas 2D fallback. Fonts are included in the repository.
+
+The workspace uses connected domain cards, compact page headers, and a stage navigator beside each investigation's evidence panel. Path filters and selected scenario stages are represented in the URL, so browser Back and shared links preserve context. Invalid links provide search and recovery navigation.
 
 <details>
 <summary>Connect the Copilot cloud agent to AWS documentation</summary>
@@ -96,6 +99,8 @@ The AWS documentation tools are read-only. The current upstream package does not
 
 Keep `npm start` running in another terminal.
 
+The release checks also use the built site on port 4174. Run `npm run build`, then start `PORT=4174 node server.mjs --dist` in another terminal (PowerShell: `$env:PORT='4174'; node server.mjs --dist`). The build versions every JS/CSS asset and its imports together so a new page cannot load a cached router from an earlier release.
+
 ```sh
 python -m pip install -r requirements-dev.txt
 python -m playwright install chromium
@@ -111,6 +116,7 @@ npm run test:motion
 npm run test:mind
 npm run test:reader
 npm run test:research
+npm run test:workspace
 npm run test:visual
 npm run test:news
 npm run test:news-ui

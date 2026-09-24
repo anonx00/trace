@@ -28,26 +28,32 @@ with sync_playwright() as p:
     page.goto('http://127.0.0.1:4173/#/scenario/web-to-role',wait_until='networkidle')
     expect(page.locator('.story-motion')).to_have_attribute('aria-label','Pause path animation')
     stop=page.locator('.story-stop').first
-    a=stop.evaluate("e=>getComputedStyle(e,'::before').left")
+    stage_position="e=>{const s=getComputedStyle(e,'::before');return [s.left,s.top]}"
+    a=stop.evaluate(stage_position)
     page.wait_for_timeout(250)
-    assert a!=stop.evaluate("e=>getComputedStyle(e,'::before').left")
+    assert a!=stop.evaluate(stage_position)
     page.locator('.story-motion').click()
     expect(page.locator('.story-motion')).to_have_attribute('aria-label','Resume path animation')
     assert stop.evaluate("e=>getComputedStyle(e,'::before').animationPlayState")=='paused'
     page.goto('http://127.0.0.1:4173',wait_until='networkidle')
-    pulse=page.locator('.atlas-node-pulse').first
-    assert pulse.evaluate("e=>getComputedStyle(e).animationPlayState")=='running'
+    flow=page.locator('.atlas-flow').first
+    a=flow.evaluate(position)
+    page.wait_for_function("previous=>{const m=document.querySelector('.atlas-flow').getCTM();return m.e!==previous[0]||m.f!==previous[1]}",arg=a,timeout=3000)
+    assert a!=flow.evaluate(position),'Domain connector did not move'
     page.locator('#atlas-motion').click()
-    assert pulse.evaluate("e=>getComputedStyle(e).animationPlayState")=='paused'
+    a=flow.evaluate(position)
+    page.wait_for_timeout(200)
+    assert a==flow.evaluate(position),'Domain connector moved while paused'
     page.emulate_media(reduced_motion='reduce')
     page.goto('http://127.0.0.1:4173/#/service/iam',wait_until='networkidle')
     assert page.locator('.world-svg').evaluate('e=>e.animationsPaused()')
     page.goto('http://127.0.0.1:4173',wait_until='networkidle')
     assert page.locator('.atlas-graph').evaluate('e=>e.animationsPaused()')
     expect(page.locator('#atlas-motion')).to_have_attribute('aria-label','Resume atlas animation')
-    assert page.locator('.atlas-node-pulse').first.evaluate(
-        "e=>getComputedStyle(e).animationName==='none'||getComputedStyle(e).animationPlayState==='paused'"
-    )
+    flow=page.locator('.atlas-flow').first
+    a=flow.evaluate(position)
+    page.wait_for_timeout(200)
+    assert a==flow.evaluate(position),'Reduced-motion connector moved'
     assert not errors,errors
     print(json.dumps({"motion":"advances / pauses / resumes","routeChanges":"passed","reducedMotion":"passed","errors":errors}))
     b.close()

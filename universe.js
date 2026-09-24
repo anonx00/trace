@@ -4,6 +4,9 @@ import {mountStory} from './story-player.js';
 import {mountPathIndex,enhanceScenarioReader,enhanceSourceReader} from './reader-experience.js';
 import {mountCoverage} from './coverage-view.js';
 import {scenarioSearchText} from './research-index.js';
+import {parseRoute} from './route-utils.js';
+import {mountEvidence,serviceEvidence} from './evidence-view.js';
+import {evidenceGuides,evidenceReviewDate} from './evidence-data.js';
 import {mountField} from './universe-field.js';
 let cleanupResearchHome=()=>{},cleanupMindPage=()=>{},graphPage=0,mindPaused=matchMedia('(prefers-reduced-motion: reduce)').matches;
 import {services,domains,connections,insights,serviceById,domainById,domainFor} from './catalog.js';
@@ -169,6 +172,7 @@ function renderPanel(){const {type,d,s,topic,topicIndex}=routeState;const panel=
       const fill=q=>{$('#topic-list').innerHTML=(doc?.sections||[]).map((t,i)=>({...t,i})).filter(t=>t.title.toLowerCase().includes(q)).map(t=>`<a class="topic-link" href="#/service/${s.id}/topic/${t.i}">${esc(t.title)}<small>Official guide / section ${t.i+1}</small></a>`).join('')||'<p class="empty-note">No matching headings in the imported page. Open the AWS guide for the complete documentation.</p>';};fill('');$('.topic-filter').oninput=e=>fill(e.target.value.toLowerCase());
     }
   }
+  if(type==='service'&&!topic&&activeTab==='evidence')$('#tab-panel').insertAdjacentHTML('beforeend',serviceEvidence(s.id));
   if(activeTab==='defense') renderFieldCommand(panel,commandFor(s.id));
 }
 
@@ -271,12 +275,12 @@ function attackPaths(){
   document.title='AWS attack paths - TRACE';
 }
 
-function scenarioPage(id){
+function scenarioPage(id,params=new URLSearchParams()){
   const scenario=scenarioById(id);if(!scenario)return notFound();
   routeState={type:'scenario',scenario};
   const sources=scenarioSources(scenario),rules=detectionCoverage(scenario.services),covered=new Set(rules.flatMap(rule=>rule.services)),gaps=scenario.services.filter(serviceId=>!covered.has(serviceId));
   $('#view').innerHTML=`<section class="content-page scenario-page">${breadcrumb([['Attack paths','#/paths'],[scenario.title]])}<article><header class="scenario-header"><div><span class="eyebrow">${esc(scenario.kicker)}</span><h1>${esc(scenario.title)}</h1><p>${esc(scenario.summary)}</p><div class="mitre-row">${scenario.mitre.map(v=>`<span>MITRE ${v}</span>`).join('')}</div></div><div class="scenario-confidence"><span>SCENARIO BASIS</span><strong>${esc(scenario.confidence)}</strong><small>Authorized testing and incident-response model</small></div></header><section class="attack-trace"><div class="section-heading"><span>01</span><div><small>ATTACK TRACE</small><h2>Follow the identity and control plane.</h2></div></div><div class="trace-stages" style="--stage-count:${scenario.stages.length}">${scenario.stages.map((stage,i)=>{const service=serviceById(stage.service),domain=domainFor(stage.service);return `<div class="trace-stage" style="--color:${domain.color}"><a class="stage-service" href="#/service/${stage.service}">${icon(domain.icon)}<span><small>STAGE ${String(i+1).padStart(2,'0')} / ${esc(domain.short.toUpperCase())}</small><strong>${esc(service.name)}</strong></span></a><h3>${esc(stage.title)}</h3><p>${esc(stage.detail)}</p><div class="stage-signal"><span>OBSERVABLE</span><p>${esc(stage.signal)}</p></div></div>`;}).join('')}</div></section><div class="response-grid"><section><div class="section-heading"><span>02</span><div><small>DETECT</small><h2>Prove the sequence.</h2></div></div><ul>${scenario.detect.map(v=>`<li>${esc(v)}</li>`).join('')}</ul></section><section><div class="section-heading"><span>03</span><div><small>CONTAIN</small><h2>Stop reach and preserve evidence.</h2></div></div><ul>${scenario.contain.map(v=>`<li>${esc(v)}</li>`).join('')}</ul></section><section><div class="section-heading"><span>04</span><div><small>HARDEN</small><h2>Close the path.</h2></div></div><ul>${scenario.harden.map(v=>`<li>${esc(v)}</li>`).join('')}</ul></section></div><section class="scenario-detections"><div class="section-heading"><span>05</span><div><small>COMMUNITY COVERAGE</small><h2>Rules that touch this path.</h2></div></div><p>These are related service-level detections, not proof that the complete scenario occurred. Use their native logic as individual signals and correlate the path with the evidence above.</p><div class="scenario-detection-grid">${rules.map(rule=>`<a href="${esc(rule.source)}" target="_blank" rel="noopener noreferrer"><span>${esc(rule.language)} · ${esc(rule.contributor)}</span><strong>${esc(rule.title)}</strong><small>${esc(rule.signals[0])}</small></a>`).join('')||'<p class="empty-note">No reviewed community rule maps to this path yet.</p>'}</div>${gaps.length?`<div class="scenario-coverage-gap"><span>VISIBLE GAPS</span><p>${gaps.map(serviceId=>esc(serviceById(serviceId).name)).join(' · ')}</p></div>`:''}</section><section class="scenario-sources"><div class="section-heading"><span>06</span><div><small>PROVENANCE</small><h2>Research behind the path.</h2></div></div><p>Attack steps are synthesized from cited labs, research, and official behavior. Sources labeled DISCOVERY ONLY supply review prompts, not evidence or text. Response actions are synthesized from AWS guidance and incident playbooks. Prerequisite permissions and evidence limits remain explicit. No private target data or exploit payloads are published.</p><div>${sources.map(v=>`<a href="${esc(v.url)}" target="_blank" rel="noopener noreferrer"><span>${esc(v.kind)}</span><strong>${esc(v.publisher)}</strong><small>${esc(v.label)}</small></a>`).join('')}</div></section></article></section>`;
-  const story=document.createElement('div');story.className='mind-story-host';$('.scenario-header').after(story);mountStory(story,scenario);
+  const story=document.createElement('div');story.className='mind-story-host';$('.scenario-header').after(story);mountStory(story,scenario,{initialStage:Number(params.get('stage')||1)-1,onStageChange:({index})=>{history.replaceState(null,'',`#/scenario/${scenario.id}${index?'?stage='+(index+1):''}`);}});
   enhanceScenarioReader($('.scenario-page'));
   document.title=`${scenario.title} - TRACE`;
 }
@@ -312,10 +316,29 @@ function sources(){
   </section>`;
   document.title='Sources and methodology - TRACE';
   enhanceSourceReader($('.sources-page'));
+  $('.source-principles').insertAdjacentHTML('afterend',`<section class="sources-note evidence-source-note"><strong>${evidenceGuides.length} AWS evidence collection guides · reviewed ${evidenceReviewDate}</strong><p>New collection notes separate prerequisites, observable records, and documented limits for CloudTrail, VPC, EKS, Lambda, and S3.</p><a href="#/evidence">Open the evidence workspace and original AWS sources ↗</a></section>`);
 }
 function concept(id){const article=insights.find(x=>x.id===id);if(!article)return notFound();routeState={type:'concept'};$('#view').innerHTML=`<section class="content-page">${breadcrumb([['Concepts'],[article.title]])}<article class="article"><span class="eyebrow">${esc(article.tag)} · SOURCE-BASED EXPLANATION</span><h1>${esc(article.title)}</h1><p>${esc(article.description)}</p><div class="article-flow">${article.services.map((id,i)=>`${i?'<span>↔</span>':''}<a href="#/service/${id}" style="--color:${domainFor(id).color}">${esc(serviceById(id).name)}</a>`).join('')}</div><p>${esc(article.body)}</p><div class="sources-note">The diagram groups the services discussed in this concept; the source links below explain their relationship.</div>${[article.source,...article.sources||[]].map(url=>linkOut(url,'Read the supporting AWS documentation','source-button')).join('')}</article></section>`;}
-function notFound(){routeState={type:'404'};$('#view').innerHTML='<section class="content-page"><h1>This node isn’t in the atlas.</h1><p><a class="text-link" href="#/">Return to the universe →</a></p></section>';}
-function route(){cleanupMindPage();cleanupResearchHome();cleanupMindPage=()=>{};cleanupResearchHome=()=>{};graphPage=0;const [type,id,sub,index]=location.hash.replace(/^#\/?/,'').split('/');activeTab='intel';graphMode='security';if(type==='library')library();else if(type==='coverage'){routeState={type:'coverage'};mountCoverage($('#view'),{documents:docs.documents,docsAvailable:!loadError});document.title='Research coverage - TRACE';}else if(type==='paths')attackPaths();else if(type==='scenario')scenarioPage(id);else if(type==='sources')sources();else if(type==='concept')concept(id);else if(type==='domain')mapPage('domain',id);else if(type==='service')mapPage('service',id,sub==='topic'?Number(index):undefined);else if(!type)cleanupResearchHome=mountResearchHome($('#view'),{topicCount:docs.stats.sections,openSearch});else notFound();document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.dataset.nav===(type==='coverage'?'coverage':type==='library'?'library':type==='paths'||type==='scenario'?'paths':type==='sources'?'sources':'map')));document.querySelectorAll('[data-domain]').forEach(a=>a.classList.toggle('active',a.dataset.domain===(type==='domain'?id:domainFor(id)?.id)));document.querySelectorAll('[data-nav]').forEach(a=>{if(a.classList.contains('active'))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});window.scrollTo(0,0);announce(document.querySelector('h1')?.textContent||'Atlas updated');}
+function notFound(){routeState={type:'404'};document.title='Find your place - TRACE';$('#view').innerHTML=`<section class="content-page route-recovery"><span class="eyebrow">LET’S GET YOU BACK TO THE ATLAS</span><h1>This link doesn’t<br>match a page.</h1><p>The address may be incomplete or from an older version. Your next step is below.</p><div class="recovery-links"><a href="#/"><strong>Explore the map</strong><span>40 connected AWS services →</span></a><a href="#/paths"><strong>Follow an investigation</strong><span>21 sourced research paths →</span></a><a href="#/coverage"><strong>Review coverage</strong><span>Documentation and mapping gaps →</span></a></div><button class="recovery-search">Search the atlas</button></section>`;$('.recovery-search').onclick=openSearch;}
+function route(){
+  cleanupMindPage();cleanupResearchHome();cleanupMindPage=()=>{};cleanupResearchHome=()=>{};graphPage=0;
+  const {type,id,sub,index,params}=parseRoute(location.hash);activeTab='intel';graphMode='security';
+  if(type==='library')library();
+  else if(type==='coverage'){routeState={type};mountCoverage($('#view'),{documents:docs.documents,docsAvailable:!loadError});document.title='Research coverage - TRACE';}
+  else if(type==='evidence'){routeState={type};mountEvidence($('#view'),params);document.title='Evidence workspace - TRACE';}
+  else if(type==='paths')attackPaths();
+  else if(type==='scenario')scenarioPage(id,params);
+  else if(type==='sources')sources();
+  else if(type==='concept')concept(id);
+  else if(type==='domain')mapPage('domain',id);
+  else if(type==='service'){if(['intel','evidence','detections','defense','docs'].includes(params.get('tab')))activeTab=params.get('tab');mapPage('service',id,sub==='topic'?Number(index):undefined);}
+  else if(!type){routeState={type:'home'};cleanupResearchHome=mountResearchHome($('#view'),{topicCount:docs.stats.sections,openSearch});}
+  else notFound();
+  const nav=type==='scenario'?'paths':['library','paths','coverage','evidence','sources'].includes(type)?type:'map';
+  document.querySelectorAll('[data-nav]').forEach(a=>{const active=a.dataset.nav===nav;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  document.querySelectorAll('[data-domain]').forEach(a=>a.classList.toggle('active',a.dataset.domain===(type==='domain'?id:domainFor(id)?.id)));
+  document.body.dataset.page=routeState.type||type||'home';window.scrollTo(0,0);announce(document.querySelector('h1')?.textContent||'Atlas updated');
+}
 function openSearch(){const dialog=$('#search-dialog');if(!dialog.open)dialog.showModal();$('#search-input').value='';searchResults('');$('#search-input').focus();}
 function searchResults(query){
   const q=query.toLowerCase().trim();
@@ -327,6 +350,7 @@ function searchResults(query){
     // Reserve room for investigations; broad service matches must not hide them.
     const paths=scenarios.filter(s=>scenarioSearchText(s).includes(q)).map(s=>({label:s.title,sub:`Research path · ${s.stages.length} stages`,url:`#/scenario/${s.id}`,d:domainFor(s.stages[0].service)}));
     results.splice(Math.min(results.length,6),0,...paths);
+    evidenceGuides.filter(g=>[g.title,g.category,g.availability,g.prerequisite,g.limitation,...g.services].join(' ').toLowerCase().includes(q)).forEach(g=>results.push({label:g.title,sub:'Evidence guide · '+g.availability,url:'#/evidence?service='+g.services[0],d:domainFor(g.services[0])}));
     currentNewsItems().filter(item=>`${item.title} ${item.summary} ${item.whyItMatters} ${item.source.publisher} ${item.mapping.flatMap(entry=>[entry.term,entry.basis]).join(' ')} ${item.checks.join(' ')}`.toLowerCase().includes(q)).forEach(item=>{const serviceId=item.services.find(id=>serviceById(id));if(serviceId)results.push({label:item.title,sub:`Time-sensitive intel · ${item.services.length} mapped node${item.services.length===1?'':'s'}`,url:`#/service/${serviceId}`,d:domainFor(serviceId)});});
     communityDetections.filter(rule=>`${rule.title} ${rule.summary} ${rule.language} ${rule.contributor} ${rule.signals.join(' ')} ${rule.mitre.join(' ')}`.toLowerCase().includes(q)).forEach(rule=>{const serviceId=rule.services[0];results.push({label:rule.title,sub:`${rule.language} detection · ${serviceById(serviceId).name}`,url:`#/service/${serviceId}`,d:domainFor(serviceId)});});
     docs.documents.filter(d=>d.status==='ok').forEach(doc=>doc.sections.forEach((t,i)=>{if(t.title.toLowerCase().includes(q))results.push({label:t.title,sub:serviceById(doc.id).name+' · Source topic',url:`#/service/${doc.id}/topic/${i}`,d:domainFor(doc.id)});}));
