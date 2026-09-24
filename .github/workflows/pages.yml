@@ -62,6 +62,7 @@ jobs:
           npm run test:motion
           npm run test:mind
           npm run test:reader
+          npm run test:research
           npm run test:visual
           npm run test:news-ui
       - name: Upload static Pages artifact
