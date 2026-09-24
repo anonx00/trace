@@ -8,8 +8,8 @@ import {detectionsForService} from './community-detections.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const symbol=d=>`<svg viewBox="-22 -22 44 44" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="${glyphs[d.id]}"/></svg>`;
 
-export function mountStory(host,scenario,{onStageChange,showMotion=true,initialPaused}={}){
-  let index=0,lens='intel',overview=false,paused=initialPaused??matchMedia('(prefers-reduced-motion: reduce)').matches;
+export function mountStory(host,scenario,{onStageChange,showMotion=true,initialPaused,initialStage=0}={}){
+  let index=Number.isInteger(initialStage)?Math.max(0,Math.min(scenario.stages.length-1,initialStage)):0,lens='intel',overview=false,paused=initialPaused??matchMedia('(prefers-reduced-motion: reduce)').matches;
   const sources=scenarioSources(scenario);
   const facts=scenarioFacts(scenario);
   host.innerHTML=`<section class="story-player" aria-label="Interactive investigation timeline">
@@ -76,14 +76,14 @@ export function mountStory(host,scenario,{onStageChange,showMotion=true,initialP
   host.querySelector('#story-next').onclick=()=>selectStage(index+1);
   host.querySelector('.story-overview-toggle').onclick=()=>{overview=!overview;render();};
   track.onkeydown=event=>{
-    if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
-    event.preventDefault();selectStage(event.key==='Home'?0:event.key==='End'?scenario.stages.length-1:index+(event.key==='ArrowRight'?1:-1),true);
+    if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key))return;
+    event.preventDefault();selectStage(event.key==='Home'?0:event.key==='End'?scenario.stages.length-1:index+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1),true);
   };
   const motionButton=host.querySelector('.story-motion');
   const setPaused=value=>{paused=value;host.classList.toggle('story-paused',paused);if(motionButton){motionButton.setAttribute('aria-label',`${paused?'Resume':'Pause'} path animation`);motionButton.textContent=paused?'Resume motion':'Pause motion';}};
   setPaused(paused);
   if(motionButton)motionButton.onclick=()=>setPaused(!paused);
   render();
-  const first=scenario.stages[0],firstService=serviceById(first.service);onStageChange?.({index:0,stage:first,service:firstService,domain:domainFor(firstService.id)});
+  const first=scenario.stages[index],firstService=serviceById(first.service);onStageChange?.({index,stage:first,service:firstService,domain:domainFor(firstService.id)});
   return {setPaused,selectedStage:()=>index};
 }

@@ -11,6 +11,7 @@
     "import:news": "python scripts/import_news.py --refresh",
     "test:ui": "python scripts/check_ui.py",
     "test:research": "node --check coverage-view.js && node --check research-index.js && node scripts/check_research_index.mjs && python scripts/check_research.py",
+    "test:workspace": "node --check evidence-view.js && node --check evidence-data.js && node scripts/check_release.mjs && python scripts/check_workspace.py",
     "test:mind": "python scripts/check_mind.py",
     "test:reader": "python scripts/check_reader.py",
     "test:visual": "python scripts/check_visual.py",

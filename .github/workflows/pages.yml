@@ -50,6 +50,7 @@ jobs:
       - name: Start local preview
         run: |
           node server.mjs > /tmp/trace-preview.log 2>&1 &
+          PORT=4174 node server.mjs --dist > /tmp/trace-release.log 2>&1 &
           python scripts/wait_preview.py
       - name: Test navigation, sourced connections, motion and layouts
         run: |
@@ -63,6 +64,7 @@ jobs:
           npm run test:mind
           npm run test:reader
           npm run test:research
+          npm run test:workspace
           npm run test:visual
           npm run test:news-ui
       - name: Upload static Pages artifact

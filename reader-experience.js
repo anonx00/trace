@@ -7,7 +7,8 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const glyph=d=>`<svg viewBox="-22 -22 44 44" aria-hidden="true"><path d="${glyphs[d.id]}"/></svg>`;
 
 export function mountPathIndex(root){
-  let domain='all',layout='cards';
+  const params=new URLSearchParams(location.hash.split('?')[1]||'');
+  let domain=domains.some(d=>d.id===params.get('domain'))?params.get('domain'):'all',layout=params.get('layout')==='compact'?'compact':'cards';
   root.innerHTML=`<section class="content-page paths-page"><div class="breadcrumb"><a href="#/">Atlas</a><span>/</span><span>Attack paths</span></div>
     <div class="content-hero paths-hero"><div><span class="eyebrow">FIELD NOTES / ${scenarios.length} RESEARCH PATHS</span><h1>Follow the attack.<br><em>Read the evidence.</em></h1><p>Explore a scenario one stage at a time. See the service involved, the evidence to collect, and the controls to review.</p></div><div class="path-index-guide"><span class="reader-label">HOW TO READ A PATH</span><p><b>01</b> Choose a question</p><p><b>02</b> Follow the service sequence</p><p><b>03</b> Compare evidence and response</p></div></div>
     <div class="path-discovery"><label for="path-search">Find an investigation<input id="path-search" type="search" placeholder="Service, scenario, or MITRE ID…"></label><div class="path-domain-filters" role="group" aria-label="Filter paths by service domain"><button data-path-domain="all" aria-pressed="true">All paths</button>${domains.map(d=>`<button data-path-domain="${d.id}" aria-pressed="false" style="--color:${d.color}">${esc(d.short)}</button>`).join('')}</div></div>
@@ -16,6 +17,7 @@ export function mountPathIndex(root){
   function render(){
     const query=root.querySelector('#path-search').value.toLowerCase().trim();
     const service=root.querySelector('#path-service').value,coverage=root.querySelector('#path-coverage').value,sort=root.querySelector('#path-sort').value;
+    const state=new URLSearchParams();if(query)state.set('q',root.querySelector('#path-search').value.trim());if(domain!=='all')state.set('domain',domain);if(service!=='all')state.set('service',service);if(coverage!=='all')state.set('mapping',coverage);if(sort!=='editorial')state.set('sort',sort);if(layout!=='cards')state.set('layout',layout);history.replaceState(null,'','#/paths'+(state.size?'?'+state:''));
     const results=scenarios.filter(s=>{
       const facts=scenarioFacts(s);
       return (domain==='all'||s.services.some(id=>domainFor(id).id===domain))&&(service==='all'||s.services.includes(service))&&(coverage==='all'||(coverage==='gaps'?facts.gaps.length>0:facts.gaps.length===0))&&scenarioSearchText(s).includes(query);
@@ -41,9 +43,12 @@ export function mountPathIndex(root){
   root.querySelector('#path-search').oninput=render;
   root.querySelectorAll('.path-refine select').forEach(select=>select.onchange=render);
   root.querySelector('.path-clear').onclick=clear;
-  root.querySelectorAll('[data-path-layout]').forEach(button=>button.onclick=()=>{layout=button.dataset.pathLayout;root.querySelectorAll('[data-path-layout]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));root.querySelector('.scenario-grid').classList.toggle('is-compact',layout==='compact');});
+  root.querySelectorAll('[data-path-layout]').forEach(button=>button.onclick=()=>{layout=button.dataset.pathLayout;root.querySelectorAll('[data-path-layout]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));render();});
   root.querySelectorAll('[data-path-domain]').forEach(button=>button.onclick=()=>{domain=button.dataset.pathDomain;updateFilters();render();});
-  render();
+  root.querySelector('#path-search').value=params.get('q')||'';
+  for(const [selector,key,fallback] of [['#path-service','service','all'],['#path-coverage','mapping','all'],['#path-sort','sort','editorial']]){const select=root.querySelector(selector),value=params.get(key);select.value=[...select.options].some(option=>option.value===value)?value:fallback;}
+  root.querySelectorAll('[data-path-layout]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.pathLayout===layout)));
+  updateFilters();render();
 }
 
 export function enhanceScenarioReader(page){

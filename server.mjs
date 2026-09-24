@@ -2,7 +2,8 @@ import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-const root = fileURLToPath(new URL('.', import.meta.url));
+const root = fileURLToPath(new URL(process.argv.includes('--dist') ? './dist/' : '.', import.meta.url));
+const port = Number(process.env.PORT || 4173);
 const mime = { '.woff2': 'font/woff2', '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.json': 'application/json', '.png': 'image/png', '.md': 'text/plain' };
 const server = http.createServer(async (req, res) => {
   try {
@@ -14,4 +15,4 @@ const server = http.createServer(async (req, res) => {
     res.end(body);
   } catch { res.writeHead(404); res.end('Not found'); }
 });
-server.listen(4173, '127.0.0.1', () => console.log('TRACE is available at http://127.0.0.1:4173'));
+server.listen(port, '127.0.0.1', () => console.log(`TRACE ${process.argv.includes('--dist')?'built release':'source'} is available at http://127.0.0.1:${port}`));
