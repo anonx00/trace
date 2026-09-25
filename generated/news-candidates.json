@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "publication": "review-only",
-  "generatedAt": "2026-09-12T07:50:48Z",
-  "snapshotExpiresAt": "2026-09-26T07:50:48Z",
+  "generatedAt": "2026-09-25T10:12:39Z",
+  "snapshotExpiresAt": "2026-10-09T10:12:39Z",
   "policy": {
     "maxItemsPerService": 3,
     "staleAfterDays": 14,
@@ -11,6 +11,643 @@
     "linksPerItem": 2
   },
   "items": [
+    {
+      "id": "news-aws-security-bulletins-fc8f584518e709",
+      "title": "CVE-2026-6437 - Mount Option Injection in Amazon EFS CSI Driver",
+      "summary": "The feed supplied no reviewable summary; open the original source before evaluating this candidate.",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "efs"
+      ],
+      "mapping": [
+        {
+          "service": "efs",
+          "method": "title-exact",
+          "term": "Amazon EFS",
+          "basis": "Exact title phrase: Amazon EFS"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon EFS. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-24T17:49:06Z",
+      "retrievedAt": "2026-09-25T10:12:39Z",
+      "expiresAt": "2026-11-08T17:49:06Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-016-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-whats-new-13e97c79192767",
+      "title": "Amazon RDS for MySQL announces Extended Support minor versions 5.7.44-rds.20260902 and 8.0.46-rds.20260908",
+      "summary": "Amazon Relational Database Service (RDS) for MySQL announces Amazon RDS Extended Support minor versions 5.7.44-rds.20260902 and 8.0.46-rds.20260908. Amazon RDS Extended Support provides up to three additional years of fixes for critical Common Vulnerabilities and Exposures (CVE) and bugs beyond a major version's end of standard support date, giving you more time to upgrade to a new major version. You can upgrade…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "rds"
+      ],
+      "mapping": [
+        {
+          "service": "rds",
+          "method": "title-exact",
+          "term": "Amazon RDS",
+          "basis": "Exact title phrase: Amazon RDS"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon RDS. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-24T16:00:00Z",
+      "retrievedAt": "2026-09-25T10:12:39Z",
+      "expiresAt": "2026-10-24T16:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-update",
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/09/amazon-rds-mysql-extended-support-minor-5744-8046-rds/",
+        "feedLabel": "AWS What's New",
+        "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-whats-new-047e957f0f4e3b",
+      "title": "AWS Network Security Manager is now generally available in US East (N. Virginia) Region",
+      "summary": "Today, AWS announces the general availability of AWS Network Security Manager, a comprehensive network security management solution designed to simplify security policy deployment and enforcement at scale. Network Security Manager supports AWS WAF and AWS Shield Advanced, with support for AWS Network Firewall soon to follow. AWS Network Security Manager enables security teams to consistently enforce firewall and…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "waf"
+      ],
+      "mapping": [
+        {
+          "service": "waf",
+          "method": "component-exact",
+          "term": "AWS WAF",
+          "basis": "Exact summary phrase: AWS WAF"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: AWS WAF. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-24T15:00:00Z",
+      "retrievedAt": "2026-09-25T10:12:39Z",
+      "expiresAt": "2026-10-24T15:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-update",
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/09/network-security-manager-us-east-va/",
+        "feedLabel": "AWS What's New",
+        "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-whats-new-2d06c7fe68772a",
+      "title": "Amazon CloudWatch Omni: AI-first observability for agents and applications",
+      "summary": "AWS announces the general availability of Amazon CloudWatch Omni, an evolution of Amazon CloudWatch. Omni is an AI-powered observability experience organized around your teams and the applications they run, so that you can observe and troubleshoot your applications and agents in one place. It combines the interoperability of OpenTelemetry with the scale and reliability of CloudWatch. And it meets you wherever you…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "service-change",
+      "services": [
+        "cloudwatch"
+      ],
+      "mapping": [
+        {
+          "service": "cloudwatch",
+          "method": "title-exact",
+          "term": "Amazon CloudWatch",
+          "basis": "Exact title phrase: Amazon CloudWatch"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon CloudWatch. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-23T00:06:00Z",
+      "retrievedAt": "2026-09-23T10:00:19Z",
+      "expiresAt": "2026-10-23T00:06:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-update",
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/09/amazon-cloudwatch-omni-ai/",
+        "feedLabel": "AWS What's New",
+        "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-65eac2f44650b5",
+      "title": "CVE-2026-7461 - OS Command Injection in Amazon ECS Agent via FSx Windows File Server Volume Credentials",
+      "summary": "The feed supplied no reviewable summary; open the original source before evaluating this candidate.",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "ecs"
+      ],
+      "mapping": [
+        {
+          "service": "ecs",
+          "method": "title-exact",
+          "term": "Amazon ECS",
+          "basis": "Exact title phrase: Amazon ECS"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon ECS. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-22T19:49:50Z",
+      "retrievedAt": "2026-09-25T10:12:39Z",
+      "expiresAt": "2026-11-06T19:49:50Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-024-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-c939e732b2b138",
+      "title": "CVE-2026-13762 and CVE-2026-13763 - Issue with HTTP/2 multi-frame request body inspection in AWS WAF",
+      "summary": "The feed supplied no reviewable summary; open the original source before evaluating this candidate.",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "waf"
+      ],
+      "mapping": [
+        {
+          "service": "waf",
+          "method": "title-exact",
+          "term": "AWS WAF",
+          "basis": "Exact title phrase: AWS WAF"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: AWS WAF. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-22T19:49:10Z",
+      "retrievedAt": "2026-09-25T10:12:39Z",
+      "expiresAt": "2026-11-06T19:49:10Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-048-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-blog-965cd2e1b67969",
+      "title": "Transforming Bedrock Guardrails events into OCSF with CloudWatch",
+      "summary": "Security teams investigating possible AI-related security events need guardrail intervention data alongside their existing security telemetry. When a guardrail identifies or blocks a prompt injection attempt or redacts sensitive data, that intervention carries additional investigative value comparable to a failed sign-in or a network intrusion alert. AWS Bedrock publishes this telemetry to AWS CloudWatch metrics…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "service-change",
+      "services": [
+        "cloudwatch",
+        "athena",
+        "lambda"
+      ],
+      "mapping": [
+        {
+          "service": "cloudwatch",
+          "method": "component-exact",
+          "term": "AWS CloudWatch",
+          "basis": "Exact summary phrase: AWS CloudWatch"
+        },
+        {
+          "service": "athena",
+          "method": "component-exact",
+          "term": "Amazon Athena",
+          "basis": "Exact summary phrase: Amazon Athena"
+        },
+        {
+          "service": "lambda",
+          "method": "component-exact",
+          "term": "AWS Lambda",
+          "basis": "Exact summary phrase: AWS Lambda"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: AWS CloudWatch; Exact summary phrase: Amazon Athena; Exact summary phrase: AWS Lambda. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-21T15:33:25Z",
+      "retrievedAt": "2026-09-22T09:58:47Z",
+      "expiresAt": "2026-11-05T15:33:25Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-research",
+        "url": "https://aws.amazon.com/blogs/security/transforming-bedrock-guardrails-events-into-ocsf-with-cloudwatch/",
+        "feedLabel": "AWS Security Blog",
+        "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-unit42-cloud-research-53b9c11a6051ce",
+      "title": "From Exposure to Lockdown: How AWS Neutralizes Compromised IAM Credentials through Managed Policies",
+      "summary": "We explore how AWS neutralizes exposed IAM credentials using managed policies, detailing GitHub secret scanning and CloudTrail monitoring strategies. The post From Exposure to Lockdown: How AWS Neutralizes Compromised IAM Credentials through Managed Policies appeared first on Unit 42 .",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "service-change",
+      "services": [
+        "cloudtrail"
+      ],
+      "mapping": [
+        {
+          "service": "cloudtrail",
+          "method": "component-exact",
+          "term": "AWS CloudTrail",
+          "basis": "Exact summary phrase: AWS CloudTrail"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: AWS CloudTrail. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-21T10:00:13Z",
+      "retrievedAt": "2026-09-21T10:45:08Z",
+      "expiresAt": "2026-11-20T10:00:13Z",
+      "source": {
+        "publisher": "Unit 42",
+        "kind": "independent-research",
+        "url": "https://unit42.paloaltonetworks.com/detecting-exposed-aws-iam-credentials/",
+        "feedLabel": "Unit 42 Cloud Cybersecurity Research",
+        "feedUrl": "https://unit42.paloaltonetworks.com/category/cloud-cybersecurity-research/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-guardduty-doc-history-9e0b5f31fe2b11",
+      "title": "Documented redacted AWS CloudTrail event fields for Custom Detection Rules",
+      "summary": "Added guidance explaining that an AWS service can redact the value of a field in the AWS CloudTrail events that it publishes, and that a Custom Detection Rule whose detection logic depends on a redacted field does not match. For more information, see Redacted event fields .",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "detection-change",
+      "services": [
+        "guardduty",
+        "cloudtrail"
+      ],
+      "mapping": [
+        {
+          "service": "guardduty",
+          "method": "fixed-source",
+          "term": "Amazon GuardDuty documentation history",
+          "basis": "Source feed is scoped to guardduty"
+        },
+        {
+          "service": "cloudtrail",
+          "method": "title-exact",
+          "term": "CloudTrail event",
+          "basis": "Exact title phrase: CloudTrail event"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Source feed is scoped to guardduty; Exact title phrase: CloudTrail event. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-18T19:00:00Z",
+      "retrievedAt": "2026-09-22T09:58:47Z",
+      "expiresAt": "2026-11-02T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-doc-update",
+        "url": "https://docs.aws.amazon.com/guardduty/latest/ug/doc-history.html",
+        "feedLabel": "Amazon GuardDuty documentation history",
+        "feedUrl": "https://docs.aws.amazon.com/guardduty/latest/ug/amazon-guardduty-doc-history.rss"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-whats-new-702f6de63b35d0",
+      "title": "AWS HealthOmics now supports IAM session policies",
+      "summary": "AWS HealthOmics now supports IAM session policies, enabling you to restrict permissions for individual runs without creating and managing multiple IAM roles. Until now, there was no way to dynamically scope down permissions for a single run, requiring you to create a separate IAM role for each tenant or run. AWS HealthOmics is a HIPAA-eligible service that helps healthcare and life sciences customers accelerate…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "iam"
+      ],
+      "mapping": [
+        {
+          "service": "iam",
+          "method": "component-exact",
+          "term": "IAM role",
+          "basis": "Exact summary phrase: IAM role"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: IAM role. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-17T18:32:00Z",
+      "retrievedAt": "2026-09-18T09:46:42Z",
+      "expiresAt": "2026-10-17T18:32:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-update",
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/09/omics-iam-session-policy/",
+        "feedLabel": "AWS What's New",
+        "feedUrl": "https://aws.amazon.com/about-aws/whats-new/recent/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-2026-113-aws",
+      "title": "CVE-2026-86831: Improper validation of pod identifier uniqueness in aws-network-policy-agent in Amazon EKS",
+      "summary": "Bulletin ID: 2026-113-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 09/16/2026 12:30 PM PDT Description: Network Policy Agent is an EKS Policy management feature. We identified CVE-2026-86831, a cross-namespace NetworkPolicy bypass in Amazon EKS Network Policy Agent (aws-network-policy-agent) before v1.4.0. Pod identifiers are constructed by concatenating the pod name and namespace…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "eks"
+      ],
+      "mapping": [
+        {
+          "service": "eks",
+          "method": "title-exact",
+          "term": "Amazon EKS",
+          "basis": "Exact title phrase: Amazon EKS"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon EKS. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-16T20:16:23Z",
+      "retrievedAt": "2026-09-17T10:00:03Z",
+      "expiresAt": "2026-10-31T20:16:23Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-113-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-blog-fc33c99683f2b2",
+      "title": "AWS STS simplifies session token size limits and adds session token size monitoring",
+      "summary": "AWS Security Token Service (AWS STS) has simplified session token size limits, giving you more room for your session policies and session tags. STS has replaced the packed policy size and the overall session token size limits with a single token size limit of 4,096 bytes. STS now reports session token size in API responses, […] AWS Security Token Service (AWS STS) has simplified session token size limits, giving…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "sts"
+      ],
+      "mapping": [
+        {
+          "service": "sts",
+          "method": "title-exact",
+          "term": "AWS STS",
+          "basis": "Exact title phrase: AWS STS"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: AWS STS. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-15T22:21:59Z",
+      "retrievedAt": "2026-09-16T09:58:11Z",
+      "expiresAt": "2026-10-30T22:21:59Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-research",
+        "url": "https://aws.amazon.com/blogs/security/aws-sts-simplifies-session-token-size-limits-and-adds-session-token-size-monitoring/",
+        "feedLabel": "AWS Security Blog",
+        "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-blog-78434976c07d9b",
+      "title": "Architecting resilient authentication with Amazon Cognito multi-Region replication",
+      "summary": "Your consumer identity and access management (CIAM) system is the foundation of your customer experience. It’s how users sign in, access services, and engage with your applications. As your business scales across geographies, ensuring authentication is always available becomes a core architectural requirement. However, building multi-Region authentication has traditionally required complex custom replication…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "cognito",
+        "iam"
+      ],
+      "mapping": [
+        {
+          "service": "cognito",
+          "method": "title-exact",
+          "term": "Amazon Cognito",
+          "basis": "Exact title phrase: Amazon Cognito"
+        },
+        {
+          "service": "iam",
+          "method": "component-exact",
+          "term": "Identity and Access Management",
+          "basis": "Exact summary phrase: Identity and Access Management"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: Amazon Cognito; Exact summary phrase: Identity and Access Management. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-15T19:00:52Z",
+      "retrievedAt": "2026-09-16T09:58:11Z",
+      "expiresAt": "2026-10-30T19:00:52Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-research",
+        "url": "https://aws.amazon.com/blogs/security/architecting-resilient-authentication-with-amazon-cognito-multi-region-replication/",
+        "feedLabel": "AWS Security Blog",
+        "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-organizations-doc-history-3dec474cc08036",
+      "title": "Added Amazon Connect Talent to AI services opt-out policy",
+      "summary": "Added Amazon Connect Talent to the list of AWS services supported by the AI services opt-out policy.",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "organizations"
+      ],
+      "mapping": [
+        {
+          "service": "organizations",
+          "method": "fixed-source",
+          "term": "AWS Organizations release notes",
+          "basis": "Source feed is scoped to organizations"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Source feed is scoped to organizations. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-15T19:00:00Z",
+      "retrievedAt": "2026-09-17T10:00:03Z",
+      "expiresAt": "2026-10-30T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-doc-update",
+        "url": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_ai-opt-out_all.html",
+        "feedLabel": "AWS Organizations release notes",
+        "feedUrl": "https://docs.aws.amazon.com/organizations/latest/userguide/aws-organizations-release-notes.rss"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-blog-e75d015f9b906c",
+      "title": "Operationalizing least privilege: Automate IAM remediation through your CI/CD pipeline",
+      "summary": "The principle of least privilege is straightforward to articulate but challenging to maintain at scale. When teams first deploy applications to AWS, they often grant broader permissions than strictly necessary; it’s faster to get things working, and the plan is always to tighten permissions later. But later rarely comes. Permissions accumulate, AWS Identity and Access […] The principle of least privilege is…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "policy-change",
+      "services": [
+        "iam",
+        "cloudtrail",
+        "organizations"
+      ],
+      "mapping": [
+        {
+          "service": "iam",
+          "method": "component-exact",
+          "term": "AWS Identity and Access Management",
+          "basis": "Exact summary phrase: AWS Identity and Access Management"
+        },
+        {
+          "service": "cloudtrail",
+          "method": "component-exact",
+          "term": "AWS CloudTrail",
+          "basis": "Exact summary phrase: AWS CloudTrail"
+        },
+        {
+          "service": "organizations",
+          "method": "component-exact",
+          "term": "AWS Organizations",
+          "basis": "Exact summary phrase: AWS Organizations"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: AWS Identity and Access Management; Exact summary phrase: AWS CloudTrail; Exact summary phrase: AWS Organizations. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-15T15:53:51Z",
+      "retrievedAt": "2026-09-16T09:58:11Z",
+      "expiresAt": "2026-10-30T15:53:51Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-research",
+        "url": "https://aws.amazon.com/blogs/security/operationalizing-least-privilege-automate-iam-remediation-through-your-ci-cd-pipeline/",
+        "feedLabel": "AWS Security Blog",
+        "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-2026-112-aws",
+      "title": "CVE-2026-86830 - Incorrect privilege assignment in Temporary Elevated Access Management (TEAM) for AWS IAM Identity Center",
+      "summary": "Bulletin ID: 2026-112-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 09/14/2026 10:45 AM PDT Description: Temporary Elevated Access Management (TEAM) is an open source AWS sample solution for managing temporary elevated access via AWS IAM Identity Center. We identified CVE-2026-86830, where an authenticated user with application-level access could gain unintended temporary elevated…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "identity-center"
+      ],
+      "mapping": [
+        {
+          "service": "identity-center",
+          "method": "title-exact",
+          "term": "AWS IAM Identity Center",
+          "basis": "Exact title phrase: AWS IAM Identity Center"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact title phrase: AWS IAM Identity Center. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-14T18:04:59Z",
+      "retrievedAt": "2026-09-15T10:05:33Z",
+      "expiresAt": "2026-10-29T18:04:59Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-112-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-unit42-cloud-research-a548598c065f36",
+      "title": "Unmasking Cloud Identities: From Behavioral Clustering to Automated Detection",
+      "summary": "We designed a behavioral clustering model to map cloud identity roles from audit logs, enabling continuous threat detection using standard SQL queries. The post Unmasking Cloud Identities: From Behavioral Clustering to Automated Detection appeared first on Unit 42 .",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "service-change",
+      "services": [
+        "cloudtrail"
+      ],
+      "mapping": [
+        {
+          "service": "cloudtrail",
+          "method": "component-exact",
+          "term": "AWS CloudTrail",
+          "basis": "Exact summary phrase: AWS CloudTrail"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: AWS CloudTrail. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-14T10:00:01Z",
+      "retrievedAt": "2026-09-14T10:40:55Z",
+      "expiresAt": "2026-11-13T10:00:01Z",
+      "source": {
+        "publisher": "Unit 42",
+        "kind": "independent-research",
+        "url": "https://unit42.paloaltonetworks.com/behavioral-clustering-map-to-cloud-identities/",
+        "feedLabel": "Unit 42 Cloud Cybersecurity Research",
+        "feedUrl": "https://unit42.paloaltonetworks.com/category/cloud-cybersecurity-research/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
     {
       "id": "news-aws-whats-new-c242ee7e65d13a",
       "title": "Amazon ECS expands IAM condition key support for RunTask and StartTask APIs",
@@ -268,6 +905,55 @@
         "publisher": "AWS",
         "kind": "official-bulletin",
         "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-082-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [],
+      "review": {
+        "status": "pending",
+        "reviewedAt": null
+      }
+    },
+    {
+      "id": "news-aws-security-bulletins-2026-046-aws",
+      "title": "Issue with containerd CRI Plugin - CVE-2026-50195, CVE-2026-53488, CVE-2026-53492, CVE-2026-53489, CVE-2026-47262",
+      "summary": "Bulletin ID: 2026-046-AWS Scope: AWS Content Type: Important (requires attention) Publication Date: 06/18/2026 17:30 PM PDT Description: containerd is an open-source container runtime used by Kubernetes via the Container Runtime Interface (CRI) plugin. It underpins AWS managed container services including Amazon Elastic Kubernetes Service (Amazon EKS), Amazon Elastic Container Service (Amazon ECS), AWS Fargate…",
+      "whyItMatters": "",
+      "checks": [],
+      "category": "vulnerability",
+      "services": [
+        "eks",
+        "ecs",
+        "fargate"
+      ],
+      "mapping": [
+        {
+          "service": "eks",
+          "method": "component-exact",
+          "term": "Elastic Kubernetes Service",
+          "basis": "Exact summary phrase: Elastic Kubernetes Service"
+        },
+        {
+          "service": "ecs",
+          "method": "component-exact",
+          "term": "Elastic Container Service",
+          "basis": "Exact summary phrase: Elastic Container Service"
+        },
+        {
+          "service": "fargate",
+          "method": "component-exact",
+          "term": "AWS Fargate",
+          "basis": "Exact summary phrase: AWS Fargate"
+        }
+      ],
+      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Exact summary phrase: Elastic Kubernetes Service; Exact summary phrase: Elastic Container Service; Exact summary phrase: AWS Fargate. Human review and primary-source corroboration required.",
+      "publishedAt": "2026-09-09T21:30:11Z",
+      "retrievedAt": "2026-09-23T10:00:19Z",
+      "expiresAt": "2026-10-24T21:30:11Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/rss/2026-046-aws/",
         "feedLabel": "AWS Security Bulletins",
         "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
       },
@@ -753,41 +1439,6 @@
         "url": "https://aws.amazon.com/blogs/security/implement-custom-authentication-for-tools-integration-using-request-lambda-interceptor-in-agentcore-gateway/",
         "feedLabel": "AWS Security Blog",
         "feedUrl": "https://aws.amazon.com/blogs/security/feed/"
-      },
-      "references": [],
-      "review": {
-        "status": "pending",
-        "reviewedAt": null
-      }
-    },
-    {
-      "id": "news-securityhub-doc-history-b8ec80bb536d59",
-      "title": "Updated security controls",
-      "summary": "Security Hub CSPM removed the EFS.6 control from the AWS Foundational Security Best Practices (FSBP) standard . This control remains available in the NIST SP 800-53 Rev. 5, NIST SP 800-171 Revision 2, and PCI DSS v4.0.1 standards.",
-      "whyItMatters": "",
-      "checks": [],
-      "category": "detection-change",
-      "services": [
-        "securityhub"
-      ],
-      "mapping": [
-        {
-          "service": "securityhub",
-          "method": "fixed-source",
-          "term": "AWS Security Hub documentation history",
-          "basis": "Source feed is scoped to securityhub"
-        }
-      ],
-      "basis": "Automated candidate from an allowlisted feed. Mapping evidence: Source feed is scoped to securityhub. Human review and primary-source corroboration required.",
-      "publishedAt": "2026-08-03T19:00:00Z",
-      "retrievedAt": "2026-09-12T07:50:48Z",
-      "expiresAt": "2026-09-17T19:00:00Z",
-      "source": {
-        "publisher": "AWS",
-        "kind": "official-doc-update",
-        "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/doc-history.html",
-        "feedLabel": "AWS Security Hub documentation history",
-        "feedUrl": "https://docs.aws.amazon.com/securityhub/latest/userguide/aws-security-hub-doc-updates.rss"
       },
       "references": [],
       "review": {
