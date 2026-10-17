@@ -165,59 +165,6 @@
       }
     },
     {
-      "id": "news-guardduty-custom-detection-rules-2026-09-01",
-      "title": "New feature - Custom Detection Rules",
-      "summary": "GuardDuty now provides AWS-maintained rules for selected threat techniques, with per-account live or 14-day dry-run associations and organization-level configuration.",
-      "whyItMatters": "Teams can evaluate account-specific unwanted CloudTrail activity in dry-run mode before enabling findings, then manage associations consistently from a delegated GuardDuty administrator.",
-      "checks": [
-        "Inventory available rules and select only techniques that should be exceptional in the target accounts.",
-        "Use dry-run associations first and review the emitted CloudWatch match metrics during the documented 14-day window.",
-        "Confirm organization targeting, delegated-administrator ownership, and live-mode finding routing before broad rollout."
-      ],
-      "category": "detection-change",
-      "services": [
-        "guardduty",
-        "cloudtrail",
-        "cloudwatch"
-      ],
-      "mapping": [
-        {
-          "service": "guardduty",
-          "method": "editorial-review",
-          "term": "GuardDuty Custom Detection Rules",
-          "basis": "Custom Detection Rules are configured and evaluated by GuardDuty."
-        },
-        {
-          "service": "cloudtrail",
-          "method": "editorial-review",
-          "term": "AWS CloudTrail management events",
-          "basis": "AWS documents that the rules evaluate selected fields in CloudTrail management events."
-        },
-        {
-          "service": "cloudwatch",
-          "method": "editorial-review",
-          "term": "Amazon CloudWatch metrics",
-          "basis": "AWS documents CloudWatch match metrics as the output of dry-run associations."
-        }
-      ],
-      "basis": "TRACE-reviewed official GuardDuty documentation for Custom Detection Rules; operational claims are limited to the documented rule, association, mode, and signal model.",
-      "publishedAt": "2026-09-01T19:00:00Z",
-      "retrievedAt": "2026-09-12T00:00:00Z",
-      "expiresAt": "2026-10-16T19:00:00Z",
-      "source": {
-        "publisher": "AWS",
-        "kind": "official-doc-update",
-        "url": "https://docs.aws.amazon.com/guardduty/latest/ug/custom-detection-rules.html",
-        "feedLabel": "Amazon GuardDuty documentation history",
-        "feedUrl": "https://docs.aws.amazon.com/guardduty/latest/ug/amazon-guardduty-doc-history.rss"
-      },
-      "references": [],
-      "review": {
-        "status": "approved",
-        "reviewedAt": "2026-09-12T00:00:00Z"
-      }
-    },
-    {
       "id": "news-datadog-aws-root-password-spray-2026-08-31",
       "title": "Password-spraying campaign targeted AWS root users at more than 150 organizations",
       "summary": "Datadog Security Research observed repeated failed AWS root-user console sign-ins from July 24 through August 23, 2026; it reported no successful authentication in the observed activity.",
