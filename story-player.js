@@ -1,12 +1,12 @@
 import {serviceById,domainFor} from './catalog.js';
 import {profileFor} from './security-data.js';
 import {scenarioSources} from './scenario-data.js';
-import {glyphs} from './node-symbols.js';
+import {domainEmblem} from './atlas-graphics.js';
 import {scenarioFacts} from './research-index.js';
 import {detectionsForService} from './community-detections.js';
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const symbol=d=>`<svg viewBox="-22 -22 44 44" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="${glyphs[d.id]}"/></svg>`;
+const symbol=domainEmblem;
 
 export function mountStory(host,scenario,{onStageChange,showMotion=true,initialPaused,initialStage=0}={}){
   let index=Number.isInteger(initialStage)?Math.max(0,Math.min(scenario.stages.length-1,initialStage)):0,lens='intel',overview=false,paused=initialPaused??matchMedia('(prefers-reduced-motion: reduce)').matches;

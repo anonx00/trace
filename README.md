@@ -6,6 +6,16 @@ An interactive map of AWS services and their security controls. Follow a connect
 
 [![TRACE: follow the thread through connected AWS services](docs/first-trace.png)](https://anonx00.github.io/trace/)
 
+## Across the atlas
+
+The shared ivory and forest palette now extends through domain and service maps, investigations, the service library, evidence guides, coverage, sources, and search. Illustrated domain cards start with security questions; graph nodes and investigation stages use matching SVG emblems. Documented capabilities, scenario sequences, and editorial groupings retain their distinct labels.
+
+| Domain overview | Service connections |
+| --- | --- |
+| ![Eight domains with introductory security questions](docs/atlas-overview.png) | ![S3 connections and sourced research](docs/atlas-service.png) |
+
+[Investigation preview](docs/atlas-investigation.png) ? [Mobile evidence preview](docs/atlas-evidence-mobile.png)
+
 ## Explore
 
 New to AWS security? Start with **Take your first trace**: a four-step, source-linked introduction to IAM permissions, STS sessions, S3 access, and CloudTrail evidence. Each concept includes a practical check, a revealable answer, and a route into the full service research. The selected step survives refresh and can be shared with a URL such as `#/?learn=sts`.
