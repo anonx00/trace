@@ -18,6 +18,7 @@
     "test:reader": "python scripts/check_reader.py",
     "test:visual": "python scripts/check_visual.py",
     "test:motion": "python scripts/check_motion.py",
+    "test:motion-visibility": "python scripts/check_motion_visibility.py",
     "test:connections": "python scripts/check_connections.py",
     "test:commands": "node scripts/check_defensive_commands.mjs",
     "test:scenarios": "node scripts/check_scenarios.mjs",
