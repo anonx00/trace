@@ -5,6 +5,7 @@
   "description": "An interactive, layered AWS architecture and incident-response atlas.",
   "scripts": {
     "start": "node server.mjs",
+    "test:first-trace": "node --check first-trace.js && python scripts/check_first_trace.py",
     "build": "node scripts/build.mjs",
     "check": "node --check knowledge-graph.js && node --check story-player.js && node --check reader-experience.js && node --check research-home.js && node --check universe-field.js && node --check universe.js && node --check news-intel.js && node --check catalog.js && node --check security-data.js && node --check defensive-commands.js && node --check community-detections.js && node --check hacktricks-data.js && node --check scenario-data.js && node --check s3-notes.js && node --check data.js && node --check scripts/check_news.mjs && node --check server.mjs",
     "import:docs": "python scripts/import_docs.py",

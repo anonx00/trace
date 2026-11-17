@@ -67,6 +67,9 @@ function mapPage(type,id,topicIndex){
     <div class="depth-bar"><a href="#/"><b>01</b> Universe</a><i class="depth-line"></i><a href="#/domain/${d.id}" class="${depth===2?'current':''}"><b>02</b> Domain</a><i class="depth-line"></i><a href="#/service/${s?.id||d.services[0]}" class="${depth>=3?'current':''}"><b>03</b> Service</a><a class="mind-depth-source" href="#/sources">Research index ↗</a></div>
   </section>`;
   renderPanel();renderGraph();decoratePage();
+  if(s&&!topic){
+    $('.mind-header').insertAdjacentHTML('beforeend',`<section class="service-primer" aria-label="Service introduction"><div><span>IN PLAIN ENGLISH / ${esc(s.label)}</span><p>${esc(s.summary)}</p>${linkOut(s.source,'Read the AWS overview ↗')}</div><nav aria-label="Where to go next"><span>CHOOSE YOUR NEXT QUESTION</span><a href="#/service/${s.id}?tab=evidence">What evidence is available? <b>→</b></a><a href="#/service/${s.id}?tab=defense">Which controls matter? <b>→</b></a><a href="#/?learn=${['iam','sts','s3','cloudtrail'].includes(s.id)?s.id:'iam'}">Take the guided basics <b>↗</b></a></nav></section>`);
+  }
   $('.canvas-wrap').insertAdjacentHTML('beforebegin','<div class="graph-reading-hint"><span>Hover or focus a node to trace its connection.</span><button>Connection notes ↓</button></div>');
   $('.graph-reading-hint button').onclick=()=>{const ledger=$('.mind-ledger');ledger.scrollIntoView({behavior:'instant',block:'start'});ledger.setAttribute('tabindex','-1');ledger.focus({preventScroll:true});};
   const field=mountField($('.canvas-wrap'),mindPaused),button=$('#mind-motion'),motion=matchMedia('(prefers-reduced-motion: reduce)');
@@ -332,7 +335,7 @@ function route(){
   else if(type==='concept')concept(id);
   else if(type==='domain')mapPage('domain',id);
   else if(type==='service'){if(['intel','evidence','detections','defense','docs'].includes(params.get('tab')))activeTab=params.get('tab');mapPage('service',id,sub==='topic'?Number(index):undefined);}
-  else if(!type){routeState={type:'home'};cleanupResearchHome=mountResearchHome($('#view'),{topicCount:docs.stats.sections,openSearch});}
+  else if(!type){routeState={type:'home'};cleanupResearchHome=mountResearchHome($('#view'),{topicCount:docs.stats.sections,openSearch,initialLesson:params.get('learn')});}
   else notFound();
   const nav=type==='scenario'?'paths':['library','paths','coverage','evidence','sources'].includes(type)?type:'map';
   document.querySelectorAll('[data-nav]').forEach(a=>{const active=a.dataset.nav===nav;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
