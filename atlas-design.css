@@ -144,3 +144,22 @@ body .content-page,body .map-page.mind-page{max-width:1440px;padding:38px 34px 4
 @media(max-width:650px){body .topbar{display:flex;flex-wrap:wrap;height:auto;min-height:96px;margin:10px 12px 0;width:calc(100% - 24px);padding:12px 16px;border-radius:22px;gap:10px}body .topbar .primary-nav{order:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:auto;min-height:72px;flex-basis:100%;overflow:visible;gap:4px}body .topbar .primary-nav a{font-size:11px;text-align:center;height:auto;min-height:34px;display:grid;place-items:center;padding:7px 5px}body .topbar .primary-nav .source-dot{display:none}body .top-actions{margin-left:auto}body .profile{display:none}body .brand{font-size:18px}body .brand-sub{display:none}body .search-launch kbd{display:none}body .sidebar.is-open{top:170px;max-height:calc(100vh - 245px)}body .content-page,body .map-page.mind-page{padding:28px 16px 35px}#view .atlas-card-question{font-size:16px}#view .atlas-card-links{font-size:15px}#view .atlas-card-members{font-size:14px}#view .library-card{padding:23px}#view .library-card h2{font-size:26px}#view .evidence-guide{padding:20px}#view .evidence-guide header h2{font-size:24px}#view .evidence-emblem{width:38px;height:38px}#view .evidence-guide-number{min-width:36px}#view .atlas-preview{padding:22px}#view .service-primer{padding:20px}#view .mind-page .inspector{padding:23px}}
 #view :is(.content-page,.map-page,.atlas-workspace) :is(strong,b){color:var(--forest)}
 #view :is(.trace-stages,.detection-intel-list a,.hacktricks-domain>header,.trail-history a){background:#edf1e2;color:#42603b;border-color:#cbd8ba}
+/* Moving signals need their own contrast, including when a node has focus. */
+#view :is(.atlas-flow,.atlas-service-flow,.mind-signal){opacity:1;stroke:#fffdf7;stroke-width:1.5;vector-effect:non-scaling-stroke;filter:none;pointer-events:none}
+#view .atlas-flow{fill:#345b42;r:6px}
+#view .atlas-service-flow{fill:#286044;r:5.5px}
+#view .atlas-edge.edge-incoming .atlas-service-flow{fill:#a34420}
+#view .mind-signal{r:5.5px}
+#view .mind-signal.documented{fill:#286044}
+#view .mind-signal.attack{fill:#a34420}
+#view .mind-signal.references{fill:#665080}
+#view .has-node-focus .mind-signal{opacity:.25}
+#view .has-node-focus .mind-link.is-node-active+.mind-signal{opacity:1}
+#view .atlas-nav-line{stroke:#718368;stroke-opacity:.8;opacity:1;stroke-width:1.7}
+#view .atlas-connection{stroke:#52724a;stroke-opacity:.7;stroke-width:1.7}
+#view .atlas-graph marker path{stroke:#345b42;stroke-width:2}
+#view .atlas-graph #atlas-direction-in path{stroke:#a34420}
+#view .thread-wire .thread-signal{stroke:#a34420;stroke-width:3;stroke-linecap:round}
+#view #thread-arrow path{stroke:#736951;stroke-width:1.8}
+#view .story-stop.is-current:not(:last-child):before{background:#a34420;width:7px;height:7px;opacity:1;box-shadow:0 0 0 2px #fffdf7}
+#view .story-stop:not(:last-child):after{color:#886045}
