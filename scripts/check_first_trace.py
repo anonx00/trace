@@ -73,6 +73,10 @@ with sync_playwright() as pw:
     page.wait_for_timeout(150)
     assert offset()!=before, 'Illustration must animate with motion enabled'
     page.locator('.thread-motion').click()
+    expect(page.locator('.thread-motion')).to_have_attribute('aria-pressed', 'true')
+    # A CSS pause commits on the animation timeline's next frame. Sample only
+    # after that pending task settles, then verify the position remains fixed.
+    page.wait_for_function('''() => {const animations=document.querySelector('.thread-signal').getAnimations();return animations.length>0&&animations.every(a=>a.playState==='paused'&&!a.pending)}''')
     frozen=offset()
     page.wait_for_timeout(150)
     assert offset()==frozen, 'Pause must stop illustration motion'
