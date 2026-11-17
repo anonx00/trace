@@ -4,9 +4,13 @@ An interactive map of AWS services and their security controls. Follow a connect
 
 **[Open TRACE →](https://anonx00.github.io/trace/)**
 
-[![TRACE showing connected AWS services](docs/atlas.png)](https://anonx00.github.io/trace/)
+[![TRACE: follow the thread through connected AWS services](docs/first-trace.png)](https://anonx00.github.io/trace/)
 
 ## Explore
+
+New to AWS security? Start with **Take your first trace**: a four-step, source-linked introduction to IAM permissions, STS sessions, S3 access, and CloudTrail evidence. Each concept includes a practical check, a revealable answer, and a route into the full service research. The selected step survives refresh and can be shared with a URL such as `#/?learn=sts`.
+
+The opening illustration links directly to eight service pages and uses documented catalog relationships. It is an educational map; motion illustrates connections. Each service page also begins with a plain-language introduction and shortcuts to its evidence and defensive controls.
 
 The map includes **40 services**, **41 documented relationships**, **28 reviewed community detections**, and **21 incident scenarios**.
 
@@ -111,6 +115,7 @@ npm run test:detections
 npm run test:hacktricks
 npm run test:commands
 npm run test:ui
+npm run test:first-trace
 npm run test:connections
 npm run test:motion
 npm run test:mind

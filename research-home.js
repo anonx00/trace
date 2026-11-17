@@ -1,4 +1,5 @@
 import {glyphs} from './node-symbols.js';
+import {firstTraceMarkup, mountFirstTrace} from './first-trace.js';
 import {mountStory} from './story-player.js';
 ﻿
 import {domains, services, serviceById, domainFor, connections} from './catalog.js';
@@ -19,7 +20,7 @@ const metricPaths={
 };
 const metricIcon=name=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${metricPaths[name]}"/></svg>`;
 
-export function mountResearchHome(root,{topicCount=0,openSearch}={}) {
+export function mountResearchHome(root,{topicCount=0,openSearch,initialLesson}={}) {
   let detail=false,storyMode=false,selected=domains[0],activeDomain=null,paused=matchMedia('(prefers-reduced-motion: reduce)').matches,storyStageIndex=0,storyController=null;
   const compact=matchMedia('(max-width:600px)');
   const serviceList=matchMedia('(max-width:1100px)');
@@ -34,7 +35,7 @@ export function mountResearchHome(root,{topicCount=0,openSearch}={}) {
   }
   function syncFlows(){cancelAnimationFrame(flowFrame);flowLast=null;if(!paused&&!storyMode&&!detail)flowFrame=requestAnimationFrame(animateFlows);}
   const abort=new AbortController(), on=(el,event,fn)=>el.addEventListener(event,fn,{signal:abort.signal});
-  document.title='TRACE — Explore the AWS security surface';
+  document.title='TRACE — Follow the thread. Understand AWS.';
   const headlineStats=[
     {value:services.length,label:'Security nodes',detail:'Browse the index',href:'#/library',icon:'nodes'},
     {value:scenarios.length.toString().padStart(2,'0'),label:'Research paths',detail:'Follow a sequence',href:'#/paths',icon:'paths'},
@@ -42,14 +43,15 @@ export function mountResearchHome(root,{topicCount=0,openSearch}={}) {
     {value:topicCount,label:'AWS topics',detail:'Open source index',href:'#/sources',icon:'topics'},
   ];
   root.innerHTML=`<section class="research-home">
-    <header class="atlas-hero">
+    ${firstTraceMarkup()}
+    <header class="atlas-hero workspace-intro">
       <div><p class="atlas-eyebrow"><span></span>THE AWS SECURITY RESEARCH ATLAS <b>VOL. 01 / FIELD NOTES</b></p>
-      <h1>The AWS security map.</h1>
+      <h2>The AWS security map.</h2>
       <p class="atlas-lede">Explore a service. Follow its connections. Understand the evidence.</p>
       <div class="hero-links"><button class="atlas-primary" id="atlas-find">Find a service <span>⌕</span></button><a href="#/paths">Open investigations <span>↗</span></a><a href="#/evidence">Evidence guides <span>↗</span></a></div></div>
       <div class="atlas-manifest"><span>BUILT FOR THE CURIOUS DEFENDER</span><p>Understand the surface.<br>Follow the evidence.<br><strong>Make the next decision.</strong></p><div class="atlas-stats">${headlineStats.map(stat=>`<a href="${stat.href}" aria-label="${stat.value} ${stat.label}. ${stat.detail}."><i>${metricIcon(stat.icon)}</i><b>${stat.value}</b><span>${stat.label.toUpperCase()}</span><small>${stat.detail} <em>↗</em></small></a>`).join('')}</div></div>
     </header>
-    <section class="atlas-workspace" aria-label="Interactive security atlas">
+    <section class="atlas-workspace" id="explore-atlas" tabindex="-1" aria-label="Interactive security atlas">
       <div class="atlas-toolbar"><div class="atlas-map-heading"><span class="atlas-cross">✳</span><div><h2>The connected surface</h2><p id="atlas-map-context">Eight domains. Choose your point of entry.</p></div></div>
       <div class="atlas-toolbar-actions"><div class="atlas-segment" role="group" aria-label="Graph detail"><button data-detail="overview" aria-pressed="true" class="active">Domains <small>${domains.length}</small></button><button data-detail="services" aria-pressed="false">Services <small>${services.length}</small></button><button data-detail="story" aria-pressed="false">Stories <small>${scenarios.length}</small></button></div><button id="atlas-motion" aria-label="${paused?'Resume':'Pause'} atlas animation">${paused?'Resume motion':'Pause motion'}</button></div></div>
       <div class="atlas-grid">
@@ -154,11 +156,14 @@ export function mountResearchHome(root,{topicCount=0,openSearch}={}) {
       preview.style.setProperty('--node','#a7ddce');
       preview.innerHTML=`<div class="atlas-preview-top"><span>SOURCED CAPABILITY / ${String(Number(edge.dataset.edge)+1).padStart(2,'0')}</span><i>DIRECTED LINK</i></div><div class="atlas-preview-symbol">${symbol(domainFor(c.from))}</div><h2>${esc(c.label)}</h2><div class="atlas-edge-endpoints"><a href="#/service/${c.from}"><small>SOURCE</small>${esc(serviceById(c.from).name)}</a><span>↓</span><a href="#/service/${c.to}"><small>DESTINATION</small>${esc(serviceById(c.to).name)}</a></div><p class="atlas-preview-description">${esc(c.detail)}</p><a class="atlas-preview-enter" href="${esc(c.source)}" target="_blank" rel="noopener noreferrer">Read supporting AWS documentation ↗</a><div class="atlas-preview-bottom"><span>HOW TO READ THIS LINK</span><p>The arrow reads as a sentence from source to destination. It describes a capability, not a deployed integration or a proven attack path.</p><a href="#/paths">Explore separately labeled research scenarios ↗</a></div>`;
     };
-    svg.querySelectorAll('.atlas-edge').forEach(edge=>{edge.addEventListener('click',()=>showEdge(edge));edge.addEventListener('pointerenter',()=>showEdge(edge));edge.addEventListener('pointerleave',()=>{if(document.activeElement!==edge)resetHighlight();});edge.addEventListener('focus',()=>showEdge(edge));edge.addEventListener('blur',resetHighlight);edge.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();showEdge(edge);}});});
+    const focusInspectors=new WeakMap();
+    const restoreFocusedPreview=()=>{const inspect=focusInspectors.get(document.activeElement);if(inspect)inspect();else resetHighlight();};
+    svg.querySelectorAll('.atlas-edge').forEach(edge=>{focusInspectors.set(edge,()=>showEdge(edge));edge.addEventListener('click',()=>showEdge(edge));edge.addEventListener('pointerenter',()=>showEdge(edge));edge.addEventListener('pointerleave',restoreFocusedPreview);edge.addEventListener('focus',()=>showEdge(edge));edge.addEventListener('blur',resetHighlight);edge.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();showEdge(edge);}});});
     for(const n of svg.querySelectorAll('.map-node')){
       const inspect=()=>{const d=domains.find(v=>v.id===n.dataset.domainId),s=serviceById(n.dataset.serviceId);resetHighlight();showPreview(d,s);svg.classList.add('has-preview');const related=new Set(s?[s.id,...connections.filter(c=>c.from===s.id||c.to===s.id).flatMap(c=>[c.from,c.to])]:d.services);svg.querySelectorAll('.map-node').forEach(el=>el.classList.toggle('atlas-related',related.has(el.dataset.serviceId)||!s&&el.dataset.domainId===d.id));svg.querySelectorAll('.atlas-domain-route').forEach(route=>route.classList.toggle('atlas-related',route.dataset.domainId===d.id));svg.querySelectorAll('.atlas-edge').forEach(e=>{const active=s?[e.dataset.from,e.dataset.to].includes(s.id):[e.dataset.from,e.dataset.to].some(id=>d.services.includes(id)),outgoing=Boolean(s)&&active&&e.dataset.from===s.id,incoming=Boolean(s)&&active&&e.dataset.to===s.id;e.classList.toggle('edge-active',active);e.classList.toggle('edge-outgoing',outgoing);e.classList.toggle('edge-incoming',incoming);if(outgoing||incoming)e.querySelector('.atlas-connection')?.setAttribute('marker-end',`url(#atlas-direction-${outgoing?'out':'in'})`);});};
       n.addEventListener('pointerenter',inspect);n.addEventListener('focus',inspect);
-      n.addEventListener('pointerleave',()=>{if(document.activeElement!==n)resetHighlight();});
+      focusInspectors.set(n,inspect);
+      n.addEventListener('pointerleave',restoreFocusedPreview);
       n.addEventListener('blur',resetHighlight);
     }
   }
@@ -192,5 +197,6 @@ export function mountResearchHome(root,{topicCount=0,openSearch}={}) {
   on(compact,'change',()=>{camera=base();draw();});
   on(serviceList,'change',()=>{camera=base();draw();});
   draw();showPreview(selected);setMotion(paused);
-  return ()=>{abort.abort();cancelAnimationFrame(flowFrame);field.destroy();};
+  const cleanupIntroduction=mountFirstTrace(root,{initialLesson,signal:abort.signal});
+  return ()=>{abort.abort();cleanupIntroduction();cancelAnimationFrame(flowFrame);field.destroy();};
 }
