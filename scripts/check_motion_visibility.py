@@ -16,6 +16,8 @@ def contrast(color):
 def check_dot(dot):
     style=dot.evaluate(STYLE)
     assert style['opacity']==1,style
+    effective_opacity=dot.evaluate('e=>{let opacity=1;while(e){opacity*=Number(getComputedStyle(e).opacity);e=e.parentElement}return opacity}')
+    assert effective_opacity==1,('Ancestor faded a moving marker',effective_opacity)
     assert contrast(style['fill'])>=4.5,style
     assert style['screen']>=5,style
     assert style['width']>=1.5,style

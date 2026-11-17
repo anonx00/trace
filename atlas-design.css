@@ -147,6 +147,7 @@ body .content-page,body .map-page.mind-page{max-width:1440px;padding:38px 34px 4
 /* Moving signals need their own contrast, including when a node has focus. */
 #view :is(.atlas-flow,.atlas-service-flow,.mind-signal){opacity:1;stroke:#fffdf7;stroke-width:1.5;vector-effect:non-scaling-stroke;filter:none;pointer-events:none}
 #view .atlas-flow{fill:#345b42;r:6px}
+#view .atlas-graph:not(.has-preview) .atlas-domain-route:not(.scope-muted){opacity:1}
 #view .atlas-service-flow{fill:#286044;r:5.5px}
 #view .atlas-edge.edge-incoming .atlas-service-flow{fill:#a34420}
 #view .mind-signal{r:5.5px}
