@@ -56,6 +56,7 @@ jobs:
         run: |
           npm run test:ui
           npm run test:first-trace
+          npm run test:atlas-design
           npm run test:connections
           npm run test:commands
           npm run test:scenarios

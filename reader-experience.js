@@ -1,10 +1,10 @@
 import {domains,serviceById,domainFor} from './catalog.js';
 import {scenarios,scenarioSources} from './scenario-data.js';
-import {glyphs} from './node-symbols.js';
+import {domainEmblem} from './atlas-graphics.js';
 import {scenarioFacts,scenarioSearchText} from './research-index.js';
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const glyph=d=>`<svg viewBox="-22 -22 44 44" aria-hidden="true"><path d="${glyphs[d.id]}"/></svg>`;
+const glyph=domainEmblem;
 
 export function mountPathIndex(root){
   const params=new URLSearchParams(location.hash.split('?')[1]||'');

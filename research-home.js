@@ -1,4 +1,5 @@
 import {glyphs} from './node-symbols.js';
+import {domainEmblem,domainCard} from './atlas-graphics.js';
 import {firstTraceMarkup, mountFirstTrace} from './first-trace.js';
 import {mountStory} from './story-player.js';
 ﻿
@@ -11,7 +12,7 @@ import {mountField} from './universe-field.js';
 const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const coords = [[145,115],[435,115],[725,115],[1015,115],[145,430],[435,430],[725,430],[1015,430]];
 
-const symbol = d => `<svg viewBox="-22 -22 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${glyphs[d.id]}"/></svg>`;
+const symbol = domainEmblem;
 const metricPaths={
   nodes:'M5 6h5v5H5zM14 5h5v5h-5zM7 15h5v5H7zM15 14h4v4h-4zM10 8.5h4M9.5 11l1 4m6-5v4',
   paths:'M4 18c3-8 5-11 9-11 3 0 4 3 7 3M4 18h.01M13 7h.01M20 10h.01',
@@ -46,13 +47,13 @@ export function mountResearchHome(root,{topicCount=0,openSearch,initialLesson}={
     ${firstTraceMarkup()}
     <header class="atlas-hero workspace-intro">
       <div><p class="atlas-eyebrow"><span></span>THE AWS SECURITY RESEARCH ATLAS <b>VOL. 01 / FIELD NOTES</b></p>
-      <h2>The AWS security map.</h2>
-      <p class="atlas-lede">Explore a service. Follow its connections. Understand the evidence.</p>
-      <div class="hero-links"><button class="atlas-primary" id="atlas-find">Find a service <span>⌕</span></button><a href="#/paths">Open investigations <span>↗</span></a><a href="#/evidence">Evidence guides <span>↗</span></a></div></div>
+      <h2>Choose a question.<br>Trace the connections.</h2>
+      <p class="atlas-lede">Start with a domain, explore its services, or follow an incident sequence. Every documented connection has a source you can inspect.</p>
+      <div class="hero-links"><button class="atlas-primary" id="atlas-find">Search the atlas <span>⌕</span></button><a href="#/paths">Follow an investigation <span>↗</span></a><a href="#/evidence">Evidence guides <span>↗</span></a></div></div>
       <div class="atlas-manifest"><span>BUILT FOR THE CURIOUS DEFENDER</span><p>Understand the surface.<br>Follow the evidence.<br><strong>Make the next decision.</strong></p><div class="atlas-stats">${headlineStats.map(stat=>`<a href="${stat.href}" aria-label="${stat.value} ${stat.label}. ${stat.detail}."><i>${metricIcon(stat.icon)}</i><b>${stat.value}</b><span>${stat.label.toUpperCase()}</span><small>${stat.detail} <em>↗</em></small></a>`).join('')}</div></div>
     </header>
     <section class="atlas-workspace" id="explore-atlas" tabindex="-1" aria-label="Interactive security atlas">
-      <div class="atlas-toolbar"><div class="atlas-map-heading"><span class="atlas-cross">✳</span><div><h2>The connected surface</h2><p id="atlas-map-context">Eight domains. Choose your point of entry.</p></div></div>
+      <div class="atlas-toolbar"><div class="atlas-map-heading"><span class="atlas-cross">✳</span><div><h2>Inside the AWS atlas</h2><p id="atlas-map-context">Choose a domain to understand its services and security questions.</p></div></div>
       <div class="atlas-toolbar-actions"><div class="atlas-segment" role="group" aria-label="Graph detail"><button data-detail="overview" aria-pressed="true" class="active">Domains <small>${domains.length}</small></button><button data-detail="services" aria-pressed="false">Services <small>${services.length}</small></button><button data-detail="story" aria-pressed="false">Stories <small>${scenarios.length}</small></button></div><button id="atlas-motion" aria-label="${paused?'Resume':'Pause'} atlas animation">${paused?'Resume motion':'Pause motion'}</button></div></div>
       <div class="atlas-grid">
         <div class="atlas-map-area"><div class="atlas-home-stories" hidden><label for="atlas-story-select">CHOOSE AN INVESTIGATION</label><select id="atlas-story-select">${scenarios.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('')}</select><div class="atlas-home-story"></div></div>
@@ -127,12 +128,12 @@ export function mountResearchHome(root,{topicCount=0,openSearch,initialLesson}={
       links=domainPoints.map(({d,x,y},i)=>{const end=y+(y<hub.y?92:-76),middle=(end+hub.y)/2,path=`M${hub.x},${hub.y} V${middle} H${x} V${end}`;return `<g class="atlas-domain-route ${activeDomain&&d.id!==activeDomain?'scope-muted':''}" data-domain-id="${d.id}" style="--node:${d.color}"><path class="atlas-nav-line" id="atlas-line-${i}" d="${path}"/><circle class="atlas-flow" r="2" fill="${d.color}" transform="translate(${hub.x} ${hub.y})"/></g>`;}).join('');
     }
     const hub=compact.matches?{x:360,y:470}:{x:580,y:280};
-    svg.innerHTML=`<defs><marker id="atlas-direction" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#9ed9cb" stroke-width="1.5"/></marker><marker id="atlas-direction-in" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#e9a889" stroke-width="1.5"/></marker><marker id="atlas-direction-out" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#a7ead7" stroke-width="1.5"/></marker></defs><g class="world-layer atlas-world">${panels}<g class="atlas-links">${links}</g>${!detail?`<g class="atlas-center" transform="translate(${hub.x} ${hub.y})" aria-hidden="true"><circle class="atlas-center-ring" r="50"/><rect x="-63" y="-29" width="126" height="58" rx="12"/><text y="-1">AWS</text><text class="atlas-center-sub" y="17">SECURITY ATLAS</text></g>`:''}${nodes}</g>`;
+    svg.innerHTML=`<defs><marker id="atlas-direction" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#63834e" stroke-width="1.5"/></marker><marker id="atlas-direction-in" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#b66d40" stroke-width="1.5"/></marker><marker id="atlas-direction-out" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#63834e" stroke-width="1.5"/></marker></defs><g class="world-layer atlas-world">${panels}<g class="atlas-links">${links}</g>${!detail?`<g class="atlas-center" transform="translate(${hub.x} ${hub.y})" aria-hidden="true"><circle class="atlas-center-ring" r="50"/><rect x="-63" y="-29" width="126" height="58" rx="12"/><text y="-1">AWS</text><text class="atlas-center-sub" y="17">SECURITY ATLAS</text></g>`:''}${nodes}</g>`;
     svg.classList.toggle('atlas-detail-view',detail);
     if(!detail){
       svg.querySelectorAll('.atlas-domain-node').forEach(node=>{
         const d=domains.find(item=>item.id===node.dataset.domainId),count=connections.filter(c=>d.services.includes(c.from)||d.services.includes(c.to)).length;
-        node.innerHTML=`<title>${esc(d.name)} — open domain</title><rect class="atlas-domain-card" x="-128" y="-76" width="256" height="168" rx="12"/><rect class="atlas-domain-accent" x="-128" y="-76" width="4" height="168" rx="2"/><path class="atlas-node-icon" d="${glyphs[d.id]}" transform="translate(-96,-42) scale(.7)"/><text class="atlas-card-title" x="-69" y="-35">${esc(d.short)}</text><text class="atlas-card-total" x="-104" y="12">${String(d.services.length).padStart(2,'0')}</text><text class="atlas-card-label" x="-60" y="10">SERVICES</text><text class="atlas-card-links" x="-104" y="41">${count} documented links</text><text class="atlas-card-open" x="103" y="12">↗</text><path class="atlas-card-divider" d="M-104 56H104"/><text class="atlas-card-members" x="-104" y="78">${esc(d.services.slice(0,2).map(id=>serviceById(id).short).join(' · '))}${d.services.length>2?' +'+(d.services.length-2):''}</text>`;
+        node.innerHTML=domainCard(d,count,d.services.slice(0,2).map(id=>serviceById(id).short).join(' · ')+(d.services.length>2?' +'+(d.services.length-2):''));
       });
     }
     const index=page.querySelector('.atlas-service-index');
@@ -146,7 +147,7 @@ export function mountResearchHome(root,{topicCount=0,openSearch,initialLesson}={
     applyCamera();
     if(paused)svg.pauseAnimations();else svg.unpauseAnimations();
     page.querySelector('#atlas-legend').innerHTML=detail?'<i></i>Solid: sourced capability · Dashed: editorial grouping':'<i></i>Editorial domain map · Not live account data';
-    page.querySelector('#atlas-map-context').textContent=storyMode?`${storyScenario.stages.length} stages · ${storyScenario.title}`:activeDomain?`${included[0].name} / ${included[0].services.length} services`:detail?`${connections.length} sourced capabilities across ${services.length} security nodes.`:'Eight domains. Choose your point of entry.';
+    page.querySelector('#atlas-map-context').textContent=storyMode?`${storyScenario.stages.length} stages · ${storyScenario.title}`:activeDomain?`${included[0].name} / ${included[0].services.length} services`:detail?`${connections.length} sourced capabilities across ${services.length} security nodes.`:'Choose a domain to understand its services and security questions.';
     updateMotionControl();
     const resetHighlight=()=>{svg.classList.remove('has-preview','has-edge-preview');svg.querySelectorAll('.atlas-edge').forEach(e=>{e.classList.remove('edge-active','edge-incoming','edge-outgoing');e.querySelector('.atlas-connection')?.setAttribute('marker-end','url(#atlas-direction)');});svg.querySelectorAll('.atlas-related').forEach(element=>element.classList.remove('atlas-related'));};
     const showEdge=edge=>{
