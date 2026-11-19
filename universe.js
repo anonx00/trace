@@ -1,4 +1,5 @@
 import {mountResearchHome} from './research-home.js';
+import {mountEventFlow} from './event-flow.js';
 import {domainEmblem,sourceJourneyMarkup} from './atlas-graphics.js';
 import {knowledgeGraph} from './knowledge-graph.js';
 import {mountStory} from './story-player.js';
@@ -80,7 +81,8 @@ function mapPage(type,id,topicIndex){
     if(reading){$('.mind-page').classList.remove('is-focus');$('#focus-graph').setAttribute('aria-pressed','false');$('#focus-graph').textContent='Focus graph';}
   };
   const motionChanged=()=>setMotion(motion.matches);motion.addEventListener('change',motionChanged);
-  cleanupMindPage=()=>{field.destroy();motion.removeEventListener('change',motionChanged);};
+  const cleanupEventFlow=s?.id==='eventbridge'&&!topic?mountEventFlow($('.mind-page')):()=>{};
+  cleanupMindPage=()=>{cleanupEventFlow();field.destroy();motion.removeEventListener('change',motionChanged);};
   $('.mind-toolbar').append($('.reading-controls'));
   if($('.trail-history'))$('.mind-header').append($('.trail-history'));
   $('#focus-graph').addEventListener('click',()=>{$('.mind-page').classList.remove('mind-reading-mode');$('#mind-reading').setAttribute('aria-pressed','false');$('#mind-reading').textContent='Reading view';});

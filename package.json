@@ -5,6 +5,7 @@
   "description": "An interactive, layered AWS architecture and incident-response atlas.",
   "scripts": {
     "start": "node server.mjs",
+    "test:event-flow": "node --check event-flow.js && python scripts/check_event_flow.py",
     "test:atlas-design": "python scripts/check_atlas_design.py",
     "test:first-trace": "node --check first-trace.js && python scripts/check_first_trace.py",
     "build": "node scripts/build.mjs",

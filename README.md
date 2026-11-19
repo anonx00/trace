@@ -16,6 +16,14 @@ The shared ivory and forest palette now extends through domain and service maps,
 
 [Investigation preview](docs/atlas-investigation.png) ? [Mobile evidence preview](docs/atlas-evidence-mobile.png)
 
+## Follow an EventBridge event
+
+[EventBridge](https://anonx00.github.io/trace/#/service/eventbridge) now has an interactive, source-linked flow: producer, bus, rule, target, and optional target dead-letter queue. Compare a matching event, a non-matching event, and a missing-permission delivery failure. Inspect stages with the mouse or arrow keys, step through the route, and pause the signals. Examples are illustrative; they do not represent a connected AWS account.
+
+![EventBridge interactive routing diagram](docs/eventbridge-flow.png)
+
+The responsive layout switches to a vertical flow on smaller screens. The focused browser test checks three outcomes at seven widths, connector attachment, text containment, keyboard navigation, pause/resume, reduced motion, and cleanup across routes. Diagram interaction references: [React Flow animated edges](https://reactflow.dev/examples/edges/animating-edges); implementation uses the site's existing native SVG and JavaScript stack.
+
 ## Explore
 
 New to AWS security? Start with **Take your first trace**: a four-step, source-linked introduction to IAM permissions, STS sessions, S3 access, and CloudTrail evidence. Each concept includes a practical check, a revealable answer, and a route into the full service research. The selected step survives refresh and can be shared with a URL such as `#/?learn=sts`.
