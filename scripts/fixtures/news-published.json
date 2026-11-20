@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "publication": "published",
+  "generatedAt": "2026-09-12T00:00:00Z",
+  "snapshotExpiresAt": "2026-09-26T00:00:00Z",
+  "policy": {
+    "maxItemsPerService": 3,
+    "staleAfterDays": 14,
+    "expiredItems": "hidden",
+    "pendingItems": "excluded",
+    "linksPerItem": 2
+  },
+  "items": [
+    {
+      "id": "news-aws-security-bulletins-2026-107-aws",
+      "title": "CVE-2026-89049: SSRF in AWS Systems Manager Agent remote-host port forwarding",
+      "summary": "AWS says SSM Agent versions earlier than 3.3.4851.0 are affected by an SSRF in Session Manager remote-host port forwarding that can reach link-local endpoints.",
+      "whyItMatters": "A principal allowed to start remote-host port-forwarding sessions could reach instance metadata and use the managed instance's temporary IAM role credentials outside the instance.",
+      "checks": [
+        "Inventory SSM Agent versions and prioritize upgrades to version 3.3.4851.0 or later.",
+        "Review who can call ssm:StartSession with AWS-StartPortForwardingSessionToRemoteHost, including access to that SSM document.",
+        "Review CloudTrail StartSession activity for that document and investigate sessions that do not match an approved support path."
+      ],
+      "category": "vulnerability",
+      "services": [
+        "systemsmanager",
+        "ec2",
+        "iam"
+      ],
+      "mapping": [
+        {
+          "service": "systemsmanager",
+          "method": "editorial-review",
+          "term": "AWS Systems Manager Agent (SSM Agent)",
+          "basis": "The affected component is SSM Agent and the vulnerable feature is Session Manager remote-host port forwarding."
+        },
+        {
+          "service": "ec2",
+          "method": "editorial-review",
+          "term": "managed EC2 instances and Instance Metadata Service",
+          "basis": "The bulletin describes managed EC2 instances and access to the instance metadata service through the affected tunnel."
+        },
+        {
+          "service": "iam",
+          "method": "editorial-review",
+          "term": "temporary IAM role credentials",
+          "basis": "The stated impact includes theft and off-instance use of temporary instance-role credentials."
+        }
+      ],
+      "basis": "TRACE-reviewed AWS Security Bulletin 2026-107-AWS, corroborated by the AWS-maintained amazon-ssm-agent GitHub security advisory.",
+      "publishedAt": "2026-09-10T18:30:00Z",
+      "retrievedAt": "2026-09-12T00:00:00Z",
+      "expiresAt": "2026-10-25T18:30:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-bulletin",
+        "url": "https://aws.amazon.com/security/security-bulletins/2026-107-aws/",
+        "feedLabel": "AWS Security Bulletins",
+        "feedUrl": "https://aws.amazon.com/security/security-bulletins/rss/feed/"
+      },
+      "references": [
+        {
+          "label": "AWS-maintained GitHub advisory",
+          "url": "https://github.com/aws/amazon-ssm-agent/security/advisories/GHSA-w9jw-h72g-6hxc"
+        }
+      ],
+      "review": {
+        "status": "approved",
+        "reviewedAt": "2026-09-12T00:00:00Z"
+      }
+    },
+    {
+      "id": "news-guardduty-slr-vpc-lattice-2026-09-09",
+      "title": "Updated GuardDuty service-linked role (SLR)",
+      "summary": "AWS added vpc-lattice:CreateServiceNetworkVpcAssociation and vpc-lattice:AssociateViaAWSService to the GuardDuty service-linked role for Runtime Monitoring agent connectivity.",
+      "whyItMatters": "The GuardDuty-owned role now has two additional network-association capabilities. Their expected service use should be distinguished from unexpected principal-created VPC Lattice associations.",
+      "checks": [
+        "Review the current AmazonGuardDutyServiceRolePolicy version and the two added VPC Lattice actions.",
+        "Baseline VPC Lattice association activity attributable to AWSServiceRoleForAmazonGuardDuty before alerting on similar principal activity.",
+        "Confirm Runtime Monitoring connectivity and its network controls in each enabled account and Region."
+      ],
+      "category": "policy-change",
+      "services": [
+        "guardduty",
+        "vpc"
+      ],
+      "mapping": [
+        {
+          "service": "guardduty",
+          "method": "editorial-review",
+          "term": "GuardDuty service-linked role (SLR)",
+          "basis": "The update changes the AWS-managed service-linked role used by GuardDuty."
+        },
+        {
+          "service": "vpc",
+          "method": "editorial-review",
+          "term": "vpc-lattice:CreateServiceNetworkVpcAssociation and vpc-lattice:AssociateViaAWSService",
+          "basis": "The added actions create and associate VPC Lattice service-network connectivity for Runtime Monitoring."
+        }
+      ],
+      "basis": "TRACE-reviewed entry in the official Amazon GuardDuty documentation history and the linked service-role permissions page.",
+      "publishedAt": "2026-09-09T19:00:00Z",
+      "retrievedAt": "2026-09-12T00:00:00Z",
+      "expiresAt": "2026-10-24T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-doc-update",
+        "url": "https://docs.aws.amazon.com/guardduty/latest/ug/doc-history.html",
+        "feedLabel": "Amazon GuardDuty documentation history",
+        "feedUrl": "https://docs.aws.amazon.com/guardduty/latest/ug/amazon-guardduty-doc-history.rss"
+      },
+      "references": [
+        {
+          "label": "GuardDuty service-linked role permissions",
+          "url": "https://docs.aws.amazon.com/guardduty/latest/ug/slr-permissions.html"
+        }
+      ],
+      "review": {
+        "status": "approved",
+        "reviewedAt": "2026-09-12T00:00:00Z"
+      }
+    },
+    {
+      "id": "news-securityhub-network-scanning-informational-2026-09-03",
+      "title": "Updated Network Scanning informational findings details",
+      "summary": "AWS clarified that Network Scanning creates an Informational finding when no supported open ports are detected, and described how that finding changes across later scans.",
+      "whyItMatters": "An Informational result confirms that an eligible resource was scanned; the absence of any finding does not establish that Network Scanning examined the resource.",
+      "checks": [
+        "Confirm Network Scanning is enabled in the intended accounts and Regions before interpreting its findings.",
+        "Treat an Informational no-open-ports finding as evidence of a completed scan, not as a permanent reachability guarantee.",
+        "Reconcile missing findings with supported resource types, scan timing, exclusions, and the documented finding lifecycle."
+      ],
+      "category": "detection-change",
+      "services": [
+        "securityhub"
+      ],
+      "mapping": [
+        {
+          "service": "securityhub",
+          "method": "editorial-review",
+          "term": "Security Hub Network Scanning informational findings",
+          "basis": "The update changes how Security Hub Network Scanning informational findings should be interpreted."
+        }
+      ],
+      "basis": "TRACE-reviewed official Security Hub documentation-history entry and the current Network Scanning finding-lifecycle documentation.",
+      "publishedAt": "2026-09-03T19:00:00Z",
+      "retrievedAt": "2026-09-12T00:00:00Z",
+      "expiresAt": "2026-10-18T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-doc-update",
+        "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/doc-history.html",
+        "feedLabel": "AWS Security Hub documentation history",
+        "feedUrl": "https://docs.aws.amazon.com/securityhub/latest/userguide/aws-security-hub-doc-updates.rss"
+      },
+      "references": [
+        {
+          "label": "Security Hub Network Scanning",
+          "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-v2-network-scanning.html"
+        }
+      ],
+      "review": {
+        "status": "approved",
+        "reviewedAt": "2026-09-12T00:00:00Z"
+      }
+    },
+    {
+      "id": "news-guardduty-custom-detection-rules-2026-09-01",
+      "title": "New feature - Custom Detection Rules",
+      "summary": "GuardDuty now provides AWS-maintained rules for selected threat techniques, with per-account live or 14-day dry-run associations and organization-level configuration.",
+      "whyItMatters": "Teams can evaluate account-specific unwanted CloudTrail activity in dry-run mode before enabling findings, then manage associations consistently from a delegated GuardDuty administrator.",
+      "checks": [
+        "Inventory available rules and select only techniques that should be exceptional in the target accounts.",
+        "Use dry-run associations first and review the emitted CloudWatch match metrics during the documented 14-day window.",
+        "Confirm organization targeting, delegated-administrator ownership, and live-mode finding routing before broad rollout."
+      ],
+      "category": "detection-change",
+      "services": [
+        "guardduty",
+        "cloudtrail",
+        "cloudwatch"
+      ],
+      "mapping": [
+        {
+          "service": "guardduty",
+          "method": "editorial-review",
+          "term": "GuardDuty Custom Detection Rules",
+          "basis": "Custom Detection Rules are configured and evaluated by GuardDuty."
+        },
+        {
+          "service": "cloudtrail",
+          "method": "editorial-review",
+          "term": "AWS CloudTrail management events",
+          "basis": "AWS documents that the rules evaluate selected fields in CloudTrail management events."
+        },
+        {
+          "service": "cloudwatch",
+          "method": "editorial-review",
+          "term": "Amazon CloudWatch metrics",
+          "basis": "AWS documents CloudWatch match metrics as the output of dry-run associations."
+        }
+      ],
+      "basis": "TRACE-reviewed official GuardDuty documentation for Custom Detection Rules; operational claims are limited to the documented rule, association, mode, and signal model.",
+      "publishedAt": "2026-09-01T19:00:00Z",
+      "retrievedAt": "2026-09-12T00:00:00Z",
+      "expiresAt": "2026-10-16T19:00:00Z",
+      "source": {
+        "publisher": "AWS",
+        "kind": "official-doc-update",
+        "url": "https://docs.aws.amazon.com/guardduty/latest/ug/custom-detection-rules.html",
+        "feedLabel": "Amazon GuardDuty documentation history",
+        "feedUrl": "https://docs.aws.amazon.com/guardduty/latest/ug/amazon-guardduty-doc-history.rss"
+      },
+      "references": [],
+      "review": {
+        "status": "approved",
+        "reviewedAt": "2026-09-12T00:00:00Z"
+      }
+    },
+    {
+      "id": "news-datadog-aws-root-password-spray-2026-08-31",
+      "title": "Password-spraying campaign targeted AWS root users at more than 150 organizations",
+      "summary": "Datadog Security Research observed repeated failed AWS root-user console sign-ins from July 24 through August 23, 2026; it reported no successful authentication in the observed activity.",
+      "whyItMatters": "The activity supplies a concrete CloudTrail hunt while reinforcing separate controls for member-account root credentials and the AWS Organizations management account.",
+      "checks": [
+        "Search CloudTrail for Root ConsoleLogin failures and successes, then compare the user agents and time window documented in the research.",
+        "Review whether root credentials have been removed from eligible Organizations member accounts through centralized root access.",
+        "Alert on direct root sign-ins, root API activity, credential changes, and privileged sts:AssumeRoot sessions."
+      ],
+      "category": "threat-research",
+      "services": [
+        "iam",
+        "organizations",
+        "cloudtrail"
+      ],
+      "mapping": [
+        {
+          "service": "iam",
+          "method": "editorial-review",
+          "term": "AWS root user",
+          "basis": "The campaign targeted AWS account root identities and the official countermeasures are documented by IAM."
+        },
+        {
+          "service": "organizations",
+          "method": "editorial-review",
+          "term": "AWS Organizations centralized root access",
+          "basis": "The research and AWS guidance distinguish centralized member-account root controls from management-account safeguards."
+        },
+        {
+          "service": "cloudtrail",
+          "method": "editorial-review",
+          "term": "CloudTrail ConsoleLogin",
+          "basis": "The observed signal is failed or successful root ConsoleLogin activity recorded in CloudTrail."
+        }
+      ],
+      "basis": "TRACE-reviewed independent research. Observed scope and outcome are attributed to Datadog; defensive interpretation is corroborated with AWS root-user guidance.",
+      "publishedAt": "2026-08-31T00:00:00Z",
+      "retrievedAt": "2026-09-12T00:00:00Z",
+      "expiresAt": "2026-10-30T00:00:00Z",
+      "source": {
+        "publisher": "Datadog Security Labs",
+        "kind": "independent-research",
+        "url": "https://securitylabs.datadoghq.com/articles/aws-root-user-bruteforce-campaign/",
+        "feedLabel": "Datadog Security Labs",
+        "feedUrl": "https://securitylabs.datadoghq.com/rss/feed.xml"
+      },
+      "references": [
+        {
+          "label": "AWS root user best practices",
+          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html"
+        }
+      ],
+      "review": {
+        "status": "approved",
+        "reviewedAt": "2026-09-12T00:00:00Z"
+      }
+    }
+  ]
+}

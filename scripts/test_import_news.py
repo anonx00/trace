@@ -21,7 +21,9 @@ class NewsImporterTests(unittest.TestCase):
         cls.config = json.loads((ROOT / "scripts" / "news_sources.json").read_text(encoding="utf-8"))
         cls.sources = {source["id"]: source for source in cls.config["sources"]}
         cls.aliases = cls.config["serviceAliases"]
-        cls.published = json.loads((ROOT / "generated" / "news.json").read_text(encoding="utf-8"))
+        # Historical input must survive production expiry/pruning unchanged.
+        # The real publication is validated separately by --check/check_news.mjs.
+        cls.published = json.loads((ROOT / "scripts" / "fixtures" / "news-published.json").read_text(encoding="utf-8"))
 
     def entry(self, **overrides):
         values = {
@@ -132,6 +134,16 @@ class NewsImporterTests(unittest.TestCase):
         self.assertGreater(removed, 0)
         self.assertEqual(pruned["generatedAt"], self.published["generatedAt"])
         self.assertEqual(pruned["snapshotExpiresAt"], self.published["snapshotExpiresAt"])
+
+    def test_pruning_empty_publication_is_idempotent(self):
+        empty = json.loads(json.dumps(self.published))
+        empty["items"] = []
+        pruned, removed = news.prune_published(
+            empty, self.config, self.sources, set(self.aliases),
+            datetime(2026, 11, 20, tzinfo=UTC),
+        )
+        self.assertEqual(removed, 0)
+        self.assertEqual(pruned, empty)
 
     def test_automated_mapping_cannot_be_promoted_as_reviewed(self):
         candidate = news.normalize_candidate(
