@@ -1,4 +1,21 @@
 /* TRACE field atlas: one visual language for every research route. */
+.source-topic-page{max-width:1120px;margin:auto}
+#view .source-topic-header{max-width:850px;margin:30px 0}
+#view .source-topic-header h1{font:500 clamp(30px,4vw,52px)/1.12 var(--display);letter-spacing:-1px;margin:15px 0;color:var(--forest);overflow-wrap:anywhere}
+#view .source-topic-header p,#view .source-topic-reading p,#view .source-topic-footer p{color:var(--copy);font-size:16px;line-height:1.7}
+#view .source-topic-reading{background:var(--sheet);border:1px solid var(--line);border-left:3px solid var(--ember);border-radius:16px;padding:clamp(20px,3vw,32px)}
+#view .source-topic-reading .topic-editorial{background:none;border:0;padding:0;margin:18px 0}
+#view .source-topic-reading .source-topic-date{font-size:12px;margin:20px 0 0}
+#view .source-topic-page h2{font:500 22px/1.3 var(--display);color:var(--forest)}
+#view .source-topic-adjacent{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0}
+#view .source-topic-adjacent a{display:grid;gap:8px;padding:20px;border:1px solid var(--line);border-radius:12px;background:#edf1e2;color:var(--forest);overflow-wrap:anywhere}
+#view .source-topic-adjacent span{font-size:12px;color:var(--copy)}
+#view .source-topic-adjacent a:hover{background:#e3ead6;border-color:#879d75}
+#view .source-topic-footer{border-top:1px solid var(--line);padding-top:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+#view .source-topic-footer>div{flex:1 1 300px}
+#view .source-topic-children{padding:20px 0}
+#view .source-topic-children li{margin:12px 0;color:var(--forest)}
+@media(max-width:600px){#view .source-topic-adjacent{grid-template-columns:1fr}}
 #view .detection-gap-inline{background:var(--sheet);color:var(--copy);border:1px solid var(--line);border-left:3px solid var(--ember);border-radius:12px;padding:18px 20px;line-height:1.65;box-shadow:none}
 #view .scenario-signal{background:#edf1e2;border:1px solid #cbd8ba;border-left:3px solid var(--ember);border-radius:12px;padding:18px 20px;box-shadow:none;transition:background .18s ease,border-color .18s ease}
 #view .scenario-signal>span{color:#98401f}

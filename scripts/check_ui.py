@@ -55,26 +55,20 @@ with sync_playwright() as pw:
     page.locator('.topic-link').first.click()
     page.wait_for_url('**/topic/0')
     page.get_by_role('link',name='Open exact AWS section').wait_for()
-    expect(page.locator('.topic-security-lens')).to_be_visible()
-    assert 'This heading was extracted' not in page.locator('.inspector').inner_text()
-    assert 'OBSERVABLE EVIDENCE' in page.locator('.inspector').inner_text()
-    assert not any('…' in value for value in page.locator('.map-node text').all_text_contents())
+    expect(page.locator('.source-topic-page')).to_be_visible()
+    expect(page.locator('.topic-editorial')).to_be_visible()
+    assert page.locator('.world-svg').count()==0
+    assert page.locator('h1').count()==1
     page.goto('http://127.0.0.1:4173/#/service/rds')
     page.get_by_role('tab',name='AWS docs',exact=True).click()
     page.locator('.topic-filter').fill('Amazon RDS monitoring')
     monitoring=page.locator('.topic-link',has_text='Amazon RDS monitoring').first
     expect(monitoring).to_be_visible()
     monitoring.click()
-    expect(page.locator('.topic-security-lens')).to_be_visible()
-    expect(page.locator('.inspector h2')).to_contain_text('Amazon RDS monitoring')
-    rds_text=page.locator('.inspector').inner_text()
-    assert 'This heading was extracted' not in rds_text
-    assert 'ATTACK HYPOTHESES' in rds_text
-    assert 'OBSERVABLE EVIDENCE' in rds_text
-    assert 'CONTROLS TO TEST' in rds_text
-    assert 'RESPONDER QUESTION' in rds_text
-    assert not any('…' in value for value in page.locator('.map-node text').all_text_contents())
-    page.locator('.world-layer').evaluate('(el)=>Promise.all(el.getAnimations().map(a=>a.finished))')
+    expect(page.locator('.source-topic-page h1')).to_contain_text('Amazon RDS monitoring')
+    assert page.locator('.world-svg').count()==0
+    assert 'ATTACK HYPOTHESES' not in page.locator('.source-topic-page').inner_text()
+    expect(page.get_by_role('link',name='Open exact AWS section')).to_be_visible()
     page.screenshot(path=str(out/'rds-monitoring-analysis.png'),full_page=True)
     page.goto('http://127.0.0.1:4173/#/service/guardduty')
     page.get_by_role('tab',name='Evidence',exact=True).click()

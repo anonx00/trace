@@ -79,7 +79,7 @@ with sync_playwright() as p:
     assert first!=page.locator('.mind-graph-node').first.get_attribute('data-route')
     page.locator('#graph-previous').click()
     page.locator('.topic-link').first.click()
-    expect(page.locator('.topic-security-lens')).to_be_visible()
+    expect(page.locator('.source-topic-page')).to_be_visible()
     assert 'This heading was extracted' not in page.locator('body').inner_text()
     page.goto(URL+'#/scenario/web-to-role',wait_until='networkidle')
     expect(page.locator('[data-stage="0"]')).to_have_attribute('aria-pressed','true')
