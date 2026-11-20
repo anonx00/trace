@@ -1,4 +1,10 @@
 /* TRACE field atlas: one visual language for every research route. */
+#view .detection-gap-inline{background:var(--sheet);color:var(--copy);border:1px solid var(--line);border-left:3px solid var(--ember);border-radius:12px;padding:18px 20px;line-height:1.65;box-shadow:none}
+#view .scenario-signal{background:#edf1e2;border:1px solid #cbd8ba;border-left:3px solid var(--ember);border-radius:12px;padding:18px 20px;box-shadow:none;transition:background .18s ease,border-color .18s ease}
+#view .scenario-signal>span{color:#98401f}
+#view .scenario-signal strong{color:var(--forest)}
+#view .scenario-signal small{color:#47603e;line-height:1.65}
+#view .scenario-signal:hover{background:#e3ead6;border-color:#879d75}
 :root{--paper:#f7f5f0;--sheet:#fffdf8;--wash:#eeeee4;--forest:#2c4536;--copy:#576751;--quiet:#6c7b62;--line:#d7decd;--ember:#b84724;--reader-text:#2c4536;--reader-muted:#576751;--reader-dim:#6c7b62;--reader-line:#d7decd;--reader-panel:#fffdf8;--mind-bg:#f7f5f0;--mind-panel:#fffdf8;--mind-line:#d7decd;--mind-muted:#62735b;--text:#2c4536;--muted:#62735b;--mint:#49704c;--accent:#b84724;--stroke:#d7decd;--ink:#2c4536;color-scheme:light}
 html,html body{background:var(--paper);color:var(--forest)}
 ::selection{background:#d9e2c8;color:#263d2b}

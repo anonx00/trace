@@ -1,0 +1,40 @@
+name: Refresh AWS context and native detection rules
+on:
+  schedule:
+    - cron: '43 5 * * *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - scripts/refresh_upstream.py
+      - scripts/test_refresh_upstream.py
+      - .github/workflows/refresh-upstream.yml
+permissions:
+  contents: read
+concurrency:
+  group: trace-upstream-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Test source scopes and change tracking
+        run: python scripts/test_refresh_upstream.py
+      - name: Fetch upstream sources and exact native YAML
+        run: python scripts/refresh_upstream.py
+      - name: Save complete review queue
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: aws-upstream-review
+          path: artifacts/upstream-review.json
+          retention-days: 30
+      - name: Explain publication status
+        run: |
+          echo '### AWS upstream review queue' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Download aws-upstream-review for native Sigma/Scanner YAML and HackTricks AWS source links, pinned commits, and changes from the checked-in baseline. These are upstream candidates, not TRACE-reviewed rules or automatic production deployments.' >> "$GITHUB_STEP_SUMMARY"
