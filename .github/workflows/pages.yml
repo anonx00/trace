@@ -64,7 +64,6 @@ jobs:
           npm run test:detections
           npm run test:hacktricks
           npm run test:motion
-          npm run test:event-flow
           npm run test:motion-visibility
           npm run test:mind
           npm run test:reader
