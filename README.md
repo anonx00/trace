@@ -24,7 +24,7 @@ New to AWS security? Start with **Take your first trace**: a four-step, source-l
 
 The opening illustration links directly to eight service pages and uses documented catalog relationships. It is an educational map; motion illustrates connections. Each service page also begins with a plain-language introduction and shortcuts to its evidence and defensive controls.
 
-The map includes **40 services**, **41 documented relationships**, **28 reviewed community detections**, and **21 incident scenarios**.
+The map includes **40 services**, **49 documented relationships**, **28 reviewed community detections**, and **21 incident scenarios**.
 
 - **Domains:** start with identity, workloads, data, networking, detection, response, supply chain, or investigation.
 - **Services:** select a node for security context, rule-backed attack cases, telemetry requirements, tuning notes, controls, and documentation. Select a connection to see why it exists.

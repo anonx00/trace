@@ -16,7 +16,7 @@ export const lessons = [
 const positions = {lambda:[115,185],iam:[310,105],sts:[495,185],cloudwatch:[90,355],s3:[325,305],kms:[525,370],cloudtrail:[315,495],guardduty:[110,530]};
 function cloudIllustration(){
   // Relay order follows the lesson: identity, session, resource, evidence. Every hop is a sourced catalog capability.
-  const relay = ['sts>iam','lambda>iam','s3>kms','cloudtrail>s3','guardduty>cloudtrail','lambda>cloudwatch'];
+  const relay = ['sts>iam','lambda>iam','s3>kms','cloudtrail>s3','guardduty>cloudtrail','cloudtrail>cloudwatch','lambda>cloudwatch'];
   const rank = c => {const i=relay.indexOf(c.from+'>'+c.to);return i<0?relay.length:i;};
   const links = connections.filter(c=>positions[c.from]&&positions[c.to]).sort((a,b)=>rank(a)-rank(b));
   const slot = 1.5, cycle = slot*links.length;
