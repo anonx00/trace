@@ -1,5 +1,5 @@
 
-const securityPillar = 'https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html';
+const securityPillar = 'https://docs.aws.amazon.com/wellarchitected/latest/framework/security.html';
 const incidentResponse = 'https://docs.aws.amazon.com/security-ir/latest/userguide/incident-response.html';
 
 export const securityProfiles = {
@@ -25,7 +25,7 @@ export const securityProfiles = {
     evidence: ['Identity-provider sign-in and MFA logs', 'CloudTrail IAM Identity Center administration events', 'Account assignments and permission-set changes'],
     defenses: ['Enforce strong MFA and rapid user lifecycle controls', 'Keep permission sets narrow and task based', 'Protect delegated administration and emergency access'],
     responder: 'Was the user session legitimate, and which account assignments expanded its reach?',
-    source: 'https://docs.aws.amazon.com/singlesignon/latest/userguide/security-best-practices.html'
+    source: 'https://docs.aws.amazon.com/singlesignon/latest/userguide/security.html'
   },
   cognito: {
     boundary: 'Manages application users, federation, tokens, app clients, user-pool triggers, and identity-pool mappings to AWS roles.',
@@ -41,7 +41,7 @@ export const securityProfiles = {
     evidence: ['Organization-wide CloudTrail events', 'SCP, RCP, account, and organizational-unit changes', 'Trusted-access and delegated-admin inventory'],
     defenses: ['Protect the management account and minimize its use', 'Test and version organization policies', 'Centralize an organization trail in a security account'],
     responder: 'Which organization-level change altered the effective permissions of affected accounts?',
-    source: 'https://docs.aws.amazon.com/organizations/latest/userguide/orgs_security.html'
+    source: 'https://docs.aws.amazon.com/organizations/latest/userguide/security.html'
   },
   kms: {
     boundary: 'Controls cryptographic use through key policies, grants, aliases, and integrated-service encryption contexts.',
@@ -49,7 +49,7 @@ export const securityProfiles = {
     evidence: ['CloudTrail KMS management and cryptographic events', 'Key policies, grants, aliases, and rotation state', 'Encryption context and calling-service details'],
     defenses: ['Separate key administration from key use', 'Apply least privilege and encryption-context conditions', 'Alert on policy, grant, disable, and deletion changes'],
     responder: 'Who used or changed the key, through which service, and with what encryption context?',
-    source: 'https://docs.aws.amazon.com/kms/latest/developerguide/best-practices.html'
+    source: 'https://docs.aws.amazon.com/kms/latest/developerguide/kms-security.html'
   },
 
   ec2: {
@@ -131,7 +131,7 @@ export const securityProfiles = {
     evidence: ['CloudTrail AWS Backup events', 'Backup Audit Manager and job status', 'Vault policies, locks, recovery points, and restore history'],
     defenses: ['Use Vault Lock and isolated recovery accounts', 'Separate backup administration from workload administration', 'Continuously test restore procedures and alert on failed jobs'],
     responder: 'Which recovery points remain trustworthy, immutable, and restorable after the event?',
-    source: 'https://docs.aws.amazon.com/aws-backup/latest/devguide/security.html'
+    source: 'https://docs.aws.amazon.com/aws-backup/latest/devguide/security-considerations.html'
   },
   secretsmanager: {
     boundary: 'Stores versioned secrets protected by IAM, resource policies, KMS keys, rotation functions, and service integrations.',
@@ -221,7 +221,7 @@ export const securityProfiles = {
     evidence: ['Security Hub findings and finding history', 'CloudTrail Security Hub administration events', 'Standards, controls, integrations, members, and aggregation state'],
     defenses: ['Use delegated administration and central aggregation', 'Continuously monitor control and integration state', 'Route high-confidence findings into owned response procedures'],
     responder: 'Which source produced the finding, what raw evidence exists, and has its workflow state been altered?',
-    source: 'https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-security.html'
+    source: 'https://docs.aws.amazon.com/securityhub/latest/userguide/security.html'
   },
   cloudwatch: {
     boundary: 'Holds operational and security logs, metrics, alarms, dashboards, subscriptions, retention, and delivery paths.',
@@ -262,7 +262,7 @@ export const securityProfiles = {
     evidence: ['CloudTrail topic and subscription changes', 'Delivery-status logs and failure metrics', 'Topic policy, subscriptions, filters, KMS key, and DLQ state'],
     defenses: ['Use least-privilege topic policies', 'Encrypt topics and control subscription confirmation', 'Monitor subscription changes and delivery failures'],
     responder: 'Who published the message, which subscriptions received it, and were any endpoints changed?',
-    source: 'https://docs.aws.amazon.com/sns/latest/dg/sns-security.html'
+    source: 'https://docs.aws.amazon.com/sns/latest/dg/security.html'
   },
   sqs: {
     boundary: 'Buffers messages through queue policies, producers, consumers, visibility timeouts, retention, encryption, and dead-letter queues.',
@@ -270,7 +270,7 @@ export const securityProfiles = {
     evidence: ['CloudTrail SQS control and enabled data events', 'Queue depth, age, receive, delete, and DLQ metrics', 'Queue policy, KMS key, redrive, and retention state'],
     defenses: ['Restrict queue policies and separate producer/consumer roles', 'Encrypt messages and use private service endpoints', 'Protect purge and redrive operations and monitor DLQs'],
     responder: 'Which producer introduced the message, which consumer received it, and did processing or deletion deviate?',
-    source: 'https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-security.html'
+    source: 'https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/security.html'
   },
   stepfunctions: {
     boundary: 'Orchestrates state transitions using definitions, versions, aliases, execution roles, service integrations, inputs, outputs, and history.',

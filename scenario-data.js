@@ -417,7 +417,7 @@ export const scenarios = [
     kicker: 'DEPLOYMENT ACCESS -> PERSISTENCE -> EVASION',
     summary: 'A function can continue serving normal traffic while a modified version, layer, alias, environment setting, or resource policy creates a quiet alternate execution path.',
     confidence: 'Documented community post-exploitation pattern',
-    mitre: ['T1505.006','T1098','T1053'],
+    mitre: ['T1648','T1098','T1053'],
     services: ['lambda','iam','vpc','cloudwatch','cloudtrail','apigateway'],
     stages: [
       {service:'lambda',title:'Function configuration changes',detail:'Code, layer, handler, environment, VPC attachment, version, or alias is changed.',signal:'CloudTrail records update and publish APIs; configuration snapshots reveal layer ARNs, hashes, versions, and networking changes.'},
@@ -455,7 +455,7 @@ export const scenarios = [
     kicker: 'DEFENSE EVASION -> IMPACT',
     summary: 'Stopping a trail is the obvious move. Selectors, delivery policies, KMS state, lifecycle rules, subscriptions, and retention can create quieter evidence gaps.',
     confidence: 'Directly emulated by Stratus Red Team',
-    mitre: ['T1562.008','T1070','T1485'],
+    mitre: ['T1685.002','T1070','T1485'],
     services: ['cloudtrail','s3','kms','cloudwatch','config','securityhub'],
     stages: [
       {service:'cloudtrail',title:'Collection scope narrows',detail:'A trail is stopped, deleted, made single-Region, or its event selectors are changed.',signal:'CloudTrail administration events, trail status, selector history, and organization configuration expose the change.'},
@@ -493,7 +493,7 @@ export const scenarios = [
     kicker: 'IMPACT -> INHIBIT RECOVERY',
     summary: 'A highly privileged identity can target production data, snapshots, backup plans, vaults, replication, and encryption keys during the same destructive event.',
     confidence: 'Resilience-focused threat model',
-    mitre: ['T1485','T1490','T1562.008'],
+    mitre: ['T1485','T1490','T1685.002'],
     services: ['backup','s3','rds','dynamodb','efs','kms','organizations'],
     stages: [
       {service:'organizations',title:'Privilege crosses workload accounts',detail:'Shared administration or weak organization guardrails allow one identity to reach production and recovery resources.',signal:'Cross-account role assumptions and organization policy changes define the blast radius.'},
@@ -512,7 +512,7 @@ export const scenarios = [
     kicker: 'DETECTION -> AUTOMATION -> CONTAINMENT',
     summary: 'Automated response reduces dwell time, but a forged event, changed rule, broad target role, or unsafe runbook can turn the response plane into a privileged execution path.',
     confidence: 'Defensive control-plane threat model',
-    mitre: ['T1098','T1059','T1562.008'],
+    mitre: ['T1098','T1059','T1685.002'],
     services: ['guardduty','eventbridge','sns','sqs','stepfunctions','systemsmanager','iam','cloudtrail'],
     stages: [
       {service:'guardduty',title:'Finding starts the workflow',detail:'A finding or security event is routed into EventBridge for enrichment and response.',signal:'Retain the original finding ID, account, Region, resource, severity, and update history.'},

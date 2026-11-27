@@ -83,7 +83,7 @@ export const connections = [
   link('ec2','iam','Can use an instance role','Applications on EC2 can use an attached IAM role through an instance profile to obtain temporary credentials.','AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html'),
   link('lambda','cloudwatch','Sends function logs','Lambda sends function logs to CloudWatch Logs when the execution role has the required permissions.','lambda/latest/dg/monitoring-cloudwatchlogs.html'),
   link('secretsmanager','kms','Encrypts secret values','Secrets Manager uses AWS KMS envelope encryption to protect stored secret values.','secretsmanager/latest/userguide/security-encryption.html'),
-  link('sns','sqs','Can deliver to a queue','An SQS queue can subscribe to an SNS topic. Subscription and queue permissions determine delivery.','sns/latest/dg/sns-sqs-as-subscriber.html'),
+  link('sns','sqs','Can deliver to a queue','An SQS queue can subscribe to an SNS topic. Subscription and queue permissions determine delivery.','sns/latest/dg/subscribe-sqs-queue-to-sns-topic.html'),
 ];
 
 export const insights = [

@@ -181,7 +181,7 @@ export const communityDetections = [
     ['An AWS account leaves the organization or is removed from it', 'Correlate the actor, management account, affected account, and organization ID'],
     'Normalized AWS CloudTrail organization-administration events in Google SecOps.',
     'Account moves can be planned during mergers, divestitures, or organization redesign. Require an approved destination and verify SCP, trail, GuardDuty, Config, and Security Hub continuity.',
-    ['T1562']
+    ['T1685']
   ),
   community(
     '019f6e52-6bee-747e-b20d-3ecf38aa46a0', 'AWS API Gateway Keys Accessed', ['apigateway'],
@@ -199,7 +199,7 @@ export const communityDetections = [
     ['A CloudWatch Logs log group is deleted', 'Review the actor, Region, log group, retention/export state, and workload lifecycle'],
     'Normalized AWS CloudTrail CloudWatch Logs management events in Google SecOps.',
     'Infrastructure teardown can delete log groups. Require a matching decommission record and confirm evidence was retained or exported before suppression.',
-    ['T1562.008']
+    ['T1685.002']
   ),
   community(
     '019f6e52-7018-756d-b18b-2f6a501d1205', 'AWS Backup Plan Deleted', ['backup'],
@@ -272,7 +272,7 @@ export const communityDetections = [
     ['The same source produces multiple BLOCK decisions', 'A later request from that source receives ALLOW', 'Correlate within the rule’s defined time window'],
     'AWS WAF access logs with action, source, request, rule, web ACL, and timestamp fields; application and origin logs are required to assess impact.',
     'Shared proxies, NAT, scanners, changed paths, and legitimate retries can match. Compare normalized request features and the allowing rule; ALLOW does not prove application compromise.',
-    ['T1190', 'T1562']
+    ['T1190', 'T1685']
   )
 ];
 
