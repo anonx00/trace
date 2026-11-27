@@ -1,9 +1,9 @@
 import {serviceById, domainFor, connections} from './catalog.js';
-import {glyphs} from './node-symbols.js';
+import {glyphs,glyphFor} from './node-symbols.js';
 
 const esc = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arrow = '<span aria-hidden="true">↗</span>';
-const icon = id => `<svg viewBox="-22 -22 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${glyphs[domainFor(id).id]}"/></svg>`;
+const icon = id => `<svg viewBox="-22 -22 44 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${glyphFor(id,domainFor(id).id)}"/></svg>`;
 
 export const lessons = [
   {id:'iam',label:'Identity',question:'Who is allowed to ask?',term:'IAM · Identity and Access Management',title:'Start with the identity.',body:'An application needs to read a file in S3. Before following the request, identify the role it uses and the policies that apply. A role’s trust policy describes who can assume it; permission policies describe allowed actions and resources.',check:'Find the role, its trust policy, and the permissions relevant to the request. A service name alone does not tell you what is allowed.',clue:'Principal → policy → permission',quiz:'Does permission to assume a role mean permission to read every S3 object?',answer:'No. Assuming the role and accessing an object are separate authorization decisions. The resulting request is evaluated against the applicable policies and conditions.',source:'https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html',sourceLabel:'AWS: policies and permissions'},
@@ -15,14 +15,19 @@ export const lessons = [
 // These are real catalog capabilities. Positions are an editorial layout, not an AWS account topology.
 const positions = {lambda:[115,185],iam:[310,105],sts:[495,185],cloudwatch:[90,355],s3:[325,305],kms:[525,370],cloudtrail:[315,495],guardduty:[110,530]};
 function cloudIllustration(){
-  const links = connections.filter(c=>positions[c.from]&&positions[c.to]);
+  // Relay order follows the lesson: identity, session, resource, evidence. Every hop is a sourced catalog capability.
+  const relay = ['sts>iam','lambda>iam','s3>kms','cloudtrail>s3','guardduty>cloudtrail','lambda>cloudwatch'];
+  const rank = c => {const i=relay.indexOf(c.from+'>'+c.to);return i<0?relay.length:i;};
+  const links = connections.filter(c=>positions[c.from]&&positions[c.to]).sort((a,b)=>rank(a)-rank(b));
+  const slot = 1.5, cycle = slot*links.length;
   return `<svg class="thread-cloud" viewBox="0 0 660 640" role="group" aria-labelledby="thread-cloud-title thread-cloud-desc">
     <title id="thread-cloud-title">A connected view of AWS security</title><desc id="thread-cloud-desc">An illustrated selection of documented relationships. Each service tile links to its research page. This is an educational map.</desc>
     <defs><pattern id="thread-grid" width="32" height="32" patternUnits="userSpaceOnUse" patternTransform="skewY(-25)"><path d="M32 0H0V32" fill="none" stroke="#dcd6c9" stroke-width=".7"/></pattern><filter id="thread-shadow" x="-80%" y="-60%" width="260%" height="240%"><feDropShadow dx="0" dy="16" stdDeviation="13" flood-color="#393a3020"/></filter><marker id="thread-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#b7ac99" stroke-width="1.3"/></marker></defs>
     <ellipse cx="330" cy="350" rx="285" ry="245" fill="url(#thread-grid)" opacity=".55"/>
     <ellipse cx="330" cy="350" rx="270" ry="245" fill="none" stroke="#ddd6c9" stroke-dasharray="3 8"/>
-    ${links.map((c,i)=>{const a=positions[c.from],b=positions[c.to],mid=(a[1]+b[1])/2;return `<g class="thread-wire"><title>${esc(serviceById(c.from).short+' → '+serviceById(c.to).short+': '+c.label)}</title><path d="M${a[0]} ${a[1]}C${a[0]} ${mid},${b[0]} ${mid},${b[0]} ${b[1]}" marker-end="url(#thread-arrow)"/><path class="thread-signal" style="animation-delay:-${i*.8}s" d="M${a[0]} ${a[1]}C${a[0]} ${mid},${b[0]} ${mid},${b[0]} ${b[1]}"/></g>`}).join('')}
-    ${Object.entries(positions).map(([id,[x,y]])=>{const d=domainFor(id),s=serviceById(id);return `<a class="thread-tile" href="#/service/${id}" aria-label="Explore ${esc(s.name)}" style="--tile-color:${id==='s3'?'#ed6036':id==='iam'?'#8b755c':'#536b65'}" transform="translate(${x} ${y})"><title>${esc(s.name)} · ${esc(s.label)}</title><g filter="url(#thread-shadow)"><path class="tile-side" d="M-60-9 0 23 60-9V12L0 45-60 12Z"/><path class="tile-top" d="M0-43 60-9 0 23-60-9Z"/><path class="tile-seam" d="M0 23V45"/></g><g transform="translate(0 -14) scale(.75)"><path class="tile-icon" d="${glyphs[d.id]}"/></g><rect x="-63" y="52" width="126" height="26" rx="13"/><text y="69" text-anchor="middle">${esc(s.short)}</text></a>`}).join('')}
+    ${links.map((c,i)=>{const a=positions[c.from],b=positions[c.to],mid=(a[1]+b[1])/2,d=`M${a[0]} ${a[1]}C${a[0]} ${mid},${b[0]} ${mid},${b[0]} ${b[1]}`;return `<g class="thread-wire" data-ends="${c.from} ${c.to}" style="--cycle:${cycle}s;--delay:${i*slot}s;--slot:${(slot/cycle*100).toFixed(2)}%"><title>${esc(serviceById(c.from).short+' → '+serviceById(c.to).short+': '+c.label)}</title><path d="${d}" marker-end="url(#thread-arrow)"/><path class="thread-signal" pathLength="1" d="${d}"/></g>`}).join('')}
+    ${links.map((c,i)=>{const b=positions[c.to];return `<ellipse class="thread-ping" cx="${b[0]}" cy="${b[1]-10}" rx="50" ry="28" style="--cycle:${cycle}s;--delay:${i*slot+slot*.82}s" aria-hidden="true"/>`}).join('')}
+    ${Object.entries(positions).map(([id,[x,y]])=>{const d=domainFor(id),s=serviceById(id);return `<a class="thread-tile" data-tile="${id}" href="#/service/${id}" aria-label="Explore ${esc(s.name)}" style="--tile-color:${id==='s3'?'#ed6036':id==='iam'?'#8b755c':'#536b65'}" transform="translate(${x} ${y})"><title>${esc(s.name)} · ${esc(s.label)}</title><g filter="url(#thread-shadow)"><path class="tile-side" d="M-60-9 0 23 60-9V12L0 45-60 12Z"/><path class="tile-top" d="M0-43 60-9 0 23-60-9Z"/><path class="tile-seam" d="M0 23V45"/></g><g transform="translate(0 -14) scale(.75)"><path class="tile-icon" d="${glyphFor(id,d.id)}"/></g><rect x="-63" y="52" width="126" height="26" rx="13"/><text y="69" text-anchor="middle">${esc(s.short)}</text></a>`}).join('')}
     <g class="thread-callout" transform="translate(402 474)"><rect width="205" height="74" rx="12"/><circle cx="17" cy="20" r="3"/><text x="29" y="24">FOLLOW THE EVIDENCE</text><text x="16" y="46" class="callout-body">S3 object activity?</text><text x="16" y="61" class="callout-small">Check data-event logging.</text></g>
     <text x="25" y="40" class="cloud-coordinate">FIELD MAP / 001</text><text x="635" y="605" text-anchor="end" class="cloud-coordinate">IDENTITY · RESOURCE · EVIDENCE</text>
   </svg>`;
@@ -50,11 +55,23 @@ export function mountFirstTrace(root,{initialLesson,signal}={}){
   const panel=root.querySelector('#lesson-content'),hero=root.querySelector('.thread-art'),motionButton=root.querySelector('.thread-motion');
   const on=(el,event,fn)=>el.addEventListener(event,fn,{signal});
   const moveTo=el=>{el.scrollIntoView({behavior:motion.matches?'instant':'smooth',block:'start'});el.focus({preventScroll:true});};
+  const cloud=root.querySelector('.thread-cloud');
+  function focusTile(id,source='lesson'){
+    if(!cloud)return;
+    if(source==='lesson')cloud.dataset.focus=id;
+    const active=cloud.dataset.hover||cloud.dataset.focus;
+    cloud.querySelectorAll('[data-tile]').forEach(t=>t.classList.toggle('is-focus',t.dataset.tile===active));
+    cloud.querySelectorAll('.thread-wire').forEach(w=>w.classList.toggle('is-lit',w.dataset.ends.split(' ').includes(active)));
+    cloud.classList.toggle('has-hover',Boolean(cloud.dataset.hover));
+  }
+  if(cloud)['pointerover','focusin'].forEach(type=>on(cloud,type,e=>{const tile=e.target.closest('[data-tile]');if(tile){cloud.dataset.hover=tile.dataset.tile;focusTile(tile.dataset.tile,'hover');}}));
+  if(cloud)['pointerleave','focusout'].forEach(type=>on(cloud,type,e=>{if(type==='focusout'&&cloud.contains(e.relatedTarget))return;delete cloud.dataset.hover;focusTile(null,'hover');}));
   function draw({updateURL=false,focus=false}={}){
     const s=lessons[index];
     root.querySelectorAll('[data-lesson]').forEach(b=>{const active=b.dataset.lesson===s.id;b.setAttribute('aria-pressed',String(active));if(active)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
     panel.innerHTML=`<div class="lesson-topline"><span>${s.term}</span><span>0${index+1} / 04</span></div><p class="lesson-question">${s.question}</p><h3 tabindex="-1">${s.title}</h3><p class="lesson-body">${s.body}</p><div class="lesson-check"><span>WHAT TO LOOK FOR</span><p>${s.check}</p></div><div class="lesson-clue"><span aria-hidden="true">↳</span> ${s.clue}</div><details class="lesson-quiz"><summary>Quick check: ${s.quiz}</summary><p>${s.answer}</p></details><div class="lesson-sources"><a href="${s.source}" target="_blank" rel="noopener noreferrer">${s.sourceLabel} ↗</a><a href="#/service/${s.id}">Go deeper into ${esc(serviceById(s.id).short)} →</a></div><div class="lesson-controls"><button data-lesson-back ${index===0?'disabled':''}>← Previous</button><span class="lesson-progress" aria-label="Step ${index+1} of 4">${lessons.map((_,i)=>`<i class="${i<=index?'complete':''}"></i>`).join('')}</span>${index<lessons.length-1?'<button data-lesson-next>Next concept →</button>':'<a href="#/service/cloudtrail?tab=evidence">Explore the evidence →</a>'}</div>`;
     if(s.id==='cloudtrail')panel.querySelector('.lesson-sources').insertAdjacentHTML('beforeend','<a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/view-cloudtrail-events.html" target="_blank" rel="noopener noreferrer">AWS: event history limits ↗</a>');
+    focusTile(s.id);
     if(updateURL){const query=new URLSearchParams(location.hash.split('?')[1]||'');query.set('learn',s.id);history.replaceState(null,'',`#/?${query}`);}
     if(focus)panel.querySelector('h3').focus({preventScroll:true});
   }

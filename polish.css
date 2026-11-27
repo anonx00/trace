@@ -1,0 +1,76 @@
+/* Final polish layer. Loaded last; keep overrides here instead of adding to earlier sheets. */
+
+/* Domains explorer lives in the top bar so it never covers page content. */
+body .top-actions .explorer-toggle,
+body[data-page] .top-actions .explorer-toggle {
+  position: static; inset: auto; display: inline-flex; align-items: center; gap: 7px;
+  height: 36px; padding: 0 14px; margin: 0;
+  background: transparent; color: #304b36; border: 1px solid #cdd8bc; border-radius: 18px;
+  box-shadow: none; font: 500 12px 'DM Sans', sans-serif; cursor: pointer; white-space: nowrap;
+  transition: background .15s, border-color .15s;
+}
+body .top-actions .explorer-toggle svg { width: 15px; height: 15px; }
+body .top-actions .explorer-toggle:hover,
+body .top-actions .explorer-toggle[aria-expanded="true"] { background: #e9eedb; border-color: #9fb38c; }
+body .top-actions .explorer-toggle:focus-visible { outline: 2px solid #a34420; outline-offset: 2px; }
+@media (max-width: 650px) {
+  body .top-actions .explorer-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  body .top-actions .explorer-toggle { width: 36px; padding: 0; justify-content: center; }
+}
+
+/* Home field map: a relay that follows one documented relationship at a time. */
+#view .thread-wire .thread-signal {
+  stroke-dasharray: .15 1.85;
+  stroke-dashoffset: .15;
+  animation: thread-relay var(--cycle, 9s) linear var(--delay, 0s) infinite both;
+}
+@keyframes thread-relay {
+  0% { stroke-dashoffset: .15; }
+  16.66% { stroke-dashoffset: -1; }
+  100% { stroke-dashoffset: -1.85; }
+}
+.thread-ping {
+  fill: none; stroke: #d4653f; stroke-width: 1.5; opacity: 0;
+  transform-box: fill-box; transform-origin: center;
+  animation: thread-ping var(--cycle, 9s) ease-out var(--delay, 0s) infinite none;
+  pointer-events: none;
+}
+@keyframes thread-ping {
+  0% { opacity: .7; transform: scale(.8); }
+  8% { opacity: 0; transform: scale(1.12); }
+  100% { opacity: 0; transform: scale(1.18); }
+}
+.thread-wire > path:first-of-type { transition: stroke .2s, stroke-width .2s, opacity .2s; }
+.thread-wire.is-lit > path:first-of-type { stroke: #a34420; stroke-width: 1.8; }
+.thread-cloud.has-hover .thread-wire:not(.is-lit) { opacity: .28; }
+.thread-cloud.has-hover .thread-tile:not(.is-focus) { opacity: .55; }
+.thread-tile { transition: opacity .2s; }
+.thread-tile .tile-top { transition: fill .2s, stroke .2s; }
+.thread-tile.is-focus .tile-top { fill: #fbe6d9; stroke: #d25d33; }
+.thread-tile.is-focus > text { fill: #a33418; font-weight: 600; }
+.thread-tile.is-focus > rect { fill: #fbe6d9; }
+.thread-art.is-paused .thread-ping { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .thread-ping { animation: none; opacity: 0; }
+  .thread-tile, .thread-wire > path:first-of-type, .thread-tile .tile-top { transition: none; }
+}
+
+body .top-actions .explorer-toggle svg { flex: none; min-width: 15px; }
+
+/* Domains panel: match the ivory atlas theme and open beneath its top-bar button. */
+body .sidebar.is-open {
+  left: auto; right: 28px; top: 92px; width: 268px; max-height: calc(100vh - 116px);
+  background: #fbfaf4; color: #30463a; border: 1px solid #cdd8bc; border-radius: 16px;
+  box-shadow: 0 18px 48px #2f43301f; backdrop-filter: none;
+}
+body .sidebar.is-open :is(.sidebar-title, .nav-caption) { color: #6d7c68; }
+body .sidebar.is-open :is(.domain-link, .all-domains) { color: #30463a; }
+body .sidebar.is-open :is(.domain-link, .all-domains):hover,
+body .sidebar.is-open :is(.domain-link, .all-domains).active { background: #e9eedb; color: #1f3326; }
+body .sidebar.is-open .count { color: #7a8775; }
+@media (max-width: 1000px) { body .sidebar.is-open { top: 120px; right: 16px; } }
+@media (max-width: 650px) { body .sidebar.is-open { top: 112px; right: 12px; left: 12px; width: auto; } }
+
+/* External-link arrows stay on the same line as their label. */
+#view .service-primer a > span { display: inline; }

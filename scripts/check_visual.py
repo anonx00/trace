@@ -141,7 +141,7 @@ with sync_playwright() as pw:
     for width in [1440, 1024, 768, 390, 320]:
         page.set_viewport_size({'width': width, 'height': 1000})
         page.goto(URL + '#/service/s3', wait_until='networkidle')
-        expect(page.locator('[data-nav="map"]')).to_have_attribute('aria-current', 'page')
+        expect(page.locator('[data-nav="library"]')).to_have_attribute('aria-current', 'page')
         graph = page.locator('.world-svg')
         nodes = page.locator('.mind-graph-node')
         page.mouse.move(0, 0)

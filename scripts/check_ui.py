@@ -13,9 +13,9 @@ with sync_playwright() as pw:
     page.goto('http://127.0.0.1:4173',wait_until='networkidle')
     page.locator('.world-svg').wait_for()
     assert page.locator('.map-node').count()==8
-    page.get_by_role('button',name='Explore domains',exact=True).click()
+    page.get_by_role('button',name='Browse security domains',exact=True).click()
     assert page.locator('.sidebar').is_visible()
-    page.get_by_role('button',name='Explore domains',exact=True).click()
+    page.get_by_role('button',name='Browse security domains',exact=True).click()
     assert not page.locator('.sidebar').is_visible()
     page.screenshot(path=str(out/'universe-desktop.png'),full_page=True)
     page.locator('[data-detail="services"]').click()
